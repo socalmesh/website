@@ -10,7 +10,8 @@ None of this is mandatory. These are the settings the people on this mesh have l
 running a lot of radios in a lot of places, and they exist for one reason: to keep the network
 from talking over itself so your messages actually get through.
 
-If you change one thing after reading this, change your hop limit. If you change nothing, you
+If you check one thing after reading this, check your device role — it is the setting people get
+wrong most often, and the one that affects everybody around you. If you change nothing at all, you
 will still be on the mesh.
 
 ## Which channel to set
@@ -30,9 +31,9 @@ There are many more nodes on this network than any map displays, so an empty-loo
 proof that nobody is out there. Treat the map as a floor, not a census — and ask on Discord, where
 somebody in your area can tell you what they are actually hearing.
 
-Set **both** the preset and the frequency slot, not just one. A radio on the right preset with
-the slot left at its default is on a different frequency from the rest of us, and radios on
-different presets cannot hear each other at all.
+Set **both** the preset and the frequency slot, not just one — and type the slot number in rather
+than leaving it at `0`, for the reason in the next section. Radios on different presets cannot
+hear each other at all, however the slot is set.
 
 We use the **default primary channel settings**. You do not need a separate pre-shared key, and
 you do not need to pick a channel to join the public network. You are welcome to set your own
@@ -167,9 +168,9 @@ person you messaged may well have got it even when nothing comes back to you —
 your radio reports it hit max transmissions. Silence is ambiguous, not negative.
 
 **Every hop lowers your odds.** The more nodes your message has to pass through, the less likely
-you are to establish real two-way conversation. This is the practical reason the hop limit
-advice above is 3 to 5 and not "as high as it goes" — and the reason a well-placed node beats a
-distant one.
+you are to establish real two-way conversation. That is the practical reason the hop limit advice
+above is a low number rather than "as high as it goes" — and the reason one well-placed node beats
+a distant one.
 
 ## Where to ask
 
