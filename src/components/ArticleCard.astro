@@ -1,0 +1,59 @@
+---
+import Byline from './Byline.astro';
+import { url } from '../lib/url';
+
+interface Props {
+  /** Heading level for the card title, so each page keeps a valid outline.
+      The help index uses h2 (its page title is the h1); the home page uses h3
+      (it sits under the section's own h2). */
+  headingLevel?: 'h2' | 'h3';
+  slug: string;
+  title: string;
+  description: string;
+  author: string;
+  date: Date;
+  updated?: Date;
+}
+
+const { headingLevel = 'h3', slug, title, description, author, date, updated } = Astro.props;
+const Heading = headingLevel;
+---
+
+<article class="card">
+  <Heading>
+    <a href={url(`/help/${slug}/`)}>{title}</a>
+  </Heading>
+  <p class="desc">{description}</p>
+  <Byline author={author} date={date} updated={updated} />
+</article>
+
+<style>
+  .card {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-m);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    transition: border-color 120ms ease;
+  }
+
+  .card:hover {
+    border-color: var(--accent-dim);
+  }
+
+  .card :is(h2, h3) a {
+    text-decoration: none;
+    color: var(--text);
+  }
+
+  .card:hover :is(h2, h3) a {
+    color: var(--accent);
+  }
+
+  .desc {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+</style>

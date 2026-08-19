@@ -1,0 +1,59 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# Build under the GitHub Pages sub-folder on purpose: it catches internal links
+# that were written as "/help/" instead of going through src/lib/url.ts.
+env:
+  SITE_URL: https://socalmesh.github.io
+  BASE_PATH: /website
+
+jobs:
+  checks:
+    name: Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # One check called "Checks" appears on the pull request; open its log to see
+      # which of the steps below failed. Types are checked first because that is the
+      # fastest failure, and every step runs even if an earlier one failed, so one
+      # push tells you about all of the problems rather than the first one.
+      - name: Types and content
+        run: npm run check
+
+      - name: Build
+        if: '!cancelled()'
+        run: npm run build
+
+      - name: Internal links
+        if: '!cancelled()'
+        run: node scripts/check-links.mjs --dist dist --base "$BASE_PATH"
+
+      # The built site, downloadable from the pull request. There are no preview
+      # deployments on this repo, so this is how someone looks at a change before
+      # it goes live.
+      - name: Upload the built site
+        if: '!cancelled()'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7

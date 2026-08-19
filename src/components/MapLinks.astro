@@ -1,0 +1,75 @@
+---
+import { site } from '../config/site';
+---
+
+<ul class="maps">
+  {
+    site.maps.map((map) => (
+      <li class:list={['map', { community: map.community }]}>
+        <a href={map.url} rel="noopener">
+          <span class="name">{map.name}</span>
+          {map.community && <span class="tag">Community-run</span>}
+        </a>
+        <p>{map.blurb}</p>
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .maps {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .map {
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-m);
+  }
+
+  .map.community {
+    border-color: var(--accent-dim);
+  }
+
+  .map a {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    text-decoration: none;
+  }
+
+  .name {
+    font-weight: 650;
+    overflow-wrap: anywhere;
+  }
+
+  .map a:hover .name {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  .tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-weight: 650;
+    color: var(--accent);
+    border: 1px solid var(--accent-dim);
+    border-radius: 999px;
+    padding: 0.1rem 0.55rem;
+    white-space: nowrap;
+  }
+
+  .map p {
+    margin-top: var(--space-xs);
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+</style>

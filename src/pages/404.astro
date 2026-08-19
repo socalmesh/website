@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Button from '../components/Button.astro';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+---
+
+<BaseLayout
+  title="Page not found"
+  description="That page does not exist on the SoCal Mesh site."
+  noindex={true}
+>
+  <div class="wrap page">
+    <p class="eyebrow">404</p>
+    <h1>No route to that page</h1>
+    <p class="lede">
+      The link is broken or the page moved. Try the home page, or ask us on Discord.
+    </p>
+    <div class="actions">
+      <Button href={url('/')} variant="accent">Go home</Button>
+      <Button href={url('/help/')} variant="ghost">Help articles</Button>
+      <Button href={site.discord.invite} variant="ghost" external>Discord</Button>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: var(--space-2xl);
+    max-width: var(--width-prose);
+  }
+
+  .lede {
+    margin-top: var(--space-s);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    margin-top: var(--space-l);
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+import Button from './Button.astro';
+import { site } from '../config/site';
+
+const widgetSrc = `https://discord.com/widget?id=${site.discord.widgetId}&theme=dark`;
+---
+
+<div class="cta">
+  <div class="copy">
+    <p class="eyebrow">Come say hi</p>
+    <h2>Join our Discord</h2>
+    <p class="lede">
+      Discord is where the mesh lives — questions, node setups, coverage reports, and the bot
+      that mirrors mesh traffic into chat. Everyone is welcome, new or experienced.
+    </p>
+    <Button href={site.discord.invite} variant="primary" external class="cta-btn">
+      Join us on Discord
+    </Button>
+    <p class="fine">
+      New here? Start with the <a href={site.discord.quickStart} rel="noopener">Quick Start post</a>.
+    </p>
+  </div>
+
+  {
+    site.discord.showWidget && (
+      <div class="widget">
+        <iframe
+          src={widgetSrc}
+          title="SoCal Mesh Discord server widget"
+          loading="lazy"
+          width="350"
+          height="420"
+          sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"
+        />
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .cta {
+    display: grid;
+    gap: var(--space-l);
+    grid-template-columns: 1fr;
+    align-items: center;
+  }
+
+  @media (min-width: 52rem) {
+    .cta:has(.widget) {
+      grid-template-columns: minmax(0, 1fr) auto;
+    }
+  }
+
+  .copy h2 {
+    margin-bottom: var(--space-s);
+  }
+
+  .cta-btn {
+    margin-top: var(--space-m);
+  }
+
+  .fine {
+    margin-top: var(--space-s);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .widget iframe {
+    width: min(350px, 100%);
+    height: 420px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+  }
+</style>

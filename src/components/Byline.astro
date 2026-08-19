@@ -1,0 +1,27 @@
+---
+import { formatDate, isoDate } from '../lib/url';
+
+interface Props {
+  author: string;
+  date: Date;
+  updated?: Date;
+}
+
+const { author, date, updated } = Astro.props;
+---
+
+<p class="byline">By {author} · <time datetime={isoDate(date)}>{formatDate(date)}</time>{
+    updated && (
+      <>
+        {' · Updated '}
+        <time datetime={isoDate(updated)}>{formatDate(updated)}</time>
+      </>
+    )
+  }</p>
+
+<style>
+  .byline {
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+</style>

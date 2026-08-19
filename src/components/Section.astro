@@ -1,0 +1,55 @@
+---
+/** A page section with an optional eyebrow, heading and intro line. */
+interface Props {
+  id?: string;
+  eyebrow?: string;
+  title?: string;
+  lede?: string;
+  tone?: 'default' | 'raised';
+  /** Heading level for the section title. A page that uses a Section as its
+      main heading passes "h1"; sections inside a page keep the default "h2",
+      so every page has exactly one h1 and the outline stays in order. */
+  titleAs?: 'h1' | 'h2' | 'h3';
+}
+
+const { id, eyebrow, title, lede, tone = 'default', titleAs = 'h2' } = Astro.props;
+const Title = titleAs;
+---
+
+<section id={id} class:list={['section', tone === 'raised' && 'raised']}>
+  <div class="wrap">
+    {
+      (eyebrow || title || lede) && (
+        <div class="head">
+          {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+          {title && <Title>{title}</Title>}
+          {lede && <p class="lede">{lede}</p>}
+        </div>
+      )
+    }
+    <slot />
+  </div>
+</section>
+
+<style>
+  .section {
+    padding-block: var(--space-2xl);
+    /* Clears the sticky header, which is taller on a phone because the nav wraps
+       onto a second row. Too small a value hides the heading you just jumped to. */
+    scroll-margin-top: 7.5rem;
+  }
+
+  .raised {
+    background: var(--bg-raised);
+    border-block: 1px solid var(--border);
+  }
+
+  .head {
+    max-width: var(--width-prose);
+    margin-bottom: var(--space-l);
+  }
+
+  .head .lede {
+    margin-top: var(--space-s);
+  }
+</style>

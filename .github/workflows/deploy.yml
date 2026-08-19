@@ -1,0 +1,68 @@
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    # Only the live branch is ever published, even when someone starts this
+    # workflow by hand from the Actions tab.
+    if: github.ref == 'refs/heads/main'
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - run: npm ci
+
+      # Reads where this site is going to live: `origin` is the domain and
+      # `base_path` is the folder under it. If a custom domain (e.g. socalmesh.org)
+      # is set in the repo's Pages settings it returns that at the top level;
+      # otherwise it returns https://<owner>.github.io/<repo>/. Nothing in the repo
+      # changes to switch over — set the domain in Settings, re-run Deploy.
+      #
+      # Pages must already be turned on, once, by a maintainer:
+      #   Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
+      # This step deliberately does not try to turn it on itself — the token this
+      # workflow runs with is not allowed to, so relying on that would fail the very
+      # first publish. If this step errors, that setting is what to check.
+      - name: Read the GitHub Pages address
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Build the site
+        env:
+          SITE_URL: ${{ steps.pages.outputs.origin }}
+          BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: npm run build
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

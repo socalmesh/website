@@ -1,0 +1,74 @@
+---
+import { site } from '../config/site';
+import { url } from '../lib/url';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p class="reach">
+      The best way to reach us is <a href={site.discord.invite} rel="noopener">Discord</a>.
+    </p>
+
+    <ul class="links">
+      <li><a href={url('/')}>Home</a></li>
+      <li><a href={url('/help/')}>Help</a></li>
+      <li><a href={site.discord.invite} rel="noopener">Discord</a></li>
+      <li><a href={site.github.org} rel="noopener">GitHub</a></li>
+      <li><a href={site.maps[0].url} rel="noopener">Live map</a></li>
+      <li><a href={site.meshtastic.site} rel="noopener">Meshtastic</a></li>
+    </ul>
+
+    <p class="legal">{site.meshtastic.trademark}</p>
+    <p class="legal">{site.meshtastic.notAffiliated}</p>
+
+    <p class="colophon">© {year} {site.name} · We add no analytics and no tracking. The Discord member list on the home page is embedded from Discord and follows their terms.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg-sunken);
+    padding-block: var(--space-xl) var(--space-l);
+    margin-top: var(--space-2xl);
+    font-size: var(--step--1);
+    color: var(--text-muted);
+  }
+
+  .reach {
+    font-size: var(--step-0);
+    color: var(--text);
+    margin-bottom: var(--space-m);
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-m);
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-l);
+  }
+
+  .links a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .links a:hover {
+    color: var(--accent);
+  }
+
+  .legal {
+    max-width: 62rem;
+    color: var(--text-faint);
+    margin-bottom: var(--space-xs);
+  }
+
+  .colophon {
+    margin-top: var(--space-m);
+    color: var(--text-faint);
+  }
+</style>

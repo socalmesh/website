@@ -1,0 +1,322 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Section from '../components/Section.astro';
+import MapLinks from '../components/MapLinks.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import PhotoGrid from '../components/PhotoGrid.astro';
+import ChannelCards from '../components/ChannelCards.astro';
+import StartHere from '../components/StartHere.astro';
+import DiscordCTA from '../components/DiscordCTA.astro';
+import Button from '../components/Button.astro';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+import { publishedArticles } from '../lib/help';
+import { Image } from 'astro:assets';
+// The SDR waterfall lives outside src/assets/photos/ so the grid does not pick it up.
+import sdrWaterfall from '../assets/sdr-waterfall.jpg';
+
+const latest = (await publishedArticles()).slice(0, 3);
+
+---
+
+<BaseLayout title={site.name} description={site.tagline}>
+  <Hero />
+
+  <Section
+    id="about"
+    eyebrow="About"
+    title="About SoCal Mesh"
+    lede="No cell towers. No internet. Just radios, and the people who run them."
+  >
+    <div class="blocks">
+      <article>
+        <h3>What is SoCal Mesh?</h3>
+        <p>
+          SoCal Mesh is a community of individuals working to build a network of Meshtastic
+          radios in Southern California. This network acts like an area-wide text messaging
+          system, allowing people to communicate publicly or privately with anyone on the
+          network. The mesh network can also be used to transmit GPS locations or read weather
+          and other telemetry. All of this happens without any external infrastructure — no
+          cell phone towers, no internet. We have hundreds of nodes and are growing every day.
+          Please join us and feel free to ask questions on our{' '}
+          <a href={site.discord.invite} rel="noopener">Discord</a>.
+        </p>
+      </article>
+
+      <article>
+        <h3>What is Meshtastic?</h3>
+        <p>
+          Meshtastic is an open source, decentralized, off-grid mesh network. It is made up of
+          small communicators that can form a mesh network. These communicators can be linked
+          to a phone via Bluetooth or Wi-Fi. Meshtastic uses inexpensive LoRa radios as a
+          long-range communication platform. Learn more at the{' '}
+          <a href={site.meshtastic.site} rel="noopener">official Meshtastic website</a>.
+        </p>
+      </article>
+
+      <article>
+        <h3>How it works</h3>
+        <p>
+          We have set up a number of client nodes in the Southern California area. These radios
+          communicate in the 906 MHz frequency range using the LoRa protocol. The radios mesh
+          using the open source Meshtastic software. Users can connect to these client nodes by
+          Bluetooth if they are close enough, or they can use their own handheld nodes, which
+          also act as repeaters. Messages hop from node to node, extending the reach of the
+          network and adding redundancy.
+        </p>
+      </article>
+    </div>
+  </Section>
+
+  <Section
+    id="channels"
+    tone="raised"
+    eyebrow="Channels"
+    title="The two channels we run"
+    lede="Set your radio to MediumFast on frequency slot 45. That is where this mesh lives."
+  >
+    <ChannelCards />
+
+    <div class="why">
+      <div>
+        <h3>Why not the default?</h3>
+        <p>
+          LongFast is what a radio ships with, so everyone who never changes a setting ends up on the
+          same slow channel. Each message sits on the air three to four times longer than it needs
+          to. On a busy city mesh that means collisions, retries, and messages that never land.
+        </p>
+      </div>
+      <div>
+        <h3>Why MediumFast, slot 45?</h3>
+        <p>
+          The same message goes out in a fraction of the airtime, so more people can talk before the
+          channel fills up. Slot 45 is a different frequency as well, so we are not sharing the air
+          with every unconfigured radio in Southern California.
+        </p>
+      </div>
+      <div>
+        <h3>What you give up</h3>
+        <p>
+          Range per hop. MediumFast has about 5 dB less link budget than LongFast, so each hop
+          reaches less far and the mesh leans on having enough nodes. That trade is worth it here,
+          and it is why we care about good node placement.
+        </p>
+      </div>
+    </div>
+
+    <p class="warn">
+      Change <strong>both</strong> settings — the preset and the frequency slot. A radio on
+      MediumFast with the slot left at 0 is on a different frequency than the rest of us, and a
+      LongFast radio cannot hear a MediumFast one at all.
+    </p>
+  </Section>
+
+  <Section
+    id="start"
+    eyebrow="New here?"
+    title="Start here"
+    lede="From an unopened radio to your first message on the mesh."
+  >
+    <StartHere />
+    <p class="more">
+      <Button href={site.discord.invite} variant="accent" external>Ask us on Discord</Button>
+    </p>
+  </Section>
+
+  <Section
+    id="maps"
+    tone="raised"
+    eyebrow="Maps"
+    title="See the network"
+    lede="Nodes that uplink to MQTT show up on these maps. Start with ours."
+  >
+    <MapLinks />
+  </Section>
+
+  <Section
+    id="help"
+    eyebrow="Help"
+    title="Getting started"
+    lede="Short guides written by people in the mesh."
+  >
+    {
+      latest.length > 0 ? (
+        <>
+          <div class="cards">
+            {latest.map((article) => (
+              <ArticleCard
+                slug={article.id}
+                title={article.data.title}
+                description={article.data.description}
+                author={article.data.author}
+                date={article.data.date}
+                updated={article.data.updated}
+              />
+            ))}
+          </div>
+          <p class="more">
+            <a href={url('/help/')}>All help articles →</a>
+          </p>
+        </>
+      ) : (
+        <p class="lede">
+          No articles yet. Ask on <a href={site.discord.invite} rel="noopener">Discord</a> and we
+          will write one.
+        </p>
+      )
+    }
+  </Section>
+
+  <Section
+    id="photos"
+    tone="raised"
+    eyebrow="Photos"
+    title="Out in the field"
+    lede="Nodes, antennas, meetups, and a waterfall full of LoRa."
+  >
+    <PhotoGrid />
+    <div class="sdr">
+      <Image
+        src={sdrWaterfall}
+        alt="An SDR waterfall display showing bursts of LoRa traffic near 906.9 MHz"
+        widths={[480, 800, 1200, 1600]}
+        width={1600}
+        height={900}
+        sizes="(min-width: 64rem) 60rem, 92vw"
+        format="webp"
+        quality={72}
+        loading="lazy"
+        decoding="async"
+      />
+      <p class="caption">LoRa traffic on the 33 cm band, seen from an SDR.</p>
+    </div>
+  </Section>
+
+  <Section id="discord">
+    <DiscordCTA />
+  </Section>
+
+  <Section
+    id="community"
+    tone="raised"
+    eyebrow="Community"
+    title="Projects and links"
+    lede="Everything we run is open source."
+  >
+    <ul class="links">
+      {
+        site.communityLinks.map((link) => (
+          <li>
+            <a href={link.url} rel="noopener">
+              {link.name}
+            </a>
+            <p>{link.blurb}</p>
+          </li>
+        ))
+      }
+    </ul>
+    <p class="more">
+      <Button href={site.discord.invite} variant="accent" external>Join us on Discord</Button>
+    </p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .blocks {
+    display: grid;
+    gap: var(--space-l);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  }
+
+  .blocks h3 {
+    margin-bottom: var(--space-xs);
+  }
+
+  .blocks p {
+    color: var(--text-muted);
+  }
+
+  .cards {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+
+  .more {
+    margin-top: var(--space-m);
+  }
+
+  .sdr {
+    margin-top: var(--space-m);
+  }
+
+  .sdr img {
+    width: 100%;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+  }
+
+  .caption {
+    margin-top: var(--space-xs);
+    font-size: var(--step--1);
+    color: var(--text-faint);
+  }
+
+  .why {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-m);
+    margin-bottom: var(--space-m);
+  }
+
+  .why h3 {
+    margin: 0 0 0.35rem;
+    font-size: var(--step-0);
+  }
+
+  .why p {
+    margin: 0;
+    color: var(--text-muted);
+  }
+
+  .warn {
+    max-width: 70ch;
+    margin: 0;
+    padding: var(--space-s) var(--space-m);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 var(--radius) var(--radius) 0;
+    background: var(--bg-raised);
+    color: var(--text-muted);
+  }
+
+  .warn strong {
+    color: var(--text);
+  }
+
+  .links {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .links li {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--space-m);
+  }
+
+  .links a {
+    font-weight: 650;
+  }
+
+  .links p {
+    margin-top: var(--space-2xs);
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+</style>
