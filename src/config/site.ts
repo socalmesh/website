@@ -40,9 +40,13 @@ const links = {
   reddit: 'https://www.reddit.com/r/SoCalMesh/',
   flasher: 'https://flasher.meshtastic.org',
   githubOrg: 'https://github.com/socalmesh',
-  bestPractices: 'https://github.com/socalmesh/best-practices',
   mqttConfig: 'https://github.com/socalmesh/mqtt-config',
-  meshBot: 'https://github.com/socalmesh/rage-against-the-meshine',
+  /* The bot we call the parrot, which echoes mesh traffic into Discord. This is the
+     upstream project it comes from, not our fork of it. */
+  parrot: 'https://github.com/baymesh/rage-against-the-meshine',
+  /* The software our own map at meshview.socalmesh.org runs on. */
+  meshview: 'https://github.com/pablorevilla-meshtastic/meshview',
+  meshSense: 'https://github.com/Affirmatech/MeshSense',
   meshtastic: 'https://meshtastic.org',
 } as const;
 
@@ -62,27 +66,28 @@ export const site = {
     showWidget: true,
   },
 
-  /* The two channels we run. Change a number here and the home page follows. */
+  /* The two channels we run. Change a number here and the home page follows.
+     The recommended one comes first, because that is the order the cards appear in. */
   channels: [
-    {
-      short: 'MF45',
-      preset: 'MediumFast',
-      slot: 45,
-      frequency: '913.125 MHz',
-      recommended: true,
-      headline: 'What we run.',
-      blurb:
-        'Faster on the air and on a quieter frequency. Set this one if you want to talk to the rest of us.',
-    },
     {
       short: 'LF20',
       preset: 'LongFast',
       slot: 20,
       frequency: '906.875 MHz',
-      recommended: false,
-      headline: 'The factory default.',
+      recommended: true,
+      headline: 'Start here.',
       blurb:
-        'What every radio ships with, so everyone who never changes a setting lands here. It works, but it is crowded.',
+        'Where many of us are, and close to what your radio already ships with. Set this one first.',
+    },
+    {
+      short: 'MF45',
+      preset: 'MediumFast',
+      slot: 45,
+      frequency: '913.125 MHz',
+      recommended: false,
+      headline: 'The alternate.',
+      blurb:
+        'Faster on the air, and plenty of us in SoCal use it — but it is not always strong. Try it if you can connect; it depends on your area.',
     },
   ],
 
@@ -99,7 +104,7 @@ export const site = {
     },
     {
       title: 'Set the channel',
-      body: 'Region US, preset MediumFast, frequency slot 45. Both settings, not just one — see the channels above.',
+      body: 'Region US, preset LongFast, frequency slot 20. Both settings, not just one — see the channels above. Once you are on the air, MediumFast slot 45 is worth a try.',
     },
     {
       title: 'Say hello',
@@ -124,38 +129,47 @@ export const site = {
     ],
     meshcore: [
       { name: 'MeshCore', url: 'https://meshcore.co.uk/', blurb: 'The MeshCore project — different firmware, different network, same idea.' },
-      { name: 'West Coast Mesh', url: 'https://wcmesh.com/', blurb: 'A MeshCore community here on the west coast. Their wiki is worth reading even if you run Meshtastic.' },
+      { name: 'West Coast Mesh', url: 'https://wcmesh.com/', blurb: 'A MeshCore community here on the west coast, running settings of their own rather than the defaults. Their wiki is worth reading even if you run Meshtastic.' },
     ],
   },
 
   reddit: links.reddit,
   flasher: links.flasher,
 
+  /* These are NOT all the same data source, which is why each blurb says what it is.
+     Ours comes first — it is also the hero's "See the live map" button. */
   maps: [
     {
       name: 'meshview.socalmesh.org',
       url: 'https://meshview.socalmesh.org',
-      blurb: 'Our live map — run by our community.',
+      blurb: 'Our live map — an instance of meshview that we run ourselves.',
       community: true,
+    },
+    {
+      name: 'meshview.world',
+      url: 'https://meshview.world/',
+      blurb: 'A map of all the meshview instances out there, ours included.',
+      community: false,
     },
     {
       name: 'meshmap.net',
       url: 'https://meshmap.net',
-      blurb: 'Another map showing nodes that uplink to the public MQTT server.',
+      blurb: 'The more reliable of the wider maps, and it takes in other regions too.',
       community: false,
     },
     {
       name: 'meshtastic.liamcottle.net',
       url: 'https://meshtastic.liamcottle.net/',
-      blurb: 'A third map, with another view of the same public data.',
+      blurb: 'Another view of the same idea, though it may show a smaller subset of nodes.',
       community: false,
     },
   ],
 
   github: {
     org: links.githubOrg,
-    bestPractices: links.bestPractices,
-    meshBot: links.meshBot,
+    parrot: links.parrot,
+    meshview: links.meshview,
+    meshSense: links.meshSense,
     mqttConfig: links.mqttConfig,
   },
 
@@ -163,12 +177,7 @@ export const site = {
     {
       name: 'GitHub organization',
       url: links.githubOrg,
-      blurb: 'Everything we build in the open — the broker config, the bot, the guides.',
-    },
-    {
-      name: 'Best Practices guide',
-      url: links.bestPractices,
-      blurb: 'Recommended radio settings: channel, role, hop limit, and what not to touch.',
+      blurb: 'Everything we build in the open — the broker config and the guides.',
     },
     {
       name: 'MQTT server config',
@@ -176,9 +185,19 @@ export const site = {
       blurb: 'How our community MQTT broker is set up, and the bridges it feeds.',
     },
     {
-      name: 'Mesh Bot',
-      url: links.meshBot,
-      blurb: 'Our open source bridge that mirrors mesh traffic into Discord channels.',
+      name: 'meshview',
+      url: links.meshview,
+      blurb: 'The software behind our live map. We run our own instance of it.',
+    },
+    {
+      name: 'Rage Against the Meshine',
+      url: links.parrot,
+      blurb: 'The project behind the parrot — the bot that echoes mesh traffic into our Discord.',
+    },
+    {
+      name: 'MeshSense',
+      url: links.meshSense,
+      blurb: 'A tool for making sense of who is connected to whom on the mesh.',
     },
     {
       name: 'r/SoCalMesh on Reddit',

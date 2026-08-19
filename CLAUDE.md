@@ -240,25 +240,44 @@ the server and has not expired.
 **Say:** "Add a new map link", or "our meshview URL moved".
 
 **Claude will:** edit the map list in `src/config/site.ts`. **Order matters** — the community's own
-map, `https://meshview.socalmesh.org`, always comes first, because it is ours; then
-`https://meshmap.net`; then `https://meshtastic.liamcottle.net/`. Then the checks, the pull request,
-and the merge question.
+map, `https://meshview.socalmesh.org`, always comes first, because it is ours (the hero's "See the
+live map" button and the footer link both read the first entry); then `https://meshview.world/`;
+then `https://meshmap.net`; then `https://meshtastic.liamcottle.net/`. Then the checks, the pull
+request, and the merge question.
+
+**These four are not the same data source, and the blurbs say so on purpose.** Ours is an instance
+of meshview that we run. Anyone who uplinks to our MQTT server also appears on meshmap.net and
+Liam's map, because we share to both of those — meshmap is the more reliable of the two and covers
+other regions as well, while Liam's may show a smaller subset. `meshview.world` is a different
+thing: a map of all the meshview instances, not another view of our traffic. Do not flatten those
+distinctions into "the maps", and do not write that uplinking puts you on all four.
+
+**And every map understates the network.** A node only shows up if its owner enabled **OK to
+MQTT**, so there are always more nodes on the air than the maps display. If you touch the maps
+section, keep that caveat with it.
 
 **Check afterwards:** the maps section lists them in that order, and each link opens.
 
 ### Change the channel settings we recommend
 
-The home page shows the two channels this mesh runs on — **MF45** (MediumFast, frequency slot 45)
-and **LF20** (LongFast, slot 20) — with the frequency each one lands on. These are the numbers
+The home page shows the two channels this mesh runs on — **LF20** (LongFast, frequency slot 20)
+and **MF45** (MediumFast, slot 45) — with the frequency each one lands on. These are the numbers
 newcomers copy onto their radio, so they matter more than anything else on the page.
+
+**LF20 is the recommended one, and MF45 is the alternate.** LongFast slot 20 is where many of this
+community actually are. MediumFast slot 45 is faster on the air and plenty of people here use it,
+but it is not always strong and whether it works depends on the area — so the page tells people to
+try it if they can connect, and to check the live map for MF45 nodes near them first. Do not
+re-flip that emphasis without asking someone who runs a node.
 
 **Say:** "We moved to MediumSlow", or "the slot 45 frequency is wrong, it should be X".
 
 **Claude will:** edit the `channels` list in `src/config/site.ts`. Each channel has a short name
-(`MF45`), the preset name, the slot number, the frequency, and a sentence of explanation. The one
-with `recommended: true` gets the highlighted "Set this one" card. Claude will also check the
-explanation paragraphs underneath still make sense — they sit in `src/pages/index.astro` in the
-section marked `id="channels"`.
+(`LF20`), the preset name, the slot number, the frequency, and a sentence of explanation. The one
+with `recommended: true` gets the highlighted "Set this one" card, and the recommended one is
+listed first because the cards render in array order. Claude will also check the explanation
+paragraphs underneath still make sense — they sit in `src/pages/index.astro` in the section marked
+`id="channels"`, along with the sources paragraph that cites where the numbers come from.
 
 **Please double-check this one before merging.** A wrong frequency or slot number sends people to a
 channel nobody is listening on. Confirm the numbers with someone who runs a node.
@@ -512,9 +531,13 @@ lives.*
 - **The Meshtastic trademark lines in the footer stay exactly as they are**, word for word. We use
   the word "Meshtastic" descriptively — "a Meshtastic community" — and we do not use the Meshtastic
   logo. This site is not affiliated with or endorsed by the Meshtastic project.
-- **Do not republish text from other repos** — including the community's own
-  `socalmesh/best-practices` guide — unless it carries a license that allows it. Link to it instead:
-  https://github.com/socalmesh/best-practices
+- **Do not republish text from other repos** unless it carries a license that allows it. Link to
+  it instead. This came up for real with the community's own `socalmesh/best-practices` guide,
+  which carried **no license at all** — so the article that replaced it,
+  `src/content/help/best-practices.md`, restates its settings and numbers (plain facts, free to
+  restate) in this site's own words, and **credits `@Coopersmith` by name** for the field-craft
+  advice rather than reproducing his paragraphs. Do the same with anything else you carry across:
+  take the facts, write the prose yourself, credit the author.
 - **No personal information** about members: no full names, home addresses, phone numbers, or
   precise home locations. Handles only.
 - **Everything here is public, forever.** Once it is merged it stays in the history even if it is

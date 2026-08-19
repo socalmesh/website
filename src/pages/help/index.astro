@@ -3,6 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { site } from '../../config/site';
 import { publishedArticles } from '../../lib/help';
+import { url } from '../../lib/url';
 
 const articles = await publishedArticles();
 ---
@@ -20,9 +21,9 @@ const articles = await publishedArticles();
     </p>
 
     <p class="note">
-      Looking for recommended radio settings? See the{' '}
-      <a href={site.github.bestPractices} rel="noopener">SoCal Mesh Best Practices guide</a>
-      on GitHub.
+      Looking for recommended radio settings? Start with{' '}
+      <a href={url('/help/best-practices/')}>Best practices for the SoCal Mesh</a> — channel,
+      device role, hop limit, and what actually makes a radio get heard.
     </p>
 
     {
