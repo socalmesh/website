@@ -105,6 +105,16 @@ const latest = (await publishedArticles()).slice(0, 3);
       </div>
     </div>
 
+    <p class="sources">
+      Where these numbers come from: Meshtastic's own{' '}
+      <a href="https://meshtastic.org/docs/overview/radio-settings/" rel="noopener">radio settings
+      reference</a>{' '}(the presets, their speeds and their link budgets) and its post{' '}
+      <a href="https://meshtastic.org/blog/why-your-mesh-should-switch-from-longfast/" rel="noopener"
+        >Why your mesh should switch from LongFast</a>. Other communities on the same channel:{' '}
+      <a href="https://bayme.sh/docs/getting-started/recommended-settings/" rel="noopener">Bay Area
+      Mesh</a> and <a href="https://mtnme.sh/mediumfast/" rel="noopener">MtnMe.sh</a>.
+    </p>
+
     <p class="warn">
       Change <strong>both</strong> settings — the preset and the frequency slot. A radio on
       MediumFast with the slot left at 0 is on a different frequency than the rest of us, and a
@@ -278,6 +288,13 @@ const latest = (await publishedArticles()).slice(0, 3);
   .why p {
     margin: 0;
     color: var(--text-muted);
+  }
+
+  .sources {
+    max-width: 70ch;
+    margin: 0 0 var(--space-m);
+    color: var(--text-muted);
+    font-size: var(--step--1);
   }
 
   .warn {

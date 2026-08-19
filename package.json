@@ -11,7 +11,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "links": "node scripts/check-links.mjs --dist dist --base /",
+    "links": "node scripts/preflight.mjs",
     "astro": "astro"
   },
   "dependencies": {
