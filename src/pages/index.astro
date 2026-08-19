@@ -102,7 +102,9 @@ const latest = (await publishedArticles()).slice(0, 3);
           Check <a href={site.maps[0].url} rel="noopener">our live map</a> for MediumFast slot 45
           nodes around you. Bear in mind the maps only show nodes that uplink to MQTT, so there are
           always more nodes on the air than any map displays — an empty patch is not proof nobody is
-          there. Asking on Discord is the surer answer.
+          there. Part of why MF45 can be weaker is physics: it has about 5 dB less link budget than
+          LongFast, so each hop reaches less far and the channel leans on having enough nodes nearby.
+          Asking on Discord is the surer answer.
         </p>
       </div>
     </div>
@@ -151,20 +153,20 @@ const latest = (await publishedArticles()).slice(0, 3);
     <MapLinks />
 
     <p class="warn">
-      <strong>The maps show less than the network.</strong> A node generally only appears if its
-      owner has switched <strong>OK to MQTT</strong> on, and plenty of people never do — so there
-      are many more nodes on the air than any of these maps display. Treat an empty area as
-      "nobody is uplinking here", not "nobody is here".
+      <strong>The maps show less than the network.</strong> They only show nodes that uplink to
+      MQTT — the <strong>OK to MQTT</strong> setting — and plenty of people never turn it on. There
+      are many more nodes on the air than any of these maps display. Treat an empty area as "nobody
+      is uplinking here", not "nobody is here".
     </p>
 
     <p class="sources">
       They are also not one data source. Ours is our own{' '}
-      <a href={site.github.meshview} rel="noopener">meshview</a> instance. Our broker forwards
-      eligible traffic on to <a href="https://meshmap.net" rel="noopener">meshmap.net</a> and{' '}
-      <a href="https://meshtastic.liamcottle.net/" rel="noopener">Liam's map</a>, so uplinking to
-      us is usually enough to appear on both — though each of them applies its own filters, so
-      forwarding is not quite a guarantee. Of the two, meshmap is the one we have found most
-      dependable, and it covers other regions as well.{' '}
+      <a href={site.github.meshview} rel="noopener">meshview</a> instance. Uplink to our MQTT
+      server and you show up on <a href="https://meshmap.net" rel="noopener">meshmap.net</a> and{' '}
+      <a href="https://meshtastic.liamcottle.net/" rel="noopener">Liam's map</a> as well, because
+      we share to both of them — each applies its own filters, so the odd node can still be
+      missing. Of the two, meshmap is the one we have found most dependable, and it covers other
+      regions as well.{' '}
       <a href="https://meshview.world/" rel="noopener">meshview.world</a> works differently again:
       rather than taking our traffic, it gathers up the meshview instances it knows about — ours
       included — and shows them together. Getting onto the maps at all is covered in{' '}
@@ -255,7 +257,7 @@ const latest = (await publishedArticles()).slice(0, 3);
       }
     </ul>
 
-    <p class="sources">
+    <p class="thanks">
       Thank you to the people who build these. Our map is an instance of{' '}
       <a href={site.github.meshview} rel="noopener">meshview</a>; the parrot in our Discord comes
       from <a href={site.github.parrot} rel="noopener">Rage Against the Meshine</a>; and{' '}
@@ -333,6 +335,15 @@ const latest = (await publishedArticles()).slice(0, 3);
     margin: 0 0 var(--space-m);
     color: var(--text-muted);
     font-size: var(--step--1);
+  }
+
+  /* The credit to the projects we depend on. Deliberately full-size body text
+     rather than the muted .sources treatment — it is a thank-you, not a footnote. */
+  .thanks {
+    max-width: 70ch;
+    margin-top: var(--space-l);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--border);
   }
 
   .warn {

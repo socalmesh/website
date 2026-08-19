@@ -25,8 +25,8 @@ are trying to connect from. Try it if you can connect on it; come back to LongFa
 you cannot.
 
 Before you switch, look at [our live map](https://meshview.socalmesh.org) and see whether there
-are MediumFast slot 45 nodes near you. One important catch when you do that: **a node generally
-only reaches a map if its owner has turned "OK to MQTT" on**, and plenty of people never do.
+are MediumFast slot 45 nodes near you. One important catch when you do that: **the maps only show
+nodes that uplink to MQTT** — the "OK to MQTT" setting — and plenty of people never turn it on.
 There are many more nodes on this network than any map displays, so an empty-looking patch is not
 proof that nobody is out there. Treat the map as a floor, not a census — and ask on Discord, where
 somebody in your area can tell you what they are actually hearing.

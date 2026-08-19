@@ -75,9 +75,9 @@ export const site = {
       slot: 20,
       frequency: '906.875 MHz',
       recommended: true,
-      headline: 'Start here.',
+      headline: 'Where most of us are.',
       blurb:
-        'Where many of us are, and close to what your radio already ships with. Set this one first.',
+        'Close to what your radio already ships with, and the channel most likely to find you somebody. Set this one first.',
     },
     {
       short: 'MF45',
