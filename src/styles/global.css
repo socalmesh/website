@@ -1,0 +1,180 @@
+/* Base styles for the whole site. Component-specific styles live in the .astro files. */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+main {
+  flex: 1;
+}
+
+img,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  line-height: 1.15;
+  text-wrap: balance;
+  font-weight: 650;
+  letter-spacing: -0.015em;
+}
+
+h1 {
+  font-size: var(--step-4);
+}
+h2 {
+  font-size: var(--step-3);
+}
+h3 {
+  font-size: var(--step-1);
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+}
+
+a:hover {
+  color: #8df2b1;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 3px;
+  border-radius: 3px;
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 0.1em 0.35em;
+  overflow-wrap: anywhere;
+}
+
+pre {
+  background: var(--bg-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-m);
+  overflow-x: auto;
+}
+
+pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--border);
+  margin-block: var(--space-l);
+}
+
+/* Layout helpers */
+.wrap {
+  width: 100%;
+  max-width: var(--width-page);
+  margin-inline: auto;
+  padding-inline: var(--space-m);
+}
+
+.eyebrow {
+  font-size: var(--step--1);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+  margin-bottom: var(--space-xs);
+}
+
+.lede {
+  font-size: var(--step-1);
+  color: var(--text-muted);
+}
+
+.skip-link {
+  position: absolute;
+  left: var(--space-m);
+  top: var(--space-m);
+  z-index: 100;
+  padding: 0.6rem 1rem;
+  background: var(--accent);
+  color: #0d1a12;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* The circle logo is black line art on a transparent background, so on this dark
+   theme it sits on its own light disc. Works for any future logo, no CSS filters. */
+.logo-disc {
+  background: radial-gradient(circle at 50% 42%, #ffffff 55%, #e6ece7 100%);
+  border-radius: 50%;
+  /* Explicit padding, not a percentage: percentage padding on an <img> resolves
+     against the containing block, which shrank the hero emblem to a dot. */
+  padding: 3px;
+  box-shadow:
+    0 0 0 1px rgba(103, 234, 148, 0.35),
+    0 0 34px -6px var(--accent-glow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

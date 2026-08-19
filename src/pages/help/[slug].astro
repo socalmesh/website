@@ -1,0 +1,105 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { render } from 'astro:content';
+import { publishedArticles } from '../../lib/help';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Byline from '../../components/Byline.astro';
+import Prose from '../../components/Prose.astro';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const articles = await publishedArticles();
+  return articles.map((article) => ({
+    params: { slug: article.id },
+    props: { article },
+  }));
+}
+
+interface Props {
+  article: CollectionEntry<'help'>;
+}
+
+const { article } = Astro.props;
+const { Content } = await render(article);
+const { title, description, author, date, updated, tags } = article.data;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="wrap page">
+    <p class="eyebrow"><a href={url('/help/')}>Help</a></p>
+    <h1>{title}</h1>
+    <p class="lede">{description}</p>
+    <Byline author={author} date={date} updated={updated} />
+
+    {
+      tags.length > 0 && (
+        <ul class="tags">
+          {tags.map((tag) => (
+            <li>{tag}</li>
+          ))}
+        </ul>
+      )
+    }
+
+    <hr />
+
+    <Prose>
+      <Content />
+    </Prose>
+
+    <p class="back">
+      <a href={url('/help/')}>← All help articles</a>
+    </p>
+  </article>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: var(--space-xl) 0;
+    max-width: calc(var(--width-prose) + 2 * var(--space-m));
+  }
+
+  .eyebrow a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  .eyebrow a:hover {
+    text-decoration: underline;
+  }
+
+  h1 {
+    font-size: var(--step-3);
+    margin-bottom: var(--space-s);
+  }
+
+  .lede {
+    margin-bottom: var(--space-s);
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    list-style: none;
+    padding: 0;
+    margin-top: var(--space-s);
+  }
+
+  .tags li {
+    font-size: 0.72rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 650;
+    color: var(--text-muted);
+    border: 1px solid var(--border-strong);
+    border-radius: 999px;
+    padding: 0.1rem 0.6rem;
+  }
+
+  .back {
+    margin-top: var(--space-xl);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--border);
+  }
+</style>

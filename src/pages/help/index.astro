@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { site } from '../../config/site';
+import { publishedArticles } from '../../lib/help';
+
+const articles = await publishedArticles();
+---
+
+<BaseLayout
+  title="Help"
+  description="Short guides for getting your node on the SoCal Mesh network."
+>
+  <div class="wrap page">
+    <p class="eyebrow">Help</p>
+    <h1>Help articles</h1>
+    <p class="lede">
+      Short guides written by people in the mesh. Something missing? Ask on{' '}
+      <a href={site.discord.invite} rel="noopener">Discord</a>.
+    </p>
+
+    <p class="note">
+      Looking for recommended radio settings? See the{' '}
+      <a href={site.github.bestPractices} rel="noopener">SoCal Mesh Best Practices guide</a>
+      on GitHub.
+    </p>
+
+    {
+      articles.length > 0 ? (
+        <div class="cards">
+          {articles.map((article) => (
+            <ArticleCard
+              headingLevel="h2"
+              slug={article.id}
+              title={article.data.title}
+              description={article.data.description}
+              author={article.data.author}
+              date={article.data.date}
+              updated={article.data.updated}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>No articles yet.</p>
+      )
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .page {
+    padding-block: var(--space-xl) 0;
+  }
+
+  .lede {
+    max-width: var(--width-prose);
+    margin-top: var(--space-s);
+  }
+
+  .note {
+    margin-block: var(--space-l);
+    padding: var(--space-s) var(--space-m);
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent-dim);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    font-size: var(--step--1);
+    color: var(--text-muted);
+    max-width: var(--width-prose);
+  }
+
+  .cards {
+    display: grid;
+    gap: var(--space-m);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+  }
+</style>

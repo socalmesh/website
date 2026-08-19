@@ -1,0 +1,114 @@
+---
+/**
+ * "Other mesh communities" — one page of outbound links, grouped by the
+ * technology each community runs.
+ *
+ * To add a link: put it in `meshLinks` in `src/config/site.ts` under the right
+ * heading. Nothing here needs editing.
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Section from '../components/Section.astro';
+import { site } from '../config/site';
+import { url } from '../lib/url';
+
+const title = 'Other mesh communities';
+const description =
+  'Meshtastic communities around the country, and the MeshCore projects running alongside us.';
+---
+
+<BaseLayout title={title} description={description}>
+  <Section eyebrow="Links" title={title} titleAs="h1" lede={description}>
+    <p class="intro">
+      Every one of these is run by people like us. Regional settings differ — check theirs before you
+      travel, and do not copy another region's frequency onto a radio you use here.
+    </p>
+
+    <h2>Meshtastic</h2>
+    <p class="group-note">Same radios and firmware as us. Different part of the map.</p>
+    <ul class="links">
+      {
+        site.meshLinks.meshtastic.map((link) => (
+          <li>
+            <a href={link.url} rel="noopener">
+              {link.name}
+            </a>
+            <p>{link.blurb}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <h2>MeshCore</h2>
+    <p class="group-note">
+      MeshCore is a different mesh project with its own firmware. A MeshCore radio and a Meshtastic
+      radio cannot hear each other, so these are neighbors rather than the same network — worth
+      reading, not worth flashing onto your node by mistake.
+    </p>
+    <ul class="links">
+      {
+        site.meshLinks.meshcore.map((link) => (
+          <li>
+            <a href={link.url} rel="noopener">
+              {link.name}
+            </a>
+            <p>{link.blurb}</p>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p class="back">
+      <a href={url('/')}>&larr; Back to the home page</a>
+    </p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .intro {
+    max-width: 62ch;
+    color: var(--text-muted);
+  }
+
+  h2 {
+    margin-top: var(--space-l);
+    padding-bottom: 0.35rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .group-note {
+    max-width: 62ch;
+    margin-top: 0.35rem;
+    color: var(--text-muted);
+  }
+
+  .links {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+    gap: var(--space-m);
+    list-style: none;
+    margin: var(--space-m) 0 0;
+    padding: 0;
+  }
+
+  .links li {
+    margin: 0;
+    padding: var(--space-s) var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg-raised);
+  }
+
+  .links a {
+    font-weight: 600;
+  }
+
+  .links p {
+    margin: 0.3rem 0 0;
+    color: var(--text-muted);
+    font-size: var(--step--1);
+  }
+
+  .back {
+    margin-top: var(--space-l);
+  }
+</style>

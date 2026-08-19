@@ -1,0 +1,61 @@
+# CodeQL — GitHub's free security scanner for public repositories.
+#
+# It reads the site's code and the workflow files and reports anything that
+# looks like a security problem, on the repository's "Security" tab. Nobody has
+# to run it; it runs itself on every change and once a week.
+#
+# It does not block anything from being merged. If it finds something, it shows
+# up as an alert for a maintainer to look at.
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    # Weekly, Monday 07:13 UTC. The odd minute is deliberate — it keeps this run
+    # out of the crowd of jobs that everyone schedules on the hour.
+    - cron: "13 7 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: codeql-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  analyze:
+    name: Analyze ${{ matrix.language }}
+    # CodeQL is free for public repositories only. While this repository is
+    # private the job is skipped — it shows as "skipped" on the pull request
+    # rather than failing. The day the repository is made public, scanning
+    # starts on its own and this line can be deleted.
+    if: github.event.repository.visibility == 'public'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # javascript-typescript: the site's own code.
+        # actions: the workflow files in .github/workflows/.
+        language: [javascript-typescript, actions]
+    steps:
+      - name: Check out the site
+        uses: actions/checkout@v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
+        with:
+          language: ${{ matrix.language }}
+          queries: security-and-quality
+
+      - name: Analyze
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:${{ matrix.language }}"

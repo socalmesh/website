@@ -1,0 +1,87 @@
+---
+/**
+ * The home page photo grid.
+ *
+ * To add a photo: drop the file into `src/assets/photos/`. That is the whole job —
+ * this component picks up every image in that folder by itself, sorts them by file
+ * name, and builds small phone-sized copies automatically when the site is built.
+ *
+ * To give a photo a proper description for screen readers, add a line to `altText`
+ * below, using the file name. Anything not listed gets a general description, so a
+ * new photo works straight away — but a real description is much better for anyone
+ * using a screen reader, so please write one.
+ */
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+const altText: Record<string, string> = {
+  'community-01.jpg':
+    'Coastal scrub on a hillside above a Southern California neighborhood at sunset',
+  'community-02.jpg': 'A green hilltop above the ocean, with a small node mounted on a rock',
+  'community-03.jpg': 'An antenna on a rooftop railing against an orange sunset sky',
+  'community-04.jpg': 'A hand holding a small node in a white case out on a trail',
+  'community-05.jpg':
+    'A node set down on a concrete overlook, with the Los Angeles basin behind it',
+  'community-06.jpg': 'A directional Yagi antenna clamped to a mast, pointed into a blue sky',
+  'community-07.jpg':
+    'Three handheld radios with keyboards and blue screens laid out on a wooden table',
+  'community-08.jpg': 'Two solar-powered node enclosures on brick garden edging, panels facing up',
+  'community-09.jpg': 'A dirt trail along a ridge of dry hills under a clear sky',
+  'community-10.jpg': 'A keyboard handheld radio, a sticker and a battery pack on a dark cloth',
+};
+
+const found = import.meta.glob<{ default: ImageMetadata }>(
+  '/src/assets/photos/*.{jpg,jpeg,png,webp,avif}',
+  { eager: true },
+);
+
+const photos = Object.entries(found)
+  .map(([path, mod]) => ({ file: path.split('/').pop() as string, image: mod.default }))
+  .sort((a, b) => a.file.localeCompare(b.file));
+---
+
+<ul class="grid">
+  {
+    photos.map(({ file, image }) => (
+      <li>
+        <Image
+          src={image}
+          alt={altText[file] ?? 'SoCal Mesh community photo'}
+          widths={[320, 480, 800, 1200]}
+          width={1200}
+          height={900}
+          sizes="(min-width: 72rem) 17rem, (min-width: 64rem) 20rem, (min-width: 40rem) 30vw, 45vw"
+          format="webp"
+          quality={72}
+          loading="lazy"
+          decoding="async"
+        />
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 10rem), 1fr));
+    gap: var(--space-s);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .grid li {
+    margin: 0;
+  }
+
+  .grid img {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    background: var(--bg-raised);
+  }
+</style>

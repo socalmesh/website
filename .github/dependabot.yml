@@ -1,0 +1,48 @@
+# Dependabot keeps the site's software libraries up to date.
+#
+# It opens a pull request when a library the site is built with has a new
+# version, and a separate one when a GitHub Action does. Those pull requests
+# come from a robot, not from a person — see "Update the site's dependencies"
+# in CLAUDE.md for what to do with them (short version: they need a second
+# pair of eyes before they are merged).
+#
+# Updates are grouped and monthly on purpose, so there is at most a couple of
+# robot pull requests a month rather than a stream of them. Security fixes do
+# not wait for the monthly run — Dependabot opens those as soon as they exist.
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: monthly
+      time: "06:00"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+    commit-message:
+      prefix: "Update"
+    groups:
+      # One pull request for all the routine updates, instead of one each.
+      site-libraries:
+        patterns:
+          - "*"
+        update-types:
+          - minor
+          - patch
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly
+      time: "06:00"
+      timezone: America/Los_Angeles
+    open-pull-requests-limit: 3
+    labels:
+      - dependencies
+    commit-message:
+      prefix: "Update"
+    groups:
+      github-actions:
+        patterns:
+          - "*"

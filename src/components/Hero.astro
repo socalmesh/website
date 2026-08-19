@@ -1,0 +1,95 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/socalmesh-logo.png';
+import Button from './Button.astro';
+import MeshPattern from './MeshPattern.astro';
+import { site } from '../config/site';
+
+const liveMap = site.maps[0];
+---
+
+<section class="hero">
+  <MeshPattern />
+  <div class="wrap inner">
+    <Image
+      class="logo-disc hero-logo"
+      src={logo}
+      widths={[190, 380]}
+      sizes="min(190px, 42vw)"
+      format="webp"
+      alt="SoCal Mesh logo: a circular emblem with a mesh of nodes around a radio tower"
+      loading="eager"
+      fetchpriority="high"
+    />
+
+    <h1>Welcome to SoCal Mesh</h1>
+    <p class="lede">{site.tagline}</p>
+
+    <div class="actions">
+      <Button href={site.discord.invite} variant="primary" external>Join us on Discord</Button>
+      <Button href={liveMap.url} variant="ghost" external>See the live map</Button>
+    </div>
+
+    <p class="more">
+      <a href="#about">Learn more about the network ↓</a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background:
+      radial-gradient(70% 60% at 50% -10%, rgba(103, 234, 148, 0.1), transparent 70%),
+      var(--bg);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding-block: var(--space-2xl);
+  }
+
+  .hero-logo {
+    width: min(190px, 42vw);
+    height: auto;
+    aspect-ratio: 1;
+    padding: 12px;
+    margin-bottom: var(--space-l);
+  }
+
+  h1 {
+    margin-bottom: var(--space-s);
+  }
+
+  .lede {
+    max-width: 42ch;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-s);
+    justify-content: center;
+    margin-top: var(--space-l);
+  }
+
+  .more {
+    margin-top: var(--space-l);
+    font-size: var(--step--1);
+  }
+
+  .more a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .more a:hover {
+    color: var(--accent);
+  }
+</style>
