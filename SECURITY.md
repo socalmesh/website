@@ -1,13 +1,13 @@
 # Reporting a security problem
 
-This is a community website. It has no accounts and no personal information — it is a
+This is a community website. It has no accounts and no personal information. It is a
 set of pages that are built once and served as files. (The help articles do print the
 shared, public credentials for our MQTT server; those are meant to be public, and are the
 same ones in Meshtastic's own documentation.)
 
-If you find something that looks like a security problem anyway — a link that
+If you find something that looks like a security problem anyway, a link that
 sends people somewhere unexpected, something on a page that should not be
-public, a way to change what the site shows — please tell us privately first,
+public, a way to change what the site shows, please tell us privately first,
 so it can be fixed before it is widely known.
 
 **How to report it, in order of preference:**

@@ -1,5 +1,5 @@
 /**
- * `npm run links` — the check that catches a link written as "/help/" instead of
+ * `npm run links`, the check that catches a link written as "/help/" instead of
  * going through the url() helper in src/lib/url.ts.
  *
  * That mistake is invisible when the site is built for a domain root, because a

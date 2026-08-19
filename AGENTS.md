@@ -4,4 +4,4 @@ The single source of truth for working in this repository is [`CLAUDE.md`](CLAUD
 follow it.
 
 This file exists so tools that look for `AGENTS.md` find the same rules. Nothing is duplicated here
-on purpose — if the two ever disagree, `CLAUDE.md` wins.
+on purpose. If the two ever disagree, `CLAUDE.md` wins.

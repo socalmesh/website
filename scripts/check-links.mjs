@@ -85,7 +85,7 @@ function main() {
       const target = resolve(distRoot, rel);
       checked++;
 
-      // A page is a real file (an image, robots.txt, and 404.html — which Astro
+      // A page is a real file (an image, robots.txt, and 404.html, which Astro
       // emits with its extension rather than as a folder), or a folder with an
       // index.html inside it.
       const ok =
@@ -104,7 +104,7 @@ function main() {
   if (misses.length > 0) {
     console.error(`\ncheck-links: ${misses.length} broken internal link(s):\n`);
     for (const miss of misses) {
-      console.error(`  ${miss.file}\n    ${miss.link}  — ${miss.why}`);
+      console.error(`  ${miss.file}\n    ${miss.link}  : ${miss.why}`);
     }
     process.exit(1);
   }

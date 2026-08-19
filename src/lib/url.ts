@@ -3,8 +3,8 @@
  *
  * The site is built twice: once for a real domain (served at `/`) and once for the
  * GitHub Pages preview (served at `/website/`). Astro puts the current prefix in
- * `import.meta.env.BASE_URL`, so EVERY internal href/src must go through `url()` —
- * a bare "/help/" link would 404 on the preview build.
+ * `import.meta.env.BASE_URL`, so EVERY internal href/src must go through `url()`.
+ * A bare "/help/" link would 404 on the preview build.
  *
  *   url('/help/')            -> '/help/'          or '/website/help/'
  *   url('photos/one.jpg')    -> '/photos/one.jpg'  or '/website/photos/one.jpg'
@@ -45,7 +45,7 @@ export function formatDate(date: Date): string {
   });
 }
 
-/** Machine-readable date for <time datetime="..."> — "2026-08-18". */
+/** Machine-readable date for <time datetime="...">, "2026-08-18". */
 export function isoDate(date: Date): string {
   return date.toISOString().slice(0, 10);
 }

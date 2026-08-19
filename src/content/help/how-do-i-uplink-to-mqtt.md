@@ -8,7 +8,7 @@ tags: ["mqtt", "getting-started"]
 ---
 
 *Originally posted by SUSHI in the SoCal Mesh Discord on November 8, 2024, and reproduced here
-as written. The username and password below are the shared public ones for our broker — they are
+as written. The username and password below are the shared public ones for our broker, and they are
 meant to be public.*
 
 ## Care and feeding of the parrot
@@ -38,15 +38,16 @@ In the primary channel settings **Enable Uplink**. **DO NOT DOWNLINK**
 ---
 
 *Notes added later by the site maintainers, outside SUSHI's post. His settings above are still
-right; these are context and one correction.*
+right. These are context, plus one correction.*
 
 *__How our broker is set up__, including the brokers it bridges to:
 [socalmesh/mqtt-config](https://github.com/socalmesh/mqtt-config). Uplinking here does put you on
-meshmap and Liam's map, because we share to both — though it is not the *only* route short of
-running your own server, since other community brokers bridge there too.*
+meshmap and Liam's map, because we share to both of them. It isn't the only route short of running
+your own server, though. Other community brokers bridge there too.*
 
 *__Two field names have moved since 2024.__ **Topic** is now **Root Topic**, and **JSON output** is
-**JSON Enabled** — removed altogether on iOS, which is no loss, since off is the state you want.*
+**JSON Enabled**. On iOS that toggle has gone altogether, which is no loss, since off is the state
+you want anyway.*
 
 *The maps only show nodes that uplink, so there are always more nodes on the air than they display.
 For which channel to run and the rest of the recommended settings, see

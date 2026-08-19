@@ -2,7 +2,7 @@
 /*
  * Note: `||` and not `??` on purpose. A GitHub Actions expression that resolves to
  * nothing sets the variable to an empty string rather than leaving it unset, and
- * `'' ?? fallback` is `''` — which would silently build every link for the wrong
+ * `'' ?? fallback` is `''`, which would silently build every link for the wrong
  * address. `||` treats empty as missing.
  */
 /**
