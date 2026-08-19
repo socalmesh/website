@@ -37,13 +37,25 @@ In the primary channel settings **Enable Uplink**. **DO NOT DOWNLINK**
 
 ---
 
-*Two notes added later by the site maintainers, outside SUSHI's original post:*
+*Notes added later by the site maintainers, outside SUSHI's original post. His settings above are
+still right; these are context and two corrections.*
 
-*Our broker is configured in the open. If you want to see how it is set up on our end — the
-topics, the bridges it feeds — that is
+*__How our broker is set up.__ It is configured in the open — the topics it carries and the
+brokers it bridges to are all in
 [socalmesh/mqtt-config](https://github.com/socalmesh/mqtt-config).*
 
-*Uplinking is also what puts you on a map at all: a node only appears on the community maps if
-its owner has enabled **OK to MQTT**, which is why there are always more nodes on the air than
-the maps show. For which channel to run and the rest of the recommended settings, see
+*__On reaching both maps.__ Our broker does forward eligible traffic to meshmap and to Liam's
+broker, so uplinking here is a convenient way onto both. Two caveats on the sentence above,
+though: it is not the *only* way short of running your own server — other community brokers bridge
+to those services too — and forwarding is not the same as being displayed, because each map
+applies its own filters for position, key and freshness before a node shows up.*
+
+*__Some field names have moved since 2024.__ What this article calls **Topic** is now **Root
+Topic** in the MQTT module, and **JSON output** is **JSON Enabled** — and on iOS that toggle has
+been removed altogether, which is fine, because off is the state you want. The setting names in
+SUSHI's list are otherwise unchanged.*
+
+*__And a caveat about the maps generally.__ A node generally only reaches the community maps if
+its owner has enabled **OK to MQTT**, and plenty never do — so there are always many more nodes on
+the air than the maps show. For which channel to run and the rest of the recommended settings, see
 [Best practices for the SoCal Mesh](../best-practices/).*

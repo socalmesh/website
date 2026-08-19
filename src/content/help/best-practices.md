@@ -24,11 +24,11 @@ are trying to connect from. Try it if you can connect on it; come back to LongFa
 you cannot.
 
 Before you switch, look at [our live map](https://meshview.socalmesh.org) and see whether there
-are MediumFast slot 45 nodes near you. One important catch when you do that: **the map only
-shows nodes with "OK to MQTT" turned on.** There are many more nodes on this network than any
-map displays, so an empty-looking area on the map is not proof that nobody is out there. Treat
-the map as a floor, not a census — and ask on Discord, where someone in your area can usually
-tell you what they are hearing.
+are MediumFast slot 45 nodes near you. One important catch when you do that: **a node generally
+only reaches a map if its owner has turned "OK to MQTT" on**, and plenty of people never do.
+There are many more nodes on this network than any map displays, so an empty-looking patch is not
+proof that nobody is out there. Treat the map as a floor, not a census — and ask on Discord, where
+somebody in your area can tell you what they are actually hearing.
 
 Set **both** the preset and the frequency slot, not just one. A radio on the right preset with
 the slot left at its default is on a different frequency from the rest of us, and radios on
@@ -49,34 +49,58 @@ mesh:
 
 - For the default LongFast channel to work, either leave its name alone entirely, or name it
   exactly `LongFast` — and change nothing else about it.
-- LongFast also works as a **secondary** channel, if you name it `LongFast` and give it the key
-  `AQ==`. That is the published default Meshtastic key, not a secret of ours.
-- **If you change the primary channel in any way** — name, key, anything — set the frequency
-  slot back to `20` yourself. Changing the channel can move you off it.
+- **Set the frequency slot explicitly rather than trusting the default.** When the slot is left
+  at `0`, the radio works out its frequency by hashing the name of the primary channel — so
+  renaming the primary can move you onto a different frequency. Changing the *key* does not.
+  On a factory-fresh radio that hash happens to land on slot 20 for LongFast and slot 45 for
+  MediumFast, which is why it often seems to work with nothing set; typing the number in is what
+  makes it reliable.
+- Slot `20` is the LongFast value for the **US** region. It is not a universal "put it back to
+  20" — if you are joining MediumFast slot 45, the slot is `45`, and other regions use different
+  numbers entirely.
 
-Slot `20` is the LongFast value for the **US** region. If you are running a different region,
-the slot numbers are different — check your own region rather than copying ours.
+You may also see advice to add LongFast as a **secondary** channel named `LongFast` with the key
+`AQ==`. Be clear about what that does: every secondary channel shares the primary's preset and
+frequency slot, so it does **not** let a MediumFast radio hear the LongFast mesh over the air. It
+only decrypts LongFast-named traffic that reaches you some other way, such as over MQTT. (`AQ==`
+is the published default key, not a secret of ours.)
 
 ## Device role
 
 This is the setting people most often get wrong, and a wrong role hurts everyone around you,
 not just you.
 
-- **`CLIENT`** — the best all-round setting. **If you are unsure, use this.** It is also the
-  right role for a "hop-out" node you have put somewhere a bit higher than where you sit.
-- **`CLIENT_MUTE`** — the best choice for a **mobile** node. It does not forward other people's
-  packets, which is what you want from something moving around in a car, but it still sends and
-  receives your messages and still reports node info and position.
-- **`ROUTER`** — only for a remote node on top of one of the highest peaks in your area. Very
-  few nodes should ever be this. If your node is in your house, it is not this.
-- **`REPEATER`** — **do not use it.** There are very few legitimate uses and it typically causes
-  problems for the mesh around it.
+- **`CLIENT`** — the best all-round setting, and the default. **If you are unsure, use this.** It
+  is also what you want out in the backcountry, where your radio might be the only thing another
+  node can reach.
+- **`CLIENT_BASE`** — for a node you have mounted somewhere with a view, an attic or a roof, that
+  should favour your own nearby nodes. This is the current role for that job. Older guides —
+  including the one this page replaces — said to use `CLIENT` for a "hop-out" node like this; that
+  advice predates `CLIENT_BASE`.
+- **`CLIENT_MUTE`** — for a node that should not relay anyone else's traffic: one sitting right
+  next to a stronger node of your own, or one of several you keep in the same place. It still
+  sends and receives your messages and still reports its node info and position. It is **not** the
+  automatic answer for anything that moves — a radio out on a hike is more use as `CLIENT`.
+- **`ROUTER`** — only for a node in a genuinely strategic spot, which means a mountain peak, not a
+  tall building. Meshtastic now advises avoiding it unless the placement has been worked out with
+  the rest of the mesh. `ROUTER_LATE` exists for filling in a known dead spot.
+- **`REPEATER`** — **do not use it.** It typically causes problems for the mesh around it, and it
+  is deprecated as of firmware 2.7.11.
+
+There are a couple of other roles you will see in the list — `CLIENT_HIDDEN` among them. If you do
+not already know you need one, you do not.
 
 ## Hop limit
 
-**Use 3 to 5.** You can try up to 7 now and then if you are chasing a specific contact, but
-leaving it that high is not recommended — every extra hop is another copy of your message on
-the air, and past a certain point you are adding congestion rather than reach.
+**Leave it at 3.** That is the firmware default, 7 is the maximum, and Meshtastic's own position is
+that 3 really is fine. You will see 3 to 5 recommended around here, and some larger meshes do run
+their infrastructure a little higher.
+
+Going up is not the free win it looks like. Every extra hop is another copy of your message on the
+air, so past a certain point you are buying congestion rather than reach — and a badly placed node
+can pick a packet up and spend its hops before it ever reaches a useful one. People then raise
+their hop count in response, which makes it worse for everybody. If your messages are not landing,
+a better antenna or a better-placed node will do far more for you than another hop.
 
 ## Broadcast intervals
 
@@ -96,11 +120,19 @@ permanent installation needs. Times are in seconds.
 | Setting | Seconds |
 |---|---|
 | Position | `900` |
-| Telemetry | `900` |
+| Telemetry | `900`–`1800` |
 | Node info | `86400` |
 
-A node bolted to a roof does not need to announce its position every fifteen minutes. It has
-not moved.
+A node bolted to a roof does not need to announce its position every fifteen minutes. It has not
+moved.
+
+Two things those tables cannot tell you. **Smart position broadcast is on by default**, so a
+moving node reports its position more often than its interval suggests — the number is a ceiling
+for a radio sitting still, not a promise. And Meshtastic's own defaults have shifted since these
+recommendations were written: telemetry now defaults to 1800 seconds and node info to 10800, and
+firmware from 2.4.0 onwards stretches these intervals further by itself once a mesh passes about
+forty online nodes. Where our number is shorter than the firmware's, lean towards the longer one.
+Nothing here breaks if you do; the mesh just gets quieter.
 
 ## MQTT
 
@@ -126,8 +158,9 @@ on this page.
 
 **Line of sight matters enormously at these frequencies.** Glass and plastic are roughly
 transparent to your signal. Almost anything else — walls, terrain, buildings, trees, a hill
-between you and the next node — costs you signal, and Meshtastic transmits at very low power to
-begin with. Given a good antenna and a clear view, the range is genuinely surprising.
+between you and the next node — costs you signal, and these radios have very little to spare:
+a typical node transmits around 22 dBm, a fraction of a watt. Given a good antenna and a clear
+view, the range is genuinely surprising.
 
 **No confirmation does not mean it was not received.** Because of the way the mesh works, the
 person you messaged may well have got it even when nothing comes back to you — including when

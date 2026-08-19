@@ -118,14 +118,14 @@ export const site = {
   meshLinks: {
     meshtastic: [
       { name: 'Meshtastic', url: links.meshtastic, blurb: 'The project itself — firmware, apps, and the official documentation.' },
-      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, like we do, and their broker feeds ours.' },
+      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45 — the channel we treat as our alternate — and our brokers bridge to each other.' },
       { name: 'MtnMe.sh', url: 'https://mtnme.sh/', blurb: 'Wrote up their move from LongFast to MediumFast slot 45 in detail.' },
       { name: 'MSP Mesh', url: 'https://mspmesh.org/', blurb: 'Twin Cities, Minnesota. Also on MediumFast slot 45.' },
-      { name: 'Puget Mesh', url: 'https://pugetmesh.org/', blurb: 'Seattle and Puget Sound. Good configuration documentation.' },
-      { name: 'Colorado Mesh', url: 'https://coloradomesh.org/', blurb: 'Denver Metro and the Front Range.' },
-      { name: 'Freq51', url: 'https://freq51.net/', blurb: 'Utah. MediumFast, but on slot 51 — a reminder to check the slot, not just the preset.' },
-      { name: 'Are You Meshing With Us', url: 'https://areyoumeshingwith.us/', blurb: 'Florida, with a well-kept page of regional LoRa settings.' },
-      { name: 'Mesh Brisbane', url: 'https://wiki.mbug.com.au/', blurb: 'Australia. Same preset names, different frequencies — their region starts at 915 MHz.' },
+      { name: 'Puget Mesh', url: 'https://pugetmesh.org/', blurb: 'Seattle and Puget Sound. A substantial configuration guide, covering their LongFast default and their alternates.' },
+      { name: 'Colorado Mesh', url: 'https://coloradomesh.org/', blurb: 'Statewide across Colorado — they used to be DenverMesh.' },
+      { name: 'Freq51', url: 'https://freq51.net/', blurb: 'Utah and Idaho. MediumFast, but on slot 51 — a reminder to check the slot, not just the preset.' },
+      { name: 'Are You Meshing With Us', url: 'https://areyoumeshingwith.us/', blurb: 'Florida, with a well-kept directory of regional LoRa settings.' },
+      { name: 'Mesh Brisbane', url: 'https://wiki.mbug.com.au/', blurb: 'Australia. Same preset names, quite different frequencies — MediumFast slot 45 lands near 926 MHz there, not 913.' },
     ],
     meshcore: [
       { name: 'MeshCore', url: 'https://meshcore.co.uk/', blurb: 'The MeshCore project — different firmware, different network, same idea.' },
@@ -148,19 +148,19 @@ export const site = {
     {
       name: 'meshview.world',
       url: 'https://meshview.world/',
-      blurb: 'A map of all the meshview instances out there, ours included.',
+      blurb: 'Pulls together the meshview instances it knows about, ours among them, into one view.',
       community: false,
     },
     {
       name: 'meshmap.net',
       url: 'https://meshmap.net',
-      blurb: 'The more reliable of the wider maps, and it takes in other regions too.',
+      blurb: 'The wider map we have found most dependable, and it covers other regions too.',
       community: false,
     },
     {
       name: 'meshtastic.liamcottle.net',
       url: 'https://meshtastic.liamcottle.net/',
-      blurb: 'Another view of the same idea, though it may show a smaller subset of nodes.',
+      blurb: 'Another view of much the same idea, though it may show fewer nodes.',
       community: false,
     },
   ],
@@ -197,7 +197,7 @@ export const site = {
     {
       name: 'MeshSense',
       url: links.meshSense,
-      blurb: 'A tool for making sense of who is connected to whom on the mesh.',
+      blurb: 'Connects to your own node over Bluetooth or Wi-Fi and shows you nodes, signal reports and traceroutes — the clearest way to see who is reaching whom.',
     },
     {
       name: 'r/SoCalMesh on Reddit',

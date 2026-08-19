@@ -121,9 +121,11 @@ const latest = (await publishedArticles()).slice(0, 3);
     </p>
 
     <p class="warn">
-      Change <strong>both</strong> settings — the preset and the frequency slot. A radio on the
-      right preset with the slot left alone is on a different frequency from the rest of us, and a
-      LongFast radio cannot hear a MediumFast one at all.
+      Set <strong>both</strong> — the preset and the frequency slot. Type the slot number in rather
+      than leaving it at 0: on 0 the radio works its frequency out from the primary channel's name,
+      which is fine on a factory-fresh radio and stops being fine the moment anything has renamed
+      that channel. And a LongFast radio cannot hear a MediumFast one at all, whatever the slot
+      says — the preset has to match too.
     </p>
   </Section>
 
@@ -149,22 +151,23 @@ const latest = (await publishedArticles()).slice(0, 3);
     <MapLinks />
 
     <p class="warn">
-      <strong>The maps show less than the network.</strong> A node only appears if its owner has
-      switched <strong>OK to MQTT</strong> on. Plenty of people never do, so there are many more
-      nodes on the air than any of these maps display. Treat an empty area as "nobody is uplinking
-      here", not "nobody is here".
+      <strong>The maps show less than the network.</strong> A node generally only appears if its
+      owner has switched <strong>OK to MQTT</strong> on, and plenty of people never do — so there
+      are many more nodes on the air than any of these maps display. Treat an empty area as
+      "nobody is uplinking here", not "nobody is here".
     </p>
 
     <p class="sources">
       They are also not one data source. Ours is our own{' '}
-      <a href={site.github.meshview} rel="noopener">meshview</a> instance. If you uplink to our
-      MQTT server you also turn up on <a href="https://meshmap.net" rel="noopener">meshmap.net</a>
-      {' '}and <a href="https://meshtastic.liamcottle.net/" rel="noopener">Liam's map</a>, because
-      we share to both of those — meshmap is the more reliable of the two and takes in other
-      regions as well, while Liam's may show a smaller subset.{' '}
-      <a href="https://meshview.world/" rel="noopener">meshview.world</a> is a different thing
-      again: a map of all the meshview instances out there, rather than another view of our
-      traffic. Getting on the maps at all is covered in{' '}
+      <a href={site.github.meshview} rel="noopener">meshview</a> instance. Our broker forwards
+      eligible traffic on to <a href="https://meshmap.net" rel="noopener">meshmap.net</a> and{' '}
+      <a href="https://meshtastic.liamcottle.net/" rel="noopener">Liam's map</a>, so uplinking to
+      us is usually enough to appear on both — though each of them applies its own filters, so
+      forwarding is not quite a guarantee. Of the two, meshmap is the one we have found most
+      dependable, and it covers other regions as well.{' '}
+      <a href="https://meshview.world/" rel="noopener">meshview.world</a> works differently again:
+      rather than taking our traffic, it gathers up the meshview instances it knows about — ours
+      included — and shows them together. Getting onto the maps at all is covered in{' '}
       <a href={url('/help/how-do-i-uplink-to-mqtt/')}>How do I uplink to MQTT</a>.
     </p>
   </Section>
