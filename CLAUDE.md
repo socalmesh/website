@@ -3,7 +3,7 @@
 **Who this file is for.** Two readers share it.
 
 - **You** — a SoCal Mesh volunteer. You do not need to write code, and you do not need to know git.
-  You change the site by talking to Claude Code in plain English. Read sections 1, 3, 4, 5, 7 and 8.
+  You change the site by talking to Claude Code in plain English. Read sections 1, 3, 4, 5 and 8.
 - **Claude** — the assistant doing the work. Sections 2, 6 and 9 are instructions to Claude, and
   Claude follows them on every change, every time.
 
@@ -122,8 +122,10 @@ how it looks), so it should get a second pair of eyes before it goes live. A mai
 
 1. `npm run build` passes.
 2. `npm run check` passes.
-3. `npm run links` passes — this is the one that catches a link written as `/help/` instead of
-   going through the `url()` helper. Without it that mistake only shows up after pushing.
+3. `npm run links` passes. This one rebuilds the site at the address it is really published from
+   and then checks every internal link, which is what catches a link written as `/help/` instead of
+   going through the `url()` helper. It takes a little longer than the other two because of the
+   rebuild.
 4. `git status` shows only the files this task needed — nothing stray, no `node_modules`, no
    scratch files, no `dist/`.
 5. No secrets, passwords, keys, or personal information anywhere in the change.
