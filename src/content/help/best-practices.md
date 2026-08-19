@@ -188,5 +188,6 @@ Meshtastic's own documentation is the authority on what each setting does:
 and [Meshtastic Routing Issues and Deployment Scenarios](https://youtu.be/htjwtnjQkkE) if you
 want to understand why roles and hop limits matter as much as they do.
 
-This guide replaces the SoCal Mesh best-practices notes that used to live in a separate
-repository. If something here is wrong, or has gone stale, say so on Discord and we will fix it.
+This page is the current home for the SoCal Mesh best-practices notes, which started life in a
+separate repository. If something here is wrong, or has gone stale, say so on Discord and we will
+fix it — that is a good deal easier now it lives on the site.
