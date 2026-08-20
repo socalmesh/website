@@ -27,10 +27,10 @@ trying to connect from. Try it if you can connect on it. Go back to LongFast slo
 **LongTurbo slot 14 is an experiment.** It is a wider 500 kHz channel that carries a little more
 than LongFast for roughly 3 dB less reach, and like LongFast it works out its own slot: 14. We are
 only starting to test it, and our guess is that it becomes the default here eventually. It needs
-firmware 2.7.17 or newer, and some older phone apps do not list the preset yet. Add it if you want
-to help test, but do not make it the only channel on your only radio. Note that Meshtastic has said
-it is considering a new default for version 3.0 without naming which one, so treat the "it becomes
-the default" part as our expectation rather than anybody's announcement.
+firmware 2.7.17 or newer, and some older phone apps do not list the preset yet. Switch a radio over
+to it if you want to help test. Note that Meshtastic has said it is considering a new default for
+version 3.0 without naming which one, so treat the "it becomes the default" part as our expectation
+rather than anybody's announcement.
 
 Before you switch, look at [our live map](https://meshview.socalmesh.org) and see if there are
 MediumFast slot 45 nodes near you. One catch when you do: a node only turns up on a map if its
