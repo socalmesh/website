@@ -1,9 +1,12 @@
 ---
 /**
- * The two channels the mesh runs on, side by side.
+ * The channels the mesh runs on, side by side.
  *
  * The numbers come from `src/config/site.ts`. Edit them there, not here.
- * The one marked `recommended: true` gets the highlighted treatment.
+ * The one marked `recommended: true` gets the highlighted treatment and the
+ * "Set this one" badge. One marked `experimental: true` gets a dimmed, dashed
+ * card instead, so nobody mistakes something we are still testing for the
+ * setting they should copy onto a new radio.
  */
 import { site } from '../config/site';
 ---
@@ -11,8 +14,14 @@ import { site } from '../config/site';
 <ul class="channels">
   {
     site.channels.map((channel) => (
-      <li class:list={['channel', { recommended: channel.recommended }]}>
+      <li
+        class:list={[
+          'channel',
+          { recommended: channel.recommended, experimental: channel.experimental },
+        ]}
+      >
         {channel.recommended && <span class="badge">Set this one</span>}
+        {channel.experimental && <span class="badge badge-trial">Experimental</span>}
         <p class="short">{channel.short}</p>
         <p class="expanded">
           {channel.preset} · slot {channel.slot}
@@ -50,6 +59,17 @@ import { site } from '../config/site';
     box-shadow: 0 0 30px -12px var(--accent-glow);
   }
 
+  /* Deliberately quieter than the others: a dashed edge reads as "not settled yet". */
+  .channel.experimental {
+    border-style: dashed;
+    border-color: var(--border-strong);
+    background: transparent;
+  }
+
+  .experimental .short {
+    color: var(--text-muted);
+  }
+
   .badge {
     position: absolute;
     top: calc(-1 * var(--space-xs));
@@ -74,6 +94,16 @@ import { site } from '../config/site';
 
   .recommended .short {
     color: var(--accent);
+  }
+
+  /* Must come after .badge, which sets the accent background. */
+  .badge-trial {
+    background: var(--bg-raised);
+    border: 1px dashed var(--border-strong);
+    color: var(--text-muted);
+    text-transform: none;
+    letter-spacing: 0;
+    font-weight: 600;
   }
 
   .expanded {

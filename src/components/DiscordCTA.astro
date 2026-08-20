@@ -1,6 +1,7 @@
 ---
 import Button from './Button.astro';
 import { site } from '../config/site';
+import { url } from '../lib/url';
 
 const widgetSrc = `https://discord.com/widget?id=${site.discord.widgetId}&theme=dark`;
 ---
@@ -15,7 +16,7 @@ const widgetSrc = `https://discord.com/widget?id=${site.discord.widgetId}&theme=
       friendly, helpful group. Come and introduce yourself whether you have your first node in
       your hands or have not bought anything yet.
     </p>
-    <Button href={site.discord.invite} variant="primary" external class="cta-btn">
+    <Button href={url(site.discord.path)} variant="primary" class="cta-btn">
       Join us on Discord
     </Button>
     <p class="fine">
