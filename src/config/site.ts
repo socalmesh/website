@@ -9,12 +9,16 @@
  *               as the site description that Google and Discord show.
  *   url         Where the site lives once it is on socalmesh.org. Only a fallback, since the
  *               deploy workflow fills in the real address automatically.
- *   discord     invite     = the link behind every "Join us on Discord" button.
+ *   discord     invite     = the real Discord invite. Only the /discord/ redirect page
+ *                            reads it; every button on the site points at `path`.
+ *               path       = the pretty link, /discord/, used for every Discord link here.
  *               widgetId   = the Discord server id that powers the member widget.
  *               quickStart = the "Quick Start" post inside Discord.
  *               showWidget = set to false to remove the embedded widget from the home page.
- *   channels    The two channels the mesh runs on, shown near the top of the home page.
+ *   channels    The channels the mesh runs on, shown near the top of the home page.
  *               recommended: true puts the highlighted "this is the one" styling on it.
+ *               experimental: true dims the card and badges it, for something we are
+ *               still testing rather than asking newcomers to set.
  *   startHere   The numbered "new here?" steps on the home page.
  *   reddit      Our subreddit.
  *   flasher     The official Meshtastic web flasher (installs firmware from a browser).
@@ -29,6 +33,8 @@
  *   meshtastic  Trademark lines we are required to show in the footer. Do not reword these.
  *
  * To change the Discord invite: replace the link inside the quotes on the `invite` line.
+ * That one edit fixes every Discord link on the site, and the /discord/ address we hand
+ * out elsewhere keeps working.
  */
 
 /* Every address the site uses, written once. Everything below refers to these,
@@ -60,14 +66,20 @@ export const site = {
   themeColor: '#15161c',
 
   discord: {
+    /* The real invite. ONLY `src/pages/discord.astro` reads this, and every link on the
+       site goes to `path` below instead. Change the invite here and you are done. */
     invite: links.discordInvite,
+    /* The pretty link every "Join us on Discord" on this site points at, and the one to
+       hand out anywhere else too. See src/pages/discord.astro for why. */
+    path: '/discord/',
     widgetId: '1197390116201697290',
     quickStart: links.discordQuickStart,
     showWidget: true,
   },
 
-  /* The two channels we run. Change a number here and the home page follows.
-     The recommended one comes first, because that is the order the cards appear in. */
+  /* The channels we run. Change a number here and the home page follows.
+     The recommended one comes first, because that is the order the cards appear in,
+     and anything experimental goes last. */
   channels: [
     {
       short: 'LF20',
@@ -75,9 +87,10 @@ export const site = {
       slot: 20,
       frequency: '906.875 MHz',
       recommended: true,
-      headline: 'Where most of us are.',
+      experimental: false,
+      headline: 'The default, and where most of us are.',
       blurb:
-        'Close to what your radio already ships with, and the channel most likely to find you somebody. Set this one first.',
+        'Set your region to US and a new radio is already here. LongFast with the slot left alone resolves to 20, so most people change nothing else. Set this one first.',
     },
     {
       short: 'MF45',
@@ -85,9 +98,21 @@ export const site = {
       slot: 45,
       frequency: '913.125 MHz',
       recommended: false,
+      experimental: false,
       headline: 'The alternate.',
       blurb:
         'Faster on the air, and plenty of us in SoCal use it. It is not always strong though, and it depends on your area. Try it if you can connect.',
+    },
+    {
+      short: 'LT14',
+      preset: 'LongTurbo',
+      slot: 14,
+      frequency: '908.75 MHz',
+      recommended: false,
+      experimental: true,
+      headline: 'What we are trying next.',
+      blurb:
+        'A wider 500 kHz channel, a little quicker than LongFast for about 3 dB less reach. We are starting to experiment with it and we think it becomes our default in time. Needs firmware 2.7.17 or newer.',
     },
   ],
 

@@ -4,6 +4,7 @@ import logo from '../assets/socalmesh-logo.png';
 import Button from './Button.astro';
 import MeshPattern from './MeshPattern.astro';
 import { site } from '../config/site';
+import { url } from '../lib/url';
 
 const liveMap = site.maps[0];
 ---
@@ -26,7 +27,7 @@ const liveMap = site.maps[0];
     <p class="lede">{site.tagline}</p>
 
     <div class="actions">
-      <Button href={site.discord.invite} variant="primary" external>Join us on Discord</Button>
+      <Button href={url(site.discord.path)} variant="primary">Join us on Discord</Button>
       <Button href={liveMap.url} variant="ghost" external>See the live map</Button>
     </div>
 

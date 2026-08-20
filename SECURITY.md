@@ -15,7 +15,7 @@ so it can be fixed before it is widely known.
 1. Use GitHub's private reporting: go to the **Security** tab of this
    repository and choose **Report a vulnerability**. Only maintainers see it.
 2. Or send a direct message to a SoCal Mesh maintainer on our Discord:
-   https://discord.gg/ZF6b9nrv7n
+   https://socalmesh.github.io/website/discord/
 
 Please do not open a public issue for a security problem.
 

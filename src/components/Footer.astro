@@ -8,13 +8,13 @@ const year = new Date().getFullYear();
 <footer class="site-footer">
   <div class="wrap">
     <p class="reach">
-      The best way to reach us is <a href={site.discord.invite} rel="noopener">Discord</a>.
+      The best way to reach us is <a href={url(site.discord.path)}>Discord</a>.
     </p>
 
     <ul class="links">
       <li><a href={url('/')}>Home</a></li>
       <li><a href={url('/help/')}>Help</a></li>
-      <li><a href={site.discord.invite} rel="noopener">Discord</a></li>
+      <li><a href={url(site.discord.path)}>Discord</a></li>
       <li><a href={site.github.org} rel="noopener">GitHub</a></li>
       <li><a href={site.maps[0].url} rel="noopener">Live map</a></li>
       <li><a href={site.meshtastic.site} rel="noopener">Meshtastic</a></li>

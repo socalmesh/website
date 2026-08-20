@@ -19,7 +19,7 @@ import { url } from '../lib/url';
     <div class="actions">
       <Button href={url('/')} variant="accent">Go home</Button>
       <Button href={url('/help/')} variant="ghost">Help articles</Button>
-      <Button href={site.discord.invite} variant="ghost" external>Discord</Button>
+      <Button href={url(site.discord.path)} variant="ghost">Discord</Button>
     </div>
   </div>
 </BaseLayout>

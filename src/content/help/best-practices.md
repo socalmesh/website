@@ -16,12 +16,21 @@ you'll still be on the mesh.
 
 ## Which channel to set
 
-**Start on LongFast, frequency slot 20.** That's where many of us are, and it's close to what
-your radio ships with.
+**Start on LongFast, frequency slot 20.** That's where many of us are, and it's the factory
+default. Set your region to US and a new radio is already there: LongFast with the frequency slot
+left alone works out to 20 on its own. For most people there's nothing else to change.
 
 **MediumFast slot 45 is an alternate.** A lot of us in SoCal do use it, and it's faster on the
 air. It isn't always strong, though, and whether it works for you depends on the area you're
 trying to connect from. Try it if you can connect on it. Go back to LongFast slot 20 if you can't.
+
+**LongTurbo slot 14 is an experiment.** It is a wider 500 kHz channel that carries a little more
+than LongFast for roughly 3 dB less reach, and like LongFast it works out its own slot: 14. We are
+only starting to test it, and our guess is that it becomes the default here eventually. It needs
+firmware 2.7.17 or newer, and some older phone apps do not list the preset yet. Add it if you want
+to help test, but do not make it the only channel on your only radio. Note that Meshtastic has said
+it is considering a new default for version 3.0 without naming which one, so treat the "it becomes
+the default" part as our expectation rather than anybody's announcement.
 
 Before you switch, look at [our live map](https://meshview.socalmesh.org) and see if there are
 MediumFast slot 45 nodes near you. One catch when you do: **the maps only show nodes that uplink
@@ -169,7 +178,7 @@ distant one.
 
 ## Where to ask
 
-Come to **[Discord](https://discord.gg/ZF6b9nrv7n)**. It's a friendly, helpful group, and it's the
+Come to **[Discord](../../discord/)**. It's a friendly, helpful group, and it's the
 fastest way to get a real answer about your own area from someone who's on the air there.
 
 Introduce yourself when you arrive, whether you've got your first node in your hands or haven't

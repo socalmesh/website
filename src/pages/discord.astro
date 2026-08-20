@@ -1,0 +1,84 @@
+---
+/**
+ * /discord/ , the pretty link that forwards to our Discord invite.
+ *
+ * WHY THIS EXISTS
+ * Discord invites go stale. When ours is replaced, every poster, video description,
+ * Reddit comment and other site that linked straight to discord.gg breaks, and there is
+ * nothing we can do about any of them. So we hand out ONE address that we control:
+ *
+ *     https://socalmesh.org/discord
+ *
+ * Everything on this site points at that, and so should anything we post anywhere else.
+ * When the invite changes, edit `discordInvite` in `src/config/site.ts` and this page
+ * starts forwarding to the new one. Nothing else needs touching.
+ *
+ * HOW IT WORKS
+ * The site is static files on GitHub Pages, so there is no server to send a real 302.
+ * This page does it three ways instead, so it works no matter what the visitor has
+ * turned off:
+ *   1. a script that swaps the page immediately, which is what nearly everyone gets;
+ *   2. a <meta http-equiv="refresh"> for anyone with scripting disabled;
+ *   3. a plain link they can click, if both of those somehow fail.
+ * `noindex` keeps it out of search results, since it is plumbing and not a page.
+ *
+ * TO ADD ANOTHER PRETTY LINK
+ * Copy this file to `src/pages/<name>.astro` and change the two lines under
+ * "the destination". That gives you /<name>/ forwarding wherever you point it.
+ */
+import { site } from '../config/site';
+
+/* The destination. Comes from src/config/site.ts so there is one place to edit. */
+const target = site.discord.invite;
+const label = 'our Discord';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <title>Taking you to {label}</title>
+    <link rel="canonical" href={target} />
+    <script is:inline define:vars={{ target }}>
+      /* replace() rather than assign() so Back does not bounce the visitor
+         straight back here and trap them. */
+      window.location.replace(target);
+    </script>
+    <style>
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 2rem;
+        background: #15161c;
+        color: #e8eaf0;
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          'Segoe UI',
+          Roboto,
+          sans-serif;
+        text-align: center;
+        line-height: 1.5;
+      }
+
+      a {
+        color: #7ee2a8;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <p>Taking you to {label}.</p>
+      <p>
+        Not moving? <a href={target} rel="noopener">Open the invite</a>.
+      </p>
+    </main>
+  </body>
+</html>

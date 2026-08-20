@@ -227,9 +227,20 @@ then run the checks, open the pull request, and ask the merge question.
 
 **Say:** "Our Discord invite changed, the new one is <link>."
 
-**Claude will:** update it in `src/config/site.ts`, which is the single place every Discord link on
-the site comes from, hero button, Discord section, and footer all change at once. Then the checks,
-the pull request, and the merge question.
+**Claude will:** change one line, `discordInvite` in `src/config/site.ts`. That is the only place
+the real invite appears anywhere in the repo.
+
+Nothing on the site links to `discord.gg` directly. Every Discord link goes to **`/discord/`**, a
+redirect page at `src/pages/discord.astro` that forwards to the invite. That is deliberate: it
+means we can hand out **`socalmesh.org/discord`** on posters, in videos and in Reddit comments, and
+when the invite is replaced none of those break. Hand out the pretty link, never the raw invite.
+
+So when the invite changes, only `discordInvite` moves. The hero button, the Discord section, the
+footer, the header, the 404 page and the help pages all keep pointing at `/discord/` and start
+forwarding to the new invite on their own.
+
+**To add another pretty link** (`/map`, `/reddit`, whatever): copy `src/pages/discord.astro` to
+`src/pages/<name>.astro` and change the destination at the top. That gives you `/<name>/`.
 
 **Check this one first, though:** the Discord invite is the main thing this website exists to do.
 Open the new link in a private or incognito window *before* merging, and make sure it really joins
@@ -260,9 +271,12 @@ section, keep that caveat with it.
 
 ### Change the channel settings we recommend
 
-The home page shows the two channels this mesh runs on, **LF20** (LongFast, frequency slot 20)
-and **MF45** (MediumFast, slot 45), with the frequency each one lands on. These are the numbers
-newcomers copy onto their radio, so they matter more than anything else on the page.
+The home page shows the channels this mesh runs on, with the frequency each one lands on. These
+are the numbers newcomers copy onto their radio, so they matter more than anything else on the page.
+
+- **LF20** (LongFast, frequency slot 20, 906.875 MHz), the recommended one.
+- **MF45** (MediumFast, slot 45, 913.125 MHz), the alternate.
+- **LT14** (LongTurbo, slot 14, 908.75 MHz), marked experimental.
 
 **LF20 is the recommended one, and MF45 is the alternate.** LongFast slot 20 is where many of this
 community actually are. MediumFast slot 45 is faster on the air and plenty of people here use it,
@@ -270,12 +284,28 @@ but it is not always strong and whether it works depends on the area, so the pag
 try it if they can connect, and to check the live map for MF45 nodes near them first. Do not
 re-flip that emphasis without asking someone who runs a node.
 
+**LF20 really is the factory default, so say so plainly.** A radio set to region US, with the
+primary channel untouched and the frequency slot left at 0, works its slot out from the channel
+name and lands on 20 at 906.875 MHz by itself. Do not soften this into "close to the default".
+The one thing the radio does not do for you is pick the region, so that part still has to be set
+by hand.
+
+**LT14 is a trial, not a recommendation.** LongTurbo is a real preset (added to the firmware in
+December 2025, needs 2.7.17 or newer) and 500 kHz wide, which is why the US band has 52 slots for
+it rather than 104 and why slot 14 lands on 908.75 MHz rather than anywhere near the other two.
+It is on the page because this community expects to move there eventually, and it carries
+`experimental: true`, which dims the card and badges it. Meshtastic has said it is *considering* a
+new default for 3.0 without naming which preset, so never write that LongTurbo has been chosen as
+the new default. Ours is an expectation, and the page says so.
+
 **Say:** "We moved to MediumSlow", or "the slot 45 frequency is wrong, it should be X".
 
 **Claude will:** edit the `channels` list in `src/config/site.ts`. Each channel has a short name
 (`LF20`), the preset name, the slot number, the frequency, and a sentence of explanation. The one
-with `recommended: true` gets the highlighted "Set this one" card, and the recommended one is
-listed first because the cards render in array order. Claude will also check the explanation
+with `recommended: true` gets the highlighted "Set this one" card, one with `experimental: true`
+gets a dimmed dashed card and an "Experimental" badge, and the cards render in array order, so the
+recommended one is listed first and anything experimental goes last. Every channel needs both
+flags present, even when they are `false`, or the types stop matching. Claude will also check the explanation
 paragraphs underneath still make sense, they sit in `src/pages/index.astro` in the section marked
 `id="channels"`, along with the sources paragraph that cites where the numbers come from.
 
@@ -443,7 +473,7 @@ Claude reads this file automatically and knows the rest.
 | `src/config/site.ts` | site name, tagline, Discord invite, the two channels, the Start here steps, the map links, the Reddit and flasher links, the other-communities list, GitHub org, one place for all of them |
 | `src/content/help/` | the help articles, one markdown file each; the filename is the web address |
 | `src/content.config.ts` | the list of details every article must have at the top (the fields in section 3) |
-| `src/pages/` | the pages: home (`index.astro`), the other-communities page (`links.astro`), the help list and article pages, the 404 page, and two files that generate `robots.txt` and the web manifest |
+| `src/pages/` | the pages: home (`index.astro`), the other-communities page (`links.astro`), the help list and article pages, the 404 page, `discord.astro` (the `/discord/` redirect), and two files that generate `robots.txt` and the web manifest |
 | `src/components/` | the reusable pieces, header, footer, hero, buttons, cards, the photo grid, the channel cards, the Start here steps, the map list and the Discord section |
 | `src/layouts/` | the page frame that every page sits inside |
 | `src/styles/` | colors, spacing and type, `tokens.css` and `global.css` |
@@ -515,10 +545,13 @@ lives.*
 3. **Re-run the Deploy workflow straight away**, from the Actions tab. Until it finishes, the site
    that is published is still the one built for the old address, so pages on the new domain will
    look broken. This step is not optional and it is not last.
-4. Wait for DNS to propagate, then tick **Enforce HTTPS** in the same Pages settings once GitHub
+4. Update the two hard-coded `socalmesh.github.io` addresses that point at the Discord redirect,
+   in `README.md` and `SECURITY.md`, to `https://socalmesh.org/discord`. Nothing on the site itself
+   needs touching, because every link there is relative.
+5. Wait for DNS to propagate, then tick **Enforce HTTPS** in the same Pages settings once GitHub
    offers it.
-5. Verify: load `https://socalmesh.org`, click through to a help article and a photo, and confirm
-   nothing is missing.
+6. Verify: load `https://socalmesh.org`, click through to a help article and a photo, and confirm
+   nothing is missing. Check `https://socalmesh.org/discord` forwards to the invite.
 
 ---
 

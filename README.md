@@ -18,7 +18,7 @@ merge it. CLAUDE.md is the operator guide and the single source of truth for how
 | `src/config/site.ts` | site name, tagline, Discord invite, the two channels, the Start here steps, the map links, the Reddit and flasher links, the other-communities list, GitHub org |
 | `src/content/help/` | help articles, one markdown file each; the filename is the web address |
 | `src/content.config.ts` | the details every article must have at the top (title, description, author, date) |
-| `src/pages/` | home page, the other-communities page, the help list and article pages, 404, and two files that generate `robots.txt` and the web manifest |
+| `src/pages/` | home page, the other-communities page, the help list and article pages, 404, `discord.astro` (the `/discord/` redirect), and two files that generate `robots.txt` and the web manifest |
 | `src/components/` | header, footer, hero, buttons, cards, photo grid |
 | `src/layouts/` | the page frame every page sits inside |
 | `src/styles/` | design tokens and global styles |
@@ -55,7 +55,7 @@ domain at the root. No file in this repository needs editing for that switch.
 
 ## Community
 
-- Discord: https://discord.gg/ZF6b9nrv7n
+- Discord: https://socalmesh.github.io/website/discord/ (a redirect; the invite itself lives in `src/config/site.ts`)
 - Live map: https://meshview.socalmesh.org
 - GitHub org: https://github.com/socalmesh
 
