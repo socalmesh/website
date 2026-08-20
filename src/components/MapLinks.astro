@@ -19,22 +19,39 @@ import { site } from '../config/site';
 <style>
   .maps {
     display: grid;
-    gap: var(--space-m);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+    gap: var(--space-s);
+    grid-template-columns: 1fr;
     list-style: none;
     margin: 0;
     padding: 0;
   }
 
+  @media (min-width: 46rem) {
+    .maps {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .map.community {
+      grid-column: 1 / -1;
+    }
+  }
+
   .map {
-    background: var(--bg-raised);
+    background: var(--bg);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     padding: var(--space-m);
   }
 
+  /* Ours reads as the one to click, and takes the full width so the other three
+     sit in a tidy row underneath instead of orphaning a fourth card. */
   .map.community {
     border-color: var(--accent-dim);
+    background: linear-gradient(
+      to right,
+      color-mix(in srgb, var(--accent) 7%, var(--bg)),
+      var(--bg) 60%
+    );
   }
 
   .map a {
