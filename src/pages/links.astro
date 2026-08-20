@@ -1,29 +1,31 @@
 ---
 /**
- * "Other mesh communities": one page of outbound links, grouped by the
- * technology each community runs.
+ * The links page. Two kinds of thing live here:
+ *   - other mesh communities, grouped by the technology each one runs (`meshLinks`);
+ *   - the open source projects this network depends on (`projects`), with the credit.
  *
- * To add a link: put it in `meshLinks` in `src/config/site.ts` under the right
- * heading. Nothing here needs editing.
+ * To add either, put it in `src/config/site.ts` under the right heading. Nothing
+ * here needs editing.
  */
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Section from '../components/Section.astro';
 import { site } from '../config/site';
 import { url } from '../lib/url';
 
-const title = 'Other mesh communities';
+const title = 'Links';
 const description =
-  'Meshtastic communities around the country, and the MeshCore projects running alongside us.';
+  'Other mesh communities around the country, and the open source projects this network runs on.';
 ---
 
 <BaseLayout title={title} description={description}>
   <Section eyebrow="Links" title={title} titleAs="h1" lede={description}>
-    <p class="intro">
+    <h2>Other mesh communities</h2>
+    <p class="group-note">
       Every one of these is run by people like us. Regional settings differ, so check theirs before
       you travel, and do not copy another region's frequency onto a radio you use here.
     </p>
 
-    <h2>Meshtastic</h2>
+    <h3>Meshtastic</h3>
     <p class="group-note">Same radios and firmware as us. Different part of the map.</p>
     <ul class="links">
       {
@@ -38,7 +40,7 @@ const description =
       }
     </ul>
 
-    <h2>MeshCore</h2>
+    <h3>MeshCore</h3>
     <p class="group-note">
       MeshCore is a different mesh project with its own firmware. A MeshCore radio and a Meshtastic
       radio cannot interoperate, since neither one can decode or relay the other's traffic. That
@@ -59,6 +61,25 @@ const description =
       }
     </ul>
 
+    <h2>Projects we rely on</h2>
+    <p class="group-note">
+      None of these are ours. Our map, the parrot in our Discord and the tool a lot of us use to
+      work out what is reaching what are all somebody else's open source work, and this network
+      would be a poorer thing without them. Thank you to everyone who builds and maintains them.
+    </p>
+    <ul class="links">
+      {
+        site.projects.map((project) => (
+          <li>
+            <a href={project.url} rel="noopener">
+              {project.name}
+            </a>
+            <p>{project.blurb}</p>
+          </li>
+        ))
+      }
+    </ul>
+
     <p class="back">
       <a href={url('/')}>&larr; Back to the home page</a>
     </p>
@@ -66,15 +87,15 @@ const description =
 </BaseLayout>
 
 <style>
-  .intro {
-    max-width: 62ch;
-    color: var(--text-muted);
-  }
-
   h2 {
-    margin-top: var(--space-l);
+    margin-top: var(--space-xl);
     padding-bottom: 0.35rem;
     border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    margin-top: var(--space-l);
+    font-size: var(--step-1);
   }
 
   .group-note {
