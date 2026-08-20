@@ -1,4 +1,4 @@
-/** Web app manifest — icon paths follow the base path the site is built for. */
+/** Web app manifest, icon paths follow the base path the site is built for. */
 import type { APIRoute } from 'astro';
 import { site } from '../config/site';
 import { url } from '../lib/url';

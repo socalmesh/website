@@ -1,5 +1,5 @@
 /**
- * robots.txt — generated at build time so the sitemap link always points at the
+ * robots.txt, generated at build time so the sitemap link always points at the
  * address the site was actually built for.
  */
 import type { APIRoute } from 'astro';

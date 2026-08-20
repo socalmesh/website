@@ -1,5 +1,5 @@
 /**
- * SoCal Mesh — site settings.
+ * SoCal Mesh site settings.
  *
  * This is the ONE file to edit when a link, name, or piece of wording changes.
  * Nothing here is code you need to understand; every value is plain text between quotes.
@@ -7,7 +7,7 @@
  *   name        The site name. Shows in the header, the browser tab, and share previews.
  *   tagline     The one-line description under the big heading on the home page. Also used
  *               as the site description that Google and Discord show.
- *   url         Where the site lives once it is on socalmesh.org. Only a fallback — the
+ *   url         Where the site lives once it is on socalmesh.org. Only a fallback, since the
  *               deploy workflow fills in the real address automatically.
  *   discord     invite     = the link behind every "Join us on Discord" button.
  *               widgetId   = the Discord server id that powers the member widget.
@@ -40,9 +40,13 @@ const links = {
   reddit: 'https://www.reddit.com/r/SoCalMesh/',
   flasher: 'https://flasher.meshtastic.org',
   githubOrg: 'https://github.com/socalmesh',
-  bestPractices: 'https://github.com/socalmesh/best-practices',
   mqttConfig: 'https://github.com/socalmesh/mqtt-config',
-  meshBot: 'https://github.com/socalmesh/rage-against-the-meshine',
+  /* The bot we call the parrot, which echoes mesh traffic into Discord. This is the
+     upstream project it comes from, not our fork of it. */
+  parrot: 'https://github.com/baymesh/rage-against-the-meshine',
+  /* The software our own map at meshview.socalmesh.org runs on. */
+  meshview: 'https://github.com/pablorevilla-meshtastic/meshview',
+  meshSense: 'https://github.com/Affirmatech/MeshSense',
   meshtastic: 'https://meshtastic.org',
 } as const;
 
@@ -62,27 +66,28 @@ export const site = {
     showWidget: true,
   },
 
-  /* The two channels we run. Change a number here and the home page follows. */
+  /* The two channels we run. Change a number here and the home page follows.
+     The recommended one comes first, because that is the order the cards appear in. */
   channels: [
-    {
-      short: 'MF45',
-      preset: 'MediumFast',
-      slot: 45,
-      frequency: '913.125 MHz',
-      recommended: true,
-      headline: 'What we run.',
-      blurb:
-        'Faster on the air and on a quieter frequency. Set this one if you want to talk to the rest of us.',
-    },
     {
       short: 'LF20',
       preset: 'LongFast',
       slot: 20,
       frequency: '906.875 MHz',
-      recommended: false,
-      headline: 'The factory default.',
+      recommended: true,
+      headline: 'Where most of us are.',
       blurb:
-        'What every radio ships with, so everyone who never changes a setting lands here. It works, but it is crowded.',
+        'Close to what your radio already ships with, and the channel most likely to find you somebody. Set this one first.',
+    },
+    {
+      short: 'MF45',
+      preset: 'MediumFast',
+      slot: 45,
+      frequency: '913.125 MHz',
+      recommended: false,
+      headline: 'The alternate.',
+      blurb:
+        'Faster on the air, and plenty of us in SoCal use it. It is not always strong though, and it depends on your area. Try it if you can connect.',
     },
   ],
 
@@ -90,16 +95,16 @@ export const site = {
   startHere: [
     {
       title: 'Get a radio',
-      body: 'Any Meshtastic-compatible LoRa radio for the US 915 MHz band. Ask on Discord before you buy — people will tell you what is working for them right now.',
+      body: 'Any Meshtastic-compatible LoRa radio for the US 915 MHz band. Ask on Discord before you buy, and people will tell you what is working for them right now.',
     },
     {
       title: 'Flash it',
-      body: 'The official web flasher installs the firmware straight from your browser. Use Chrome or Edge — it needs WebSerial.',
+      body: 'The official web flasher installs the firmware straight from your browser. Use Chrome or Edge, because it needs WebSerial.',
       link: { label: 'Meshtastic web flasher', url: links.flasher },
     },
     {
       title: 'Set the channel',
-      body: 'Region US, preset MediumFast, frequency slot 45. Both settings, not just one — see the channels above.',
+      body: 'Region US, preset LongFast, frequency slot 20. Both settings, not just one. See the channels above. Once you are on the air, MediumFast slot 45 is worth a try.',
     },
     {
       title: 'Say hello',
@@ -108,54 +113,63 @@ export const site = {
   ],
 
   /* The "Other mesh communities" page, grouped by the technology each one runs.
-     Meshtastic radios and MeshCore radios cannot talk to each other — that is why
+     Meshtastic radios and MeshCore radios cannot talk to each other, which is why
      the page keeps them under separate headings. */
   meshLinks: {
     meshtastic: [
-      { name: 'Meshtastic', url: links.meshtastic, blurb: 'The project itself — firmware, apps, and the official documentation.' },
-      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, like we do, and their broker feeds ours.' },
+      { name: 'Meshtastic', url: links.meshtastic, blurb: 'The project itself: firmware, apps and the official documentation.' },
+      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, the channel we treat as our alternate, and our brokers bridge to each other.' },
       { name: 'MtnMe.sh', url: 'https://mtnme.sh/', blurb: 'Wrote up their move from LongFast to MediumFast slot 45 in detail.' },
       { name: 'MSP Mesh', url: 'https://mspmesh.org/', blurb: 'Twin Cities, Minnesota. Also on MediumFast slot 45.' },
-      { name: 'Puget Mesh', url: 'https://pugetmesh.org/', blurb: 'Seattle and Puget Sound. Good configuration documentation.' },
-      { name: 'Colorado Mesh', url: 'https://coloradomesh.org/', blurb: 'Denver Metro and the Front Range.' },
-      { name: 'Freq51', url: 'https://freq51.net/', blurb: 'Utah. MediumFast, but on slot 51 — a reminder to check the slot, not just the preset.' },
-      { name: 'Are You Meshing With Us', url: 'https://areyoumeshingwith.us/', blurb: 'Florida, with a well-kept page of regional LoRa settings.' },
-      { name: 'Mesh Brisbane', url: 'https://wiki.mbug.com.au/', blurb: 'Australia. Same preset names, different frequencies — their region starts at 915 MHz.' },
+      { name: 'Puget Mesh', url: 'https://pugetmesh.org/', blurb: 'Seattle and Puget Sound. A substantial configuration guide, covering their LongFast default and their alternates.' },
+      { name: 'Colorado Mesh', url: 'https://coloradomesh.org/', blurb: 'Statewide across Colorado. They used to be DenverMesh.' },
+      { name: 'Freq51', url: 'https://freq51.net/', blurb: 'Utah and Idaho. MediumFast, but on slot 51, which is a good reminder to check the slot and not just the preset.' },
+      { name: 'Are You Meshing With Us', url: 'https://areyoumeshingwith.us/', blurb: 'Florida, with a well-kept directory of regional LoRa settings.' },
+      { name: 'Mesh Brisbane', url: 'https://wiki.mbug.com.au/', blurb: 'Australia. Same preset names, quite different frequencies. MediumFast slot 45 lands near 926 MHz there, not 913.' },
     ],
     meshcore: [
-      { name: 'MeshCore', url: 'https://meshcore.co.uk/', blurb: 'The MeshCore project — different firmware, different network, same idea.' },
-      { name: 'West Coast Mesh', url: 'https://wcmesh.com/', blurb: 'A MeshCore community here on the west coast. Their wiki is worth reading even if you run Meshtastic.' },
+      { name: 'MeshCore', url: 'https://meshcore.co.uk/', blurb: 'The MeshCore project. Different firmware, different network, same idea.' },
+      { name: 'West Coast Mesh', url: 'https://wcmesh.com/', blurb: 'A MeshCore community here on the west coast, running settings of their own rather than the defaults. Their wiki is worth reading even if you run Meshtastic.' },
     ],
   },
 
   reddit: links.reddit,
   flasher: links.flasher,
 
+  /* These are NOT all the same data source, which is why each blurb says what it is.
+     Ours comes first, and it is also the hero's "See the live map" button. */
   maps: [
     {
       name: 'meshview.socalmesh.org',
       url: 'https://meshview.socalmesh.org',
-      blurb: 'Our live map — run by our community.',
+      blurb: 'Our live map, an instance of meshview that we run ourselves.',
       community: true,
+    },
+    {
+      name: 'meshview.world',
+      url: 'https://meshview.world/',
+      blurb: 'Pulls together the meshview instances it knows about, ours among them, into one view.',
+      community: false,
     },
     {
       name: 'meshmap.net',
       url: 'https://meshmap.net',
-      blurb: 'Another map showing nodes that uplink to the public MQTT server.',
+      blurb: 'The wider map we have found most dependable, and it covers other regions too.',
       community: false,
     },
     {
       name: 'meshtastic.liamcottle.net',
       url: 'https://meshtastic.liamcottle.net/',
-      blurb: 'A third map, with another view of the same public data.',
+      blurb: 'Another view of much the same idea, though it may show fewer nodes.',
       community: false,
     },
   ],
 
   github: {
     org: links.githubOrg,
-    bestPractices: links.bestPractices,
-    meshBot: links.meshBot,
+    parrot: links.parrot,
+    meshview: links.meshview,
+    meshSense: links.meshSense,
     mqttConfig: links.mqttConfig,
   },
 
@@ -163,12 +177,7 @@ export const site = {
     {
       name: 'GitHub organization',
       url: links.githubOrg,
-      blurb: 'Everything we build in the open — the broker config, the bot, the guides.',
-    },
-    {
-      name: 'Best Practices guide',
-      url: links.bestPractices,
-      blurb: 'Recommended radio settings: channel, role, hop limit, and what not to touch.',
+      blurb: 'Everything we build in the open, including the broker config and the guides.',
     },
     {
       name: 'MQTT server config',
@@ -176,14 +185,24 @@ export const site = {
       blurb: 'How our community MQTT broker is set up, and the bridges it feeds.',
     },
     {
-      name: 'Mesh Bot',
-      url: links.meshBot,
-      blurb: 'Our open source bridge that mirrors mesh traffic into Discord channels.',
+      name: 'meshview',
+      url: links.meshview,
+      blurb: 'The software behind our live map. We run our own instance of it.',
+    },
+    {
+      name: 'Rage Against the Meshine',
+      url: links.parrot,
+      blurb: 'The project behind the parrot, the bot that echoes mesh traffic into our Discord.',
+    },
+    {
+      name: 'MeshSense',
+      url: links.meshSense,
+      blurb: 'Connects to your own node over Bluetooth or Wi-Fi and shows you nodes, signal reports and traceroutes. The clearest way to see who is reaching whom.',
     },
     {
       name: 'r/SoCalMesh on Reddit',
       url: links.reddit,
-      blurb: 'Our subreddit — longer posts, build photos, and questions that outlive a chat window.',
+      blurb: 'Our subreddit, for longer posts, build photos and questions that outlive a chat window.',
     },
     {
       name: 'Meshtastic web flasher',

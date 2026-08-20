@@ -13,4 +13,4 @@
 - [ ] If this adds or edits a help article: it was written by the person in the byline, and the
       date is right.
 - [ ] No personal information about members (full names, addresses, phone numbers, home locations).
-- [ ] No secrets, passwords, or keys — this repository is public.
+- [ ] No secrets, passwords, or keys, this repository is public.

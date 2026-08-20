@@ -37,7 +37,7 @@ const latest = (await publishedArticles()).slice(0, 3);
           radios in Southern California. This network acts like an area-wide text messaging
           system, allowing people to communicate publicly or privately with anyone on the
           network. The mesh network can also be used to transmit GPS locations or read weather
-          and other telemetry. All of this happens without any external infrastructure — no
+          and other telemetry. All of this happens without any external infrastructure. No
           cell phone towers, no internet. We have hundreds of nodes and are growing every day.
           Please join us and feel free to ask questions on our{' '}
           <a href={site.discord.invite} rel="noopener">Discord</a>.
@@ -58,12 +58,13 @@ const latest = (await publishedArticles()).slice(0, 3);
       <article>
         <h3>How it works</h3>
         <p>
-          We have set up a number of client nodes in the Southern California area. These radios
-          communicate in the 906 MHz frequency range using the LoRa protocol. The radios mesh
-          using the open source Meshtastic software. Users can connect to these client nodes by
-          Bluetooth if they are close enough, or they can use their own handheld nodes, which
-          also act as repeaters. Messages hop from node to node, extending the reach of the
-          network and adding redundancy.
+          People across Southern California run nodes. Some are at home, some sit on hilltops, some
+          live in a backpack. The radios talk to each other over LoRa in the 915 MHz band used in
+          the US. The exact frequency comes from the preset and frequency slot you set, which is why
+          it matters that we all use the same ones. They mesh using the open source Meshtastic
+          firmware. You pair your own node to your phone over Bluetooth or Wi-Fi, and the node
+          handles the radio side. Messages hop from node to node, so the network reaches further
+          than any single radio can, and it keeps working when one node drops off.
         </p>
       </article>
     </div>
@@ -74,33 +75,36 @@ const latest = (await publishedArticles()).slice(0, 3);
     tone="raised"
     eyebrow="Channels"
     title="The two channels we run"
-    lede="Set your radio to MediumFast on frequency slot 45. That is where this mesh lives."
+    lede="Start on LongFast, frequency slot 20. That is where many of us are. MediumFast slot 45 is an alternate worth trying once you are on the air."
   >
     <ChannelCards />
 
     <div class="why">
       <div>
-        <h3>Why not the default?</h3>
+        <h3>Start on LongFast, slot 20</h3>
         <p>
-          LongFast is what a radio ships with, so everyone who never changes a setting ends up on the
-          same slow channel. Each message sits on the air three to four times longer than it needs
-          to. On a busy city mesh that means collisions, retries, and messages that never land.
+          It is where many of us are, and it is closest to what your radio already ships with, so it
+          is the setting most likely to find you somebody on your first try. If you only ever change
+          two things, make them the preset and the slot.
         </p>
       </div>
       <div>
-        <h3>Why MediumFast, slot 45?</h3>
+        <h3>MediumFast slot 45 is the alternate</h3>
         <p>
-          The same message goes out in a fraction of the airtime, so more people can talk before the
-          channel fills up. Slot 45 is a different frequency as well, so we are not sharing the air
-          with every unconfigured radio in Southern California.
+          Plenty of us in SoCal use it, and it is faster on the air. The same message takes less
+          airtime, so a busy channel fills up more slowly. It is not always strong though, and
+          whether it works for you depends on your area. Try it if you can connect on it.
         </p>
       </div>
       <div>
-        <h3>What you give up</h3>
+        <h3>How to tell what is near you</h3>
         <p>
-          Range per hop. MediumFast has about 5 dB less link budget than LongFast, so each hop
-          reaches less far and the mesh leans on having enough nodes. That trade is worth it here,
-          and it is why we care about good node placement.
+          Check <a href={site.maps[0].url} rel="noopener">our live map</a> for MediumFast slot 45
+          nodes around you. Remember the maps only show nodes that uplink to MQTT, so there are
+          always more nodes on the air than any map displays. An empty patch is not proof nobody is
+          there. Some of why MF45 can be weaker is physics: it has about 5 dB less link budget than
+          LongFast, so each hop reaches less far and the channel leans on having enough nodes nearby.
+          Asking on Discord is the surer answer.
         </p>
       </div>
     </div>
@@ -108,17 +112,22 @@ const latest = (await publishedArticles()).slice(0, 3);
     <p class="sources">
       Where these numbers come from: Meshtastic's own{' '}
       <a href="https://meshtastic.org/docs/overview/radio-settings/" rel="noopener">radio settings
-      reference</a>{' '}(the presets, their speeds and their link budgets) and its post{' '}
+      reference</a>{' '}(the presets, their speeds and their link budgets). The case for MediumFast
+      is argued by Meshtastic itself in{' '}
       <a href="https://meshtastic.org/blog/why-your-mesh-should-switch-from-longfast/" rel="noopener"
-        >Why your mesh should switch from LongFast</a>. Other communities on the same channel:{' '}
+        >Why your mesh should switch from LongFast</a>, and by the communities that have moved.{' '}
       <a href="https://bayme.sh/docs/getting-started/recommended-settings/" rel="noopener">Bay Area
-      Mesh</a> and <a href="https://mtnme.sh/mediumfast/" rel="noopener">MtnMe.sh</a>.
+      Mesh</a> and <a href="https://mtnme.sh/mediumfast/" rel="noopener">MtnMe.sh</a> are both on
+      MediumFast slot 45. It is a genuine argument. It just leans on having enough nodes near you,
+      and that is the part that varies across Southern California.
     </p>
 
     <p class="warn">
-      Change <strong>both</strong> settings — the preset and the frequency slot. A radio on
-      MediumFast with the slot left at 0 is on a different frequency than the rest of us, and a
-      LongFast radio cannot hear a MediumFast one at all.
+      Set <strong>both</strong> the preset and the frequency slot. Type the slot number in rather
+      than leaving it at 0. On 0 the radio works its frequency out from the primary channel's name,
+      which is fine on a factory-fresh radio and stops being fine the moment anything has renamed
+      that channel. A LongFast radio also cannot hear a MediumFast one at all, whatever the slot
+      says, because the preset has to match too.
     </p>
   </Section>
 
@@ -139,9 +148,30 @@ const latest = (await publishedArticles()).slice(0, 3);
     tone="raised"
     eyebrow="Maps"
     title="See the network"
-    lede="Nodes that uplink to MQTT show up on these maps. Start with ours."
+    lede="Start with ours. Read the caveat below before you judge coverage from any of them."
   >
     <MapLinks />
+
+    <p class="warn">
+      <strong>The maps show less than the network.</strong> They only show nodes that uplink to
+      MQTT, which is the <strong>OK to MQTT</strong> setting, and plenty of people never turn it on.
+      There are many more nodes on the air than any of these maps display. An empty area means
+      nobody is uplinking there, not that nobody is there.
+    </p>
+
+    <p class="sources">
+      They are also not one data source. Ours is our own{' '}
+      <a href={site.github.meshview} rel="noopener">meshview</a> instance. Uplink to our MQTT
+      server and you show up on <a href="https://meshmap.net" rel="noopener">meshmap.net</a> and{' '}
+      <a href="https://meshtastic.liamcottle.net/" rel="noopener">Liam's map</a> as well, because
+      we share to both of them. Each applies its own filters, so the odd node can still be missing.
+      Of the two, meshmap is the one we have found most dependable, and it covers other regions as
+      well.{' '}
+      <a href="https://meshview.world/" rel="noopener">meshview.world</a> works differently again.
+      Rather than taking our traffic, it gathers up the meshview instances it knows about, ours
+      included, and shows them together. Getting onto the maps at all is covered in{' '}
+      <a href={url('/help/how-do-i-uplink-to-mqtt/')}>How do I uplink to MQTT</a>.
+    </p>
   </Section>
 
   <Section
@@ -212,7 +242,7 @@ const latest = (await publishedArticles()).slice(0, 3);
     tone="raised"
     eyebrow="Community"
     title="Projects and links"
-    lede="Everything we run is open source."
+    lede="Some of this we run. Some of it we simply depend on."
   >
     <ul class="links">
       {
@@ -226,6 +256,16 @@ const latest = (await publishedArticles()).slice(0, 3);
         ))
       }
     </ul>
+
+    <p class="thanks">
+      Thank you to the people who build these. Our map is an instance of{' '}
+      <a href={site.github.meshview} rel="noopener">meshview</a>; the parrot in our Discord comes
+      from <a href={site.github.parrot} rel="noopener">Rage Against the Meshine</a>; and{' '}
+      <a href={site.github.meshSense} rel="noopener">MeshSense</a> is how a lot of us make sense of
+      what is connected to what. None of these are ours, and we build a better mesh with them than
+      we could without them.
+    </p>
+
     <p class="more">
       <Button href={site.discord.invite} variant="accent" external>Join us on Discord</Button>
     </p>
@@ -295,6 +335,15 @@ const latest = (await publishedArticles()).slice(0, 3);
     margin: 0 0 var(--space-m);
     color: var(--text-muted);
     font-size: var(--step--1);
+  }
+
+  /* The credit to the projects we depend on. Deliberately full-size body text
+     rather than the muted .sources treatment, because it is a thank-you and not a footnote. */
+  .thanks {
+    max-width: 70ch;
+    margin-top: var(--space-l);
+    padding-top: var(--space-m);
+    border-top: 1px solid var(--border);
   }
 
   .warn {

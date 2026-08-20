@@ -54,7 +54,7 @@ const ogImageUrl = absoluteUrl(ogImage, Astro.site ?? site.url);
     />
 
     <!-- Declared here rather than in a .css file so the address goes through the
-         same url() helper as the preload above — the site is served from a
+         same url() helper as the preload above, because the site is served from a
          sub-folder today and from a domain root later, and these must agree or
          the font is downloaded twice. -->
     <style set:html={fontFace}></style>
