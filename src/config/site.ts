@@ -202,22 +202,22 @@ export const site = {
     {
       name: 'meshmap.net',
       url: 'https://meshmap.net',
-      blurb: 'The wider map we have found most dependable, and it covers other regions too.',
+      blurb: 'Uplink to us and you appear here too. The wider map we have found most dependable, and it covers other regions as well.',
       community: false,
     },
     {
       name: 'meshtastic.liamcottle.net',
       url: 'https://meshtastic.liamcottle.net/',
-      blurb: 'Another view of much the same idea, though it may show fewer nodes.',
+      blurb: 'We share to this one as well, though it may show fewer nodes than meshmap does.',
       community: false,
     },
   ],
 
   /* Only what the templates actually read. Everything else lives in `links` above
-     and is reached through the list that uses it, so there is one place per link. */
+     and is reached through the list that uses it, so there is one place per link.
+     The meshview repo is credited on the links page now, via `projects`. */
   github: {
     org: links.githubOrg,
-    meshview: links.meshview,
   },
 
   communityLinks: [
