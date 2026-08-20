@@ -15,7 +15,7 @@ merge it. CLAUDE.md is the operator guide and the single source of truth for how
 
 | Path | What it holds |
 |---|---|
-| `src/config/site.ts` | site name, tagline, Discord invite, the two channels, the Start here steps, the map links, the Reddit and flasher links, the other-communities list, GitHub org |
+| `src/config/site.ts` | site name, tagline, Discord invite, the channels, the Start here steps, the map links, the Reddit and flasher links, the other-communities list, the projects we rely on, GitHub org |
 | `src/content/help/` | help articles, one markdown file each; the filename is the web address |
 | `src/content.config.ts` | the details every article must have at the top (title, description, author, date) |
 | `src/pages/` | home page, the other-communities page, the help list and article pages, 404, `discord.astro` (the `/discord/` redirect), and two files that generate `robots.txt` and the web manifest |

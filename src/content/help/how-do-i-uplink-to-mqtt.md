@@ -49,6 +49,10 @@ your own server, though. Other community brokers bridge there too.*
 **JSON Enabled**. On iOS that toggle has gone altogether, which is no loss, since off is the state
 you want anyway.*
 
-*The maps only show nodes that uplink, so there are always more nodes on the air than they display.
-For which channel to run and the rest of the recommended settings, see
+*__OK to MQTT is not the same thing as uplinking.__ The settings above set a node up as a gateway,
+pushing what it hears to the broker. **OK to MQTT** is the separate, much smaller thing every other
+node needs: permission for a gateway that hears it to pass its traffic on. That is what puts a node
+on the maps, and plenty of people never switch it on, which is why there are always more nodes on
+the air than the maps show. You do not need to run a gateway to appear on a map. For which channel
+to run and the rest of the recommended settings, see
 [Best practices for the SoCal Mesh](../best-practices/).*

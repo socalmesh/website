@@ -267,6 +267,14 @@ distinctions into "the maps", and do not write that uplinking puts you on all fo
 MQTT**, so there are always more nodes on the air than the maps display. If you touch the maps
 section, keep that caveat with it.
 
+**Do not confuse "OK to MQTT" with uplinking.** These are two different things and the site got
+this wrong once already. **OK to MQTT is permission**: it uploads nothing on its own, it tells any
+gateway that hears you that it may pass your traffic to an MQTT server, and it is what puts a node
+on the maps. **Uplinking** is running your own node as a gateway that pushes traffic up to a broker,
+which is what the MQTT help article is about. Somebody can be on the maps without ever setting up
+MQTT themselves, as long as they allowed it and a gateway heard them. Never write "the maps only
+show nodes that uplink"; that is the mistake.
+
 **Check afterwards:** the maps section lists them in that order, and each link opens.
 
 ### Change the channel settings we recommend
@@ -320,18 +328,32 @@ channel nobody is listening on. Confirm the numbers with someone who runs a node
 sentence or two, and optionally one link. Steps are numbered automatically in the order they appear
 in that list, to reorder them, move the blocks.
 
-### Add another mesh community to the links page
+### Add something to the links page
 
-The `/links/` page lists other mesh communities, split under two headings: **Meshtastic** (the same
-technology we run) and **MeshCore** (a different one, those radios cannot talk to ours).
+The `/links/` page holds two different kinds of thing, and it matters which list a link goes in.
 
-**Say:** "Add the Austin mesh community to the links page."
+**Other mesh communities**, split under **Meshtastic** (the same technology we run) and
+**MeshCore** (a different one, those radios cannot talk to ours). These live in `meshLinks` in
+`src/config/site.ts`, under `meshtastic` or `meshcore`.
 
-**Claude will:** add a name, address and one-line description to `meshLinks` in
-`src/config/site.ts`, under `meshtastic` or `meshcore`. The page builds itself from that list.
+**Projects we rely on**, the open source software this network actually runs on and that we do
+**not** own: the map software, the parrot, the tools people use to see what is reaching what.
+These live in `projects` in `src/config/site.ts`, and the links page thanks their authors.
 
-**Check afterwards:** open the link and make sure it is the community you meant and the site is
-still up.
+**Say:** "Add the Austin mesh community to the links page", or "add this tool we use to the links
+page".
+
+**Claude will:** add a name, address and one-line description to the right list. The page builds
+itself from them.
+
+**Which list, and why it matters.** `communityLinks` is the "Projects and links" block at the
+bottom of the **home page**, and it is for **our own** things: our GitHub org, our broker config,
+our subreddit. Anything built by somebody else goes in `projects` and appears on the links page
+instead. Do not put third-party projects back on the home page. Keeping the two apart is what lets
+the home page say "everything we run is open source" without it being a false claim, and it is
+where the thank-you to other people's work belongs.
+
+**Check afterwards:** open the link and make sure it is what you meant and the site is still up.
 
 ### Add a photo
 
@@ -470,7 +492,7 @@ Claude reads this file automatically and knows the rest.
 
 | Path | What it holds |
 |---|---|
-| `src/config/site.ts` | site name, tagline, Discord invite, the two channels, the Start here steps, the map links, the Reddit and flasher links, the other-communities list, GitHub org, one place for all of them |
+| `src/config/site.ts` | site name, tagline, Discord invite, the channels, the Start here steps, the map links, the Reddit and flasher links, the other-communities list, the projects we rely on, GitHub org, one place for all of them |
 | `src/content/help/` | the help articles, one markdown file each; the filename is the web address |
 | `src/content.config.ts` | the list of details every article must have at the top (the fields in section 3) |
 | `src/pages/` | the pages: home (`index.astro`), the other-communities page (`links.astro`), the help list and article pages, the 404 page, `discord.astro` (the `/discord/` redirect), and two files that generate `robots.txt` and the web manifest |

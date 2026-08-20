@@ -33,11 +33,11 @@ it is considering a new default for version 3.0 without naming which one, so tre
 the default" part as our expectation rather than anybody's announcement.
 
 Before you switch, look at [our live map](https://meshview.socalmesh.org) and see if there are
-MediumFast slot 45 nodes near you. One catch when you do: **the maps only show nodes that uplink
-to MQTT**, which is the "OK to MQTT" setting, and plenty of people never turn it on. There are far
-more nodes on this network than any map displays. So an empty patch on the map isn't proof that
-nobody's out there. Use the map as a floor rather than a headcount, and ask on Discord, where
-somebody nearby can tell you what they're really hearing.
+MediumFast slot 45 nodes near you. One catch when you do: a node only turns up on a map if its
+owner has switched on **OK to MQTT**, and plenty never do. There are far more nodes on this network
+than any map displays, so an empty patch isn't proof that nobody's out there. Use the map as a
+floor rather than a headcount, and ask on Discord, where somebody nearby can tell you what they're
+really hearing. There's more on that setting below.
 
 Set both the preset and the frequency slot, not just one. Type the slot number in rather than
 leaving it at `0`, for the reason in the next section. Radios on different presets can't hear each
@@ -140,12 +140,24 @@ were written: telemetry now defaults to 1800 seconds and node info to 10800, and
 Where our number is shorter than the firmware's, go with the longer one. Nothing breaks if you do.
 The mesh just gets quieter.
 
-## MQTT
+## MQTT, and getting on the map
 
-Getting your traffic onto the community maps takes a separate set of settings, and they have their
-own guide: **[How do I uplink to MQTT](../how-do-i-uplink-to-mqtt/)**. Follow that rather than
-guessing. The topic string is case sensitive, and there's one setting in there you specifically
-shouldn't turn on.
+Two different things get run together here, so it is worth separating them.
+
+**OK to MQTT is permission.** Switching it on uploads nothing by itself. It tells any gateway node
+that hears you that it is allowed to pass your traffic on to an MQTT server, and that is what puts
+you on the community maps. Leave it off and gateways are supposed to skip you, so you stay off the
+maps even when people around you can hear you perfectly well. You do not have to run a gateway or
+set up MQTT yourself to appear on a map. You only have to allow it.
+
+**Uplinking is the other half:** running your own node as a gateway that pushes what it hears up to
+a broker. That takes a set of settings of its own, and they have their own guide:
+**[How do I uplink to MQTT](../how-do-i-uplink-to-mqtt/)**. Follow that rather than guessing. The
+topic string is case sensitive, and there is one setting in there you specifically should not turn
+on.
+
+So if you want to be visible on the map, turn on OK to MQTT. If you want to be one of the nodes
+carrying everyone else's traffic up to the broker, that is uplinking, and it is the other guide.
 
 ## What actually makes a radio get heard
 

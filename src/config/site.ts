@@ -28,8 +28,10 @@
  *   maps        The community maps, in the order they appear on the site. The first one is
  *               also the hero's "See the live map" button. community: true = we run it.
  *   github      Our public GitHub org and the repos we point people at.
+ *   projects    Open source projects we depend on but do not run. These appear on the
+ *               links page, not the home page, and get the thank-you there.
  *   communityLinks  The "Projects and links" cards at the bottom of the home page, in order.
- *               To add one: copy a block, change the name, url and blurb.
+ *               Our own things only. To add one: copy a block, change name, url and blurb.
  *   meshtastic  Trademark lines we are required to show in the footer. Do not reword these.
  *
  * To change the Discord invite: replace the link inside the quotes on the `invite` line.
@@ -158,6 +160,27 @@ export const site = {
     ],
   },
 
+  /* Open source projects this network actually runs on. None of these are ours: we
+     depend on them, and the links page credits the people who build them. Keep them
+     off the home page's "Projects and links" list, which is for our own things. */
+  projects: [
+    {
+      name: 'meshview',
+      url: links.meshview,
+      blurb: 'The software behind our live map at meshview.socalmesh.org. We run our own instance of it.',
+    },
+    {
+      name: 'Rage Against the Meshine',
+      url: links.parrot,
+      blurb: 'The project behind the parrot, the bot that echoes what it hears on the mesh into our Discord.',
+    },
+    {
+      name: 'MeshSense',
+      url: links.meshSense,
+      blurb: 'Connects to your own node over Bluetooth or Wi-Fi and shows you nodes, signal reports and traceroutes. The clearest way to see who is reaching whom.',
+    },
+  ],
+
   reddit: links.reddit,
   flasher: links.flasher,
 
@@ -190,12 +213,11 @@ export const site = {
     },
   ],
 
+  /* Only what the templates actually read. Everything else lives in `links` above
+     and is reached through the list that uses it, so there is one place per link. */
   github: {
     org: links.githubOrg,
-    parrot: links.parrot,
     meshview: links.meshview,
-    meshSense: links.meshSense,
-    mqttConfig: links.mqttConfig,
   },
 
   communityLinks: [
@@ -208,21 +230,6 @@ export const site = {
       name: 'MQTT server config',
       url: links.mqttConfig,
       blurb: 'How our community MQTT broker is set up, and the bridges it feeds.',
-    },
-    {
-      name: 'meshview',
-      url: links.meshview,
-      blurb: 'The software behind our live map. We run our own instance of it.',
-    },
-    {
-      name: 'Rage Against the Meshine',
-      url: links.parrot,
-      blurb: 'The project behind the parrot, the bot that echoes mesh traffic into our Discord.',
-    },
-    {
-      name: 'MeshSense',
-      url: links.meshSense,
-      blurb: 'Connects to your own node over Bluetooth or Wi-Fi and shows you nodes, signal reports and traceroutes. The clearest way to see who is reaching whom.',
     },
     {
       name: 'r/SoCalMesh on Reddit',

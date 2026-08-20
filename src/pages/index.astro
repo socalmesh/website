@@ -110,9 +110,9 @@ const latest = (await publishedArticles()).slice(0, 3);
         <h3>How to tell what is near you</h3>
         <p>
           Check <a href={site.maps[0].url} rel="noopener">our live map</a> for MediumFast slot 45
-          nodes around you. Remember the maps only show nodes that uplink to MQTT, so there are
-          always more nodes on the air than any map displays. An empty patch is not proof nobody is
-          there. Some of why MF45 can be weaker is physics: it has about 5 dB less link budget than
+          nodes around you. Remember a node only reaches a map if its owner switched on OK to
+          MQTT, so there are always more nodes on the air than any map displays. An empty patch is
+          not proof nobody is there. Some of why MF45 can be weaker is physics: it has about 5 dB less link budget than
           LongFast, so each hop reaches less far and the channel leans on having enough nodes nearby.
           Asking on Discord is the surer answer.
         </p>
@@ -163,10 +163,11 @@ const latest = (await publishedArticles()).slice(0, 3);
     <MapLinks />
 
     <p class="warn">
-      <strong>The maps show less than the network.</strong> They only show nodes that uplink to
-      MQTT, which is the <strong>OK to MQTT</strong> setting, and plenty of people never turn it on.
-      There are many more nodes on the air than any of these maps display. An empty area means
-      nobody is uplinking there, not that nobody is there.
+      <strong>The maps show less than the network.</strong> A node reaches a map only if its owner
+      has switched on <strong>OK to MQTT</strong>. That setting uploads nothing by itself: it is
+      permission, telling any gateway that hears you it may pass your traffic on to an MQTT server.
+      Plenty of people never turn it on, so there are many more nodes on the air than any of these
+      maps display. An empty area means nobody there is allowing it, not that nobody is there.
     </p>
 
     <p class="sources">
@@ -252,7 +253,7 @@ const latest = (await publishedArticles()).slice(0, 3);
     tone="raised"
     eyebrow="Community"
     title="Projects and links"
-    lede="Some of this we run. Some of it we simply depend on."
+    lede="Everything we run is open source."
   >
     <ul class="links">
       {
@@ -267,13 +268,10 @@ const latest = (await publishedArticles()).slice(0, 3);
       }
     </ul>
 
-    <p class="thanks">
-      Thank you to the people who build these. Our map is an instance of{' '}
-      <a href={site.github.meshview} rel="noopener">meshview</a>; the parrot in our Discord comes
-      from <a href={site.github.parrot} rel="noopener">Rage Against the Meshine</a>; and{' '}
-      <a href={site.github.meshSense} rel="noopener">MeshSense</a> is how a lot of us make sense of
-      what is connected to what. None of these are ours, and we build a better mesh with them than
-      we could without them.
+    <p class="sources">
+      We also lean on a handful of open source projects that are not ours, including the software
+      behind our map and the parrot in our Discord. They are listed and thanked on the{' '}
+      <a href={url('/links/')}>links page</a>.
     </p>
 
     <p class="more">
@@ -345,15 +343,6 @@ const latest = (await publishedArticles()).slice(0, 3);
     margin: 0 0 var(--space-m);
     color: var(--text-muted);
     font-size: var(--step--1);
-  }
-
-  /* The credit to the projects we depend on. Deliberately full-size body text
-     rather than the muted .sources treatment, because it is a thank-you and not a footnote. */
-  .thanks {
-    max-width: 70ch;
-    margin-top: var(--space-l);
-    padding-top: var(--space-m);
-    border-top: 1px solid var(--border);
   }
 
   .warn {
