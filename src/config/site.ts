@@ -84,17 +84,18 @@ export const site = {
      and anything experimental goes last. */
   channels: [
     {
-      short: 'LF20',
-      preset: 'LongFast',
-      slot: 20,
-      frequency: '906.875 MHz',
+      short: 'LT14',
+      preset: 'LongTurbo',
+      slot: 14,
+      frequency: '908.750 MHz',
       recommended: true,
       experimental: false,
       headline: 'The default, and where most of us are.',
       blurb:
-        'Set your region to US and a new radio is already here. LongFast with the slot left alone resolves to 20, so most people change nothing else. Set this one first.',
+        'Set your region to US and a new radio is already here. LongTurbo with the slot left alone resolves to 14, so most people change nothing else. Set this one first.',
     },
-    {
+/**
+     {
       short: 'MF45',
       preset: 'MediumFast',
       slot: 45,
@@ -116,6 +117,7 @@ export const site = {
       blurb:
         'A wider 500 kHz channel, a little quicker than LongFast for about 3 dB less reach. We are starting to experiment with it and we think it becomes our default in time. Needs firmware 2.7.17 or newer.',
     },
+    */
   ],
 
   /* The numbered steps under "New here?" on the home page. */
@@ -131,7 +133,7 @@ export const site = {
     },
     {
       title: 'Set the channel',
-      body: 'Region US, preset LongFast, frequency slot 20. Both settings, not just one. See the channels above. Once you are on the air, MediumFast slot 45 is worth a try.',
+      body: 'Region US, preset LongTurbo, frequency slot 14. Both settings, not just one. See the channels above.',
     },
     {
       title: 'Say hello',
