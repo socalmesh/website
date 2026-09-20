@@ -75,69 +75,35 @@ const latest = (await publishedArticles()).slice(0, 3);
     tone="raised"
     eyebrow="Channels"
     title="The channels we run"
-    lede="Start on LongTurbo, frequency slot 14. It is the factory default and it is where many of us are. MediumFast slot 45 is the alternate."
+    lede="Start on LongTurbo, frequency slot 14. It is the factory default as of firmware version 2.8.0, but is also available on 2.7.26"
   >
     <ChannelCards />
 
     <div class="why">
       <div>
-        <h3>Start on LongFast, slot 20</h3>
+        <h3>Start on LongTurbo, Slot 14</h3>
         <p>
-          This is the factory default and it is where many of us are. Set your region to US and a
-          new radio is already on it, because LongFast with the slot left alone resolves to 20. For
+          This is the factory default as of firmware version 2.8.0. Set your region to US and a
+          new radio is already on it, because LongTurbo with the slot left alone resolves to 14. For
           most people that means there is nothing to change here at all.
-        </p>
-      </div>
-      <div>
-        <h3>MediumFast slot 45 is the alternate</h3>
-        <p>
-          Plenty of us in SoCal use it, and it is faster on the air. The same message takes less
-          airtime, so a busy channel fills up more slowly. It is not always strong though, and
-          whether it works for you depends on your area. Try it if you can connect on it.
-        </p>
-      </div>
-      <div>
-        <h3>LongTurbo slot 14 is an experiment</h3>
-        <p>
-          A wider 500 kHz channel. It carries a little more than LongFast for roughly 3 dB less
-          reach, and slot 14 is the slot it settles on by itself, the same way LongFast settles on
-          20. We are only starting to test it, and we think it ends up as our default here in time.
-          You need firmware 2.7.17 or newer, and older phone apps may not list the preset yet.
-          Switch a radio over to it if you want to help test.
         </p>
       </div>
       <div>
         <h3>How to tell what is near you</h3>
         <p>
-          Check <a href={site.maps[0].url} rel="noopener">our live map</a> for MediumFast slot 45
+          Check <a href={site.maps[0].url} rel="noopener">our live map</a> for LongTurbo slot 14
           nodes around you. Remember a node only reaches a map if its owner switched on OK to
           MQTT, so there are always more nodes on the air than any map displays. An empty patch is
-          not proof nobody is there. Some of why MF45 can be weaker is physics: it has about 5 dB less link budget than
-          LongFast, so each hop reaches less far and the channel leans on having enough nodes nearby.
-          Asking on Discord is the surer answer.
+          not proof nobody is there. 
         </p>
       </div>
     </div>
-
-    <p class="sources">
-      Where these numbers come from: Meshtastic's own{' '}
-      <a href="https://meshtastic.org/docs/overview/radio-settings/" rel="noopener">radio settings
-      reference</a>{' '}(the presets, their speeds and their link budgets). The case for MediumFast
-      is argued by Meshtastic itself in{' '}
-      <a href="https://meshtastic.org/blog/why-your-mesh-should-switch-from-longfast/" rel="noopener"
-        >Why your mesh should switch from LongFast</a>, and by the communities that have moved.{' '}
-      <a href="https://bayme.sh/docs/getting-started/recommended-settings/" rel="noopener">Bay Area
-      Mesh</a> and <a href="https://mtnme.sh/mediumfast/" rel="noopener">MtnMe.sh</a> are both on
-      MediumFast slot 45. It is a genuine argument. It just leans on having enough nodes near you,
-      and that is the part that varies across Southern California.
-    </p>
 
     <p class="warn">
       Set <strong>both</strong> the preset and the frequency slot. Type the slot number in rather
       than leaving it at 0. On 0 the radio works its frequency out from the primary channel's name,
       which is fine on a factory-fresh radio and stops being fine the moment anything has renamed
-      that channel. A LongFast radio also cannot hear a MediumFast one at all, whatever the slot
-      says, because the preset has to match too.
+      that channel. 
     </p>
   </Section>
 
