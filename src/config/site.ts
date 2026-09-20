@@ -56,6 +56,9 @@ const links = {
   meshview: 'https://github.com/pablorevilla-meshtastic/meshview',
   meshSense: 'https://github.com/Affirmatech/MeshSense',
   meshtastic: 'https://meshtastic.org',
+  mt280: 'https://github.com/meshtastic/firmware/releases/tag/v2.8.0.47db0e3',
+  mt2726: 'https://github.com/meshtastic/firmware/releases/tag/v2.7.26.54e0d8d',
+  fcc: 'https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-C/subject-group-ECFR2f2e5828339709e/section-15.247',
 } as const;
 
 export const site = {
