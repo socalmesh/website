@@ -75,7 +75,9 @@ const latest = (await publishedArticles()).slice(0, 3);
     tone="raised"
     eyebrow="Channels"
     title="The channels we run"
-    lede="Start on LongTurbo, frequency slot 14. It is the factory default as of firmware version <a href="https://github.com/meshtastic/firmware/releases/tag/v2.8.0.47db0e3" rel="noopener">2.8.0</a>, but is also available on <a href="https://github.com/meshtastic/firmware/releases/tag/v2.7.26.54e0d8d" rel="noopener">2.7.26</a>."
+    lede="Start on LongTurbo, frequency slot 14. It is the factory default as of firmware version {' '}
+          <a href={site.mt280.site} rel="noopener">2.8.0</a>, but is also available on {' '}
+          <a href={site.mt2726.site} rel="noopener">2.7.26</a>.
   >
     <ChannelCards />
 
@@ -91,7 +93,8 @@ const latest = (await publishedArticles()).slice(0, 3);
       <div>
         <h3>Why LongTurbo?</h3>
         <p>
-          The "Turbo" presets are the only settings which comply with <a href="https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-C/subject-group-ECFR2f2e5828339709e/section-15.247" rel="noopener">FCC CFR 15.247:</a> <br>
+          The "Turbo" presets are the only settings which comply with {' '}
+          <a href={site.fcc.site} rel="noopener">FCC CFR 15.247</a> <br>
           (a)(2): "Systems using digital modulation techniques may operate in the 902-928 MHz, 2400-2483.5 MHz, and 5725-5850 MHz bands. The minimum 6 dB bandwidth shall be at least 500 kHz." <br>
           (b) "The maximum peak conducted output power of the intentional radiator shall not exceed the following:" (3) "For systems using digital modulation in the 902-928 MHz, 2400-2483.5 MHz, and 5725-5850 MHz bands: 1 Watt." <br>
         </p>
