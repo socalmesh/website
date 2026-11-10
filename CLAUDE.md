@@ -549,6 +549,32 @@ internal link and asset path must go through the `url()` helper in `src/lib/url.
 
 CI builds under `/website/` on purpose, so a bare leading-slash link gets caught before it ships.
 
+### Borrowing from other sites
+
+The maintainer who set this site up also looks after a few other sites built the same way (Astro,
+published as plain files). They are private, so they are not named or linked here, and nothing
+from them is copied into this public repository except the practice itself.
+
+They solve the same problems, so when a change here touches how the site is built, checked or
+published, it is worth asking the maintainer how the other sites do it before inventing something
+new. Practices those sites use that this one does not have yet, as of November 2026:
+
+- **Workflow steps pinned to an exact version.** The workflows here use tags like `@v4`, which can
+  change underneath us. The other sites pin each step to a specific commit and let Dependabot
+  update the pin.
+- **More automatic checks before publishing:** an accessibility scan of every page, a page-weight
+  budget, and small tests for helper code such as `src/lib/url.ts`.
+- **A check on the finished site,** not only on the source: one page title and one main heading
+  per page, no duplicate ids, links to sections that really exist.
+- **Publishing in two steps,** a preview copy first and the real site only on a deliberate
+  release, with a simple way to go back to the previous release.
+
+In the other direction, the other sites have borrowed from this one: the plain-language guide you
+are reading, the one-command `npm run links` check, and `SECURITY.md`.
+
+Any of these is a build change, so it belongs in the right-hand column of the table in section
+2.3: open the pull request, then stop for a second pair of eyes.
+
 ---
 
 ## 7. Moving the site to socalmesh.org
