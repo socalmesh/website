@@ -32,6 +32,8 @@ merge it. CLAUDE.md is the operator guide and the single source of truth for how
 | `scripts/check-links.mjs` | internal link checker run by CI against the built site |
 | `scripts/check-pages.mjs` | checks the finished pages: one title, one main heading, no repeated ids, section links that land |
 | `scripts/html-tags.mjs` | the small HTML reader the check scripts share |
+| `scripts/check-weight.mjs` | the page-weight budget: limits on pictures, scripts and what a page needs before pictures |
+| `tests/` | small tests for the helper code and the check scripts (`npm test`) |
 
 ## Running it locally (developers)
 
@@ -42,6 +44,7 @@ npm ci        # install dependencies
 npm run dev   # local preview at http://localhost:4321 (or the address the command prints)
 npm run build # production build into dist/
 npm run check # astro check, types and content schema
+npm test      # small tests for the helper code and the check scripts
 ```
 
 CI builds under the `/website/` base path on purpose, so a bare leading-slash link such as

@@ -39,6 +39,12 @@ jobs:
       - name: Types and content
         run: npm run check
 
+      # Small tests for the helper code and for the check scripts themselves. They
+      # use Node's own test runner, so there is nothing extra to install.
+      - name: Helper tests
+        if: '!cancelled()'
+        run: npm test
+
       - name: Build
         if: '!cancelled()'
         run: npm run build
@@ -52,6 +58,12 @@ jobs:
       - name: Finished pages
         if: '!cancelled()'
         run: node scripts/check-pages.mjs --dist dist --base "$BASE_PATH"
+
+      # The page-weight budget: fails if a picture, a script or a whole page got
+      # heavier than the limits at the top of scripts/check-weight.mjs.
+      - name: Page weight
+        if: '!cancelled()'
+        run: node scripts/check-weight.mjs --dist dist --base "$BASE_PATH"
 
       # The built site, downloadable from the pull request. There are no preview
       # deployments on this repo, so this is how someone looks at a change before
