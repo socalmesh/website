@@ -2,13 +2,13 @@
 #
 # It opens a pull request when a library the site is built with has a new
 # version, and a separate one when a GitHub Action does. Those pull requests
-# come from a robot, not from a person — see "Update the site's dependencies"
+# come from a robot, not from a person. See "Update the site's dependencies"
 # in CLAUDE.md for what to do with them (short version: they need a second
 # pair of eyes before they are merged).
 #
 # Updates are grouped and monthly on purpose, so there is at most a couple of
 # robot pull requests a month rather than a stream of them. Security fixes do
-# not wait for the monthly run — Dependabot opens those as soon as they exist.
+# not wait for the monthly run. Dependabot opens those as soon as they exist.
 version: 2
 updates:
   - package-ecosystem: npm

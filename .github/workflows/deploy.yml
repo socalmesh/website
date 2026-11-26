@@ -35,11 +35,11 @@ jobs:
       # `base_path` is the folder under it. If a custom domain (e.g. socalmesh.org)
       # is set in the repo's Pages settings it returns that at the top level;
       # otherwise it returns https://<owner>.github.io/<repo>/. Nothing in the repo
-      # changes to switch over — set the domain in Settings, re-run Deploy.
+      # changes to switch over: set the domain in Settings, re-run Deploy.
       #
       # Pages must already be turned on, once, by a maintainer:
       #   Settings -> Pages -> Build and deployment -> Source: GitHub Actions.
-      # This step deliberately does not try to turn it on itself — the token this
+      # This step deliberately does not try to turn it on itself, because the token this
       # workflow runs with is not allowed to, so relying on that would fail the very
       # first publish. If this step errors, that setting is what to check.
       - name: Read the GitHub Pages address
