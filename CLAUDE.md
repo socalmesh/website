@@ -603,10 +603,16 @@ from them is copied into this public repository except the practice itself.
 
 They solve the same problems, so when a change here touches how the site is built, checked or
 published, it is worth asking the maintainer how the other sites do it before inventing something
-new. One practice those sites use that this one does not have yet, as of November 2026:
+new.
 
-- **Publishing in two steps,** a preview copy first and the real site only on a deliberate
-  release, with a simple way to go back to the previous release.
+This site has already taken what was worth taking: workflow steps pinned to an exact version, the
+check on the finished pages, the page-weight budget, the helper tests and the accessibility scan
+all came from there.
+
+One practice was looked at and turned down, in November 2026: **publishing in two steps**, with a
+preview copy first and the real site only on a deliberate release. It is too much process for a
+site this size. Every merge to `main` publishes straight to the live site, and going back is a
+revert pull request (section 4). Do not propose it again unless a maintainer asks.
 
 In the other direction, the other sites have borrowed from this one: the plain-language guide you
 are reading, the one-command `npm run links` check, and `SECURITY.md`.
