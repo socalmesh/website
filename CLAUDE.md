@@ -509,6 +509,7 @@ Claude reads this file automatically and knows the rest.
 | `.github/dependabot.yml` | the settings for the update robot (see section 3) |
 | `scripts/check-links.mjs` | the internal link checker that CI runs against the built site |
 | `scripts/check-pages.mjs` | the check that reads the finished pages: one title, one main heading, no repeated ids, section links that land |
+| `scripts/html-tags.mjs` | the small HTML reader the check scripts share |
 
 ### What CI checks
 
