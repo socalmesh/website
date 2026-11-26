@@ -539,6 +539,19 @@ is set in the repo's Pages settings it publishes to `https://socalmesh.github.io
 a domain is set it publishes to that domain at the root instead. No file in the repo has to be
 edited for that switch.
 
+### Workflow steps name an exact version
+
+Each `uses:` line in `.github/workflows/` ends in a long code followed by a comment, like
+`actions/checkout@11d5960a... # v4.4.0`. The code is the exact copy of that step we run. The
+comment is the same thing in a form people can read.
+
+It is written that way on purpose. A short name like `@v4` can be pointed at different code by
+whoever owns the step, and then what publishes this site would change without anything changing
+here. The long code cannot be moved.
+
+Do not shorten one back to `@v4`, and do not edit the code by hand. Dependabot opens a pull
+request that updates the code and the comment together when a new version comes out.
+
 ### The one gotcha
 
 Because the site lives under `/website/` today and will live at the root of a domain later, **every
@@ -559,9 +572,6 @@ They solve the same problems, so when a change here touches how the site is buil
 published, it is worth asking the maintainer how the other sites do it before inventing something
 new. Practices those sites use that this one does not have yet, as of November 2026:
 
-- **Workflow steps pinned to an exact version.** The workflows here use tags like `@v4`, which can
-  change underneath us. The other sites pin each step to a specific commit and let Dependabot
-  update the pin.
 - **More automatic checks before publishing:** an accessibility scan of every page, a page-weight
   budget, and small tests for helper code such as `src/lib/url.ts`.
 - **A check on the finished site,** not only on the source: one page title and one main heading
