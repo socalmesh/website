@@ -30,6 +30,7 @@ merge it. CLAUDE.md is the operator guide and the single source of truth for how
 | `src/assets/photos/` | community photos (every file here appears in the home-page grid) |
 | `.github/workflows/` | `ci.yml` (checks on every pull request) and `deploy.yml` (publish on merge) |
 | `scripts/check-links.mjs` | internal link checker run by CI against the built site |
+| `scripts/check-pages.mjs` | checks the finished pages: one title, one main heading, no repeated ids, section links that land |
 
 ## Running it locally (developers)
 

@@ -47,6 +47,12 @@ jobs:
         if: '!cancelled()'
         run: node scripts/check-links.mjs --dist dist --base "$BASE_PATH"
 
+      # Reads the pages that were just built: one title and one main heading each,
+      # no id used twice, and every link to a section landing on a real section.
+      - name: Finished pages
+        if: '!cancelled()'
+        run: node scripts/check-pages.mjs --dist dist --base "$BASE_PATH"
+
       # The built site, downloadable from the pull request. There are no preview
       # deployments on this repo, so this is how someone looks at a change before
       # it goes live.
