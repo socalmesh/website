@@ -15,6 +15,10 @@ import { publishedArticles } from '../lib/help';
 import { Image } from 'astro:assets';
 // The SDR waterfall lives outside src/assets/photos/ so the grid does not pick it up.
 import sdrWaterfall from '../assets/sdr-waterfall.jpg';
+// A QR code of site.secondaryChannels.addUrl. See the note beside that link in site.ts.
+import secondaryChannelsQr from '../assets/secondary-channels-qr.svg';
+
+const [firstSecondary, secondSecondary] = site.secondaryChannels.names;
 
 const latest = (await publishedArticles()).slice(0, 3);
 
@@ -114,6 +118,35 @@ const latest = (await publishedArticles()).slice(0, 3);
       which is fine on a factory-fresh radio and stops being fine the moment anything has renamed
       that channel. 
     </p>
+
+    <div class="secondary">
+      <div class="secondary-text">
+        <h3>Two more channels: {firstSecondary} and {secondSecondary}</h3>
+        <p>
+          We run two secondary channels as well, and one link adds both. Open it on the phone
+          that is paired to your radio, or scan the code with that phone.
+        </p>
+        <p>
+          The Meshtastic app shows you both channels and asks before it changes anything. Choose
+          to <strong>add</strong> them. If it offers to replace your channels, say no, or you lose
+          your primary channel.
+        </p>
+        <p class="secondary-action">
+          <Button href={site.secondaryChannels.addUrl} variant="ghost" external>
+            Add both channels
+          </Button>
+        </p>
+      </div>
+      <img
+        class="qr"
+        src={secondaryChannelsQr.src}
+        width="200"
+        height="200"
+        alt={`QR code that adds the ${firstSecondary} and ${secondSecondary} channels in the Meshtastic app`}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
   </Section>
 
   <Section
@@ -318,6 +351,53 @@ const latest = (await publishedArticles()).slice(0, 3);
 
   .warn strong {
     color: var(--text);
+  }
+
+  /* The secondary channels: text on the left, the QR code on the right, and the
+     code drops underneath on a phone. */
+  .secondary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-l);
+    margin-top: var(--space-l);
+    padding: var(--space-m);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--bg);
+  }
+
+  .secondary-text {
+    flex: 1 1 20rem;
+    max-width: 70ch;
+  }
+
+  .secondary h3 {
+    margin: 0 0 var(--space-xs);
+    font-size: var(--step-0);
+  }
+
+  .secondary p {
+    margin: 0 0 var(--space-s);
+    color: var(--text-muted);
+  }
+
+  .secondary strong {
+    color: var(--text);
+  }
+
+  .secondary .secondary-action {
+    margin: var(--space-m) 0 0;
+  }
+
+  /* A QR code only scans if it stays dark on white with a clear edge around it, so
+     this one keeps its own white square whatever the page colours are. */
+  .qr {
+    flex: none;
+    width: 200px;
+    height: 200px;
+    border-radius: var(--radius-sm);
+    background: #fff;
   }
 
   .links {
