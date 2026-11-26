@@ -80,64 +80,48 @@ const latest = (await publishedArticles()).slice(0, 3);
     title="The channels we run"
   >
     <Fragment slot="lede">
-      Start on LongTurbo, frequency slot 14. It became the factory default in firmware{' '}
-      <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a>, and you can also select it in{' '}
-      <a href={site.firmware.recommended} rel="noopener">2.7.26</a>. There have been problems
-      with the 2.8 alphas, so we recommend{' '}
-      <a href={site.firmware.recommended} rel="noopener">2.7.26 Beta</a>.
+      Start on LongTurbo, frequency slot 14. We recommend firmware{' '}
+      <a href={site.firmware.recommended} rel="noopener">2.7.26 Beta</a>. LongTurbo is the default
+      in <a href={site.firmware.defaultSince} rel="noopener">2.8</a>, but we're seeing problems
+      with the 2.8 alphas.
     </Fragment>
 
     <ChannelCards />
 
     <div class="why">
       <div>
-        <h3>Start on LongTurbo, Slot 14</h3>
+        <h3>Why LongTurbo?</h3>
         <p>
-          It's the only setting we recommend. We don't use LongFast or MediumFast anymore. From
-          firmware <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a> it's the factory
-          default: set your region to US and a new radio is already on it. On{' '}
-          <a href={site.firmware.recommended} rel="noopener">2.7.26</a>, which is what we recommend
-          today, choose the LongTurbo preset as well.
+          LongFast and MediumFast don't comply with{' '}
+          <a href={site.fccRule} rel="noopener">FCC rule 15.247</a>, which requires a channel at
+          least 500 kHz wide, and we don't condone using them. LongTurbo is 500 kHz wide. It also
+          got rid of the problems that plagued bigger meshes on the Fast presets.
         </p>
       </div>
       <div>
-        <h3>Why LongTurbo?</h3>
+        <h3>Why not stay on LongFast?</h3>
         <p>
-          The "Turbo" presets are the only settings which comply with{' '}
-          <a href={site.fccRule} rel="noopener">FCC CFR 15.247</a> <br>
-          (a)(2): "Systems using digital modulation techniques may operate in the 902-928 MHz, 2400-2483.5 MHz, and 5725-5850 MHz bands. The minimum 6 dB bandwidth shall be at least 500 kHz." <br>
-          (b) "The maximum peak conducted output power of the intentional radiator shall not exceed the following:" (3) "For systems using digital modulation in the 902-928 MHz, 2400-2483.5 MHz, and 5725-5850 MHz bands: 1 Watt." <br>
+          It's the old default, so it's where the unattended ghost nodes sit. They run old
+          firmware and don't make for a reliable mesh.
         </p>
       </div>
       <div>
         <h3>How to tell what's near you</h3>
         <p>
           Check <a href={site.maps[0].url} rel="noopener">our live map</a> for LongTurbo slot 14
-          nodes around you. Remember a node only reaches a map if its owner switched on OK to
-          MQTT, so there are always more nodes on the air than any map displays. An empty patch
-          isn't proof nobody's there.
+          nodes. A node only shows up if its owner switched on OK to MQTT, so there are always
+          more on the air than the map shows.
         </p>
       </div>
     </div>
 
-    <p class="warn">
-      Set <strong>both</strong> the preset and the frequency slot. Type the slot number in rather
-      than leaving it at 0. On 0 the radio works its frequency out from the primary channel's name,
-      which is fine on a factory-fresh radio and stops being fine the moment anything has renamed
-      that channel. 
-    </p>
-
     <div class="secondary">
       <div class="secondary-text">
-        <h3>Two more channels: {firstSecondary} and {secondSecondary}</h3>
+        <h3>Private channels: {firstSecondary} and {secondSecondary}</h3>
         <p>
-          We run two secondary channels as well, and one link adds both. Open it on the phone
-          that is paired to your radio, or scan the code with that phone.
-        </p>
-        <p>
-          The Meshtastic app shows you both channels and asks before it changes anything. Choose
-          to <strong>add</strong> them. If it offers to replace your channels, say no, or you lose
-          your primary channel.
+          Our two private secondary channels. They use the same frequency and preset, so nothing
+          else on your radio changes. Open the link on the phone paired to your radio, or scan
+          the code, and choose <strong>add</strong>, not replace.
         </p>
         <p class="secondary-action">
           <Button href={site.secondaryChannels.addUrl} variant="ghost" external>

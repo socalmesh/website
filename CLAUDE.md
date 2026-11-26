@@ -299,11 +299,30 @@ as a recommendation or as an alternate, without asking someone who runs a node.
 set to region US, with the primary channel untouched and the frequency slot left at 0, works its
 slot out from the channel name and lands on 14 at 908.75 MHz by itself. On 2.7.26, which is the
 version the page recommends while the 2.8 alphas have problems, the factory default is still
-LongFast, so the reader has to choose the LongTurbo preset as well. Keep both halves on the page.
-"Set your region and you are done" is only true on 2.8.
+LongFast, so the reader has to choose the LongTurbo preset as well. The page says "we're seeing
+problems with the 2.8 alphas" because that is this mesh's own experience, so keep it as "we".
 
 LongTurbo is 500 kHz wide, which is why the US band has 52 slots for it instead of 104. It needs
 firmware 2.7.17 or newer.
+
+**Why, the way the mesh puts it.** LongFast and MediumFast are not FCC compliant (rule 15.247
+wants a channel at least 500 kHz wide), and the mesh does not condone using them. LongFast is also
+the old default, so it is where unattended "ghost" nodes on old firmware sit, and that does not
+make for a reliable mesh. LongTurbo fixed the FCC problem and the problems that plagued bigger
+meshes on the Fast presets. Say it that plainly on the site.
+
+**Slot 0 is fine.** 14 is where LongTurbo lands by itself, so the page tells people to leave the
+frequency slot at 0. Do not add a warning telling them to type the number in. The one case where
+it matters, a renamed primary channel, is covered in the help article.
+
+**The two private secondary channels,** SoCalMesh and SoCalAlerts, sit in the same section of the
+home page. They use the same frequency and preset as the primary, so adding them changes nothing
+else on a radio. The link that adds both is `addSecondaryChannels` in `src/config/site.ts`, and
+the QR code is a picture of that link (the note beside the link says how to remake it).
+
+**Keep this section short.** A maintainer has already cut it down once for having too many words:
+one line of intro, one card, three short notes and the private channels. Add a fact by replacing
+a sentence, not by adding one.
 
 The same advice is written out at more length in the help article
 `src/content/help/best-practices.md`. When the channel changes, change the article in the same

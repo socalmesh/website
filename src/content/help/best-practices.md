@@ -17,32 +17,29 @@ On the wrong one, nobody here can hear you.
 
 ## Which channel to set
 
-**Set LongTurbo, frequency slot 14.** It's the only channel we recommend now. We don't use
-LongFast or MediumFast here anymore, and a radio left on either of them can't hear this mesh.
+**Set LongTurbo.** Region US, preset LongTurbo. Leave the frequency slot at `0` and it lands on
+14, or type 14 in. It's the only setting we recommend.
 
-LongTurbo is a wider 500 kHz channel that carries a little more than LongFast for roughly 3 dB
-less reach. It needs firmware 2.7.17 or newer, and some older phone apps don't list the preset
-yet.
+On firmware 2.7.26 Beta, which is what we recommend, you choose the LongTurbo preset yourself. On
+2.8 it's the factory default, but we're seeing problems with the 2.8 alphas. LongTurbo needs
+2.7.17 or newer, and some older phone apps don't list the preset yet.
 
-How much you have to set depends on your firmware. From 2.8.0 on, LongTurbo is the factory
-default: set your region to US and a new radio is already there. On 2.7.26, which is what we
-recommend for now because the 2.8 alphas have had problems, you choose the LongTurbo preset
-yourself. The home page links to both versions.
+**Don't use LongFast or MediumFast.** They aren't FCC compliant and we don't condone using them.
+LongFast is also the old default, so it's where the unattended ghost nodes sit. They run old
+firmware and don't make for a reliable mesh. LongTurbo fixed the FCC problem, and the problems
+that plagued bigger meshes on the Fast presets. Radios on different presets can't hear each other
+at all, so a radio left on either of them can't hear this mesh.
 
 To see who's near you, look at [our live map](https://meshview.socalmesh.org) for LongTurbo slot
-14 nodes. One catch when you do: a node only turns up on a map if its
-owner has switched on **OK to MQTT**, and plenty never do. There are far more nodes on this network
-than any map displays, so an empty patch isn't proof that nobody's out there. Use the map as a
-floor rather than a headcount, and ask on Discord, where somebody nearby can tell you what they're
-really hearing. There's more on that setting below.
-
-Set both the preset and the frequency slot, not just one. Type the slot number in rather than
-leaving it at `0`, for the reason in the next section. Radios on different presets can't hear each
-other at all, whatever the slot says.
+14 nodes. A node only turns up on a map if its owner has switched on **OK to MQTT**, and plenty
+never do, so an empty patch isn't proof that nobody's out there. Ask on Discord, where somebody
+nearby can tell you what they're hearing. There's more on that setting below.
 
 We use the **default primary channel settings**. You don't need a separate pre-shared key, and you
-don't need to pick a channel to join the public network. Set your own keys on your own devices if
-you want private channels. That's a separate thing from the public mesh.
+don't need to pick a channel to join the public network.
+
+We also run two private secondary channels, SoCalMesh and SoCalAlerts. They use the same frequency
+and preset, and the [home page](../../#channels) has the link that adds both.
 
 If your settings get into a state you can't untangle, do a **factory reset** and start again from
 default. It's not giving up. It's the quickest way back to a radio you can trust.
@@ -53,11 +50,9 @@ The default channel is fussy about this, and getting it wrong takes you off the 
 
 - For the default LongTurbo channel to work, either leave its name alone or name it exactly
   `LongTurbo`. Change nothing else about it.
-- **Set the frequency slot yourself instead of trusting the default.** With the slot left at `0`,
-  the radio works out its frequency from the name of the primary channel. So renaming the primary
-  can move you onto a different frequency. Changing the key doesn't. On a factory-fresh radio that
-  calculation lands on slot 14 for LongTurbo, which is why it often seems fine with nothing set.
-  Typing the number in is what makes it reliable.
+- **If you do rename it, type the slot in.** With the slot at `0`, the radio works out its
+  frequency from the name of the primary channel, so a renamed primary can land on a different
+  frequency. Changing the key doesn't. With the default name, `0` lands on 14 and is fine.
 - Slot `14` is the LongTurbo value for the **US** region. It isn't a universal "put it back to 14".
   Other presets and other regions land on different numbers.
 
