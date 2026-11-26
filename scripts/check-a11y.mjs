@@ -31,6 +31,7 @@ import { join, resolve, extname, delimiter, sep } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createRequire } from 'node:module';
 import { pathToFileURL } from 'node:url';
+import { readTags, attribute } from './html-tags.mjs';
 
 /** The two screen sizes every page is checked at. */
 const VIEWS = [
@@ -87,7 +88,11 @@ export function findBrowser(env = process.env, platform = process.platform, exis
 
 /** True for a page that only forwards the reader somewhere else, like /discord/. */
 export function isRedirectPage(html) {
-  return /<meta\b[^>]*http-equiv\s*=\s*["']?refresh/i.test(html.replace(/<!--[\s\S]*?-->/g, ''));
+  for (const tag of readTags(html)) {
+    if (tag.closing || tag.name !== 'meta') continue;
+    if ((attribute(tag.attributes, 'http-equiv') ?? '').toLowerCase() === 'refresh') return true;
+  }
+  return false;
 }
 
 /**
@@ -161,14 +166,28 @@ function serve(distRoot, base) {
     let file = path.startsWith(base) ? resolve(distRoot, path.slice(base.length)) : null;
     // Never serve anything from outside the built site.
     if (file && file !== distRoot && !file.startsWith(distRoot + sep)) file = null;
-    if (file && existsSync(file) && statSync(file).isDirectory()) file = join(file, 'index.html');
-    if (!file || !existsSync(file)) {
+
+    // Read first and ask questions afterwards: a folder is served as its index.html,
+    // and anything that cannot be read is simply "not found".
+    let body = null;
+    if (file) {
+      for (const candidate of [file, join(file, 'index.html')]) {
+        try {
+          body = readFileSync(candidate);
+          file = candidate;
+          break;
+        } catch {
+          // Try the next one.
+        }
+      }
+    }
+    if (body === null) {
       response.writeHead(404, { 'content-type': 'text/plain' });
       response.end('Not found');
       return;
     }
     response.writeHead(200, { 'content-type': TYPES[extname(file).toLowerCase()] ?? 'application/octet-stream' });
-    response.end(readFileSync(file));
+    response.end(body);
   });
   return new Promise((done) => server.listen(0, '127.0.0.1', () => done(server)));
 }
