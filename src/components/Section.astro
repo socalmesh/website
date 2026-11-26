@@ -1,5 +1,11 @@
 ---
-/** A page section with an optional eyebrow, heading and intro line. */
+/**
+ * A page section with an optional eyebrow, heading and intro line.
+ *
+ * The intro line is normally the `lede` text. When it needs a link in it, leave
+ * `lede` out and pass the line as a slot instead:
+ *   <Fragment slot="lede">Read <a href="...">this</a> first.</Fragment>
+ */
 interface Props {
   id?: string;
   eyebrow?: string;
@@ -14,16 +20,23 @@ interface Props {
 
 const { id, eyebrow, title, lede, tone = 'default', titleAs = 'h2' } = Astro.props;
 const Title = titleAs;
+const hasLedeSlot = Astro.slots.has('lede');
 ---
 
 <section id={id} class:list={['section', tone === 'raised' && 'raised']}>
   <div class="wrap">
     {
-      (eyebrow || title || lede) && (
+      (eyebrow || title || lede || hasLedeSlot) && (
         <div class="head">
           {eyebrow && <p class="eyebrow">{eyebrow}</p>}
           {title && <Title>{title}</Title>}
-          {lede && <p class="lede">{lede}</p>}
+          {hasLedeSlot ? (
+            <p class="lede">
+              <slot name="lede" />
+            </p>
+          ) : (
+            lede && <p class="lede">{lede}</p>
+          )}
         </div>
       )
     }
