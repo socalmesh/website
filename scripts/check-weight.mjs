@@ -211,10 +211,18 @@ function main() {
   let total = 0;
   for (const file of walk(distRoot)) {
     const rel = file.slice(distRoot.length).replace(/\\/g, '/').replace(/^\//, '');
-    const bytes = statSync(file).size;
+    let bytes;
+    if (rel.endsWith('.html')) {
+      // Read a page once and weigh what was read, so its size and its contents
+      // can never be two different versions of the file.
+      const content = readFileSync(file);
+      bytes = content.length;
+      pages.set(rel, scanPage(content.toString('utf8')));
+    } else {
+      bytes = statSync(file).size;
+    }
     files.set(rel, bytes);
     total += bytes;
-    if (rel.endsWith('.html')) pages.set(rel, scanPage(readFileSync(file, 'utf8')));
   }
 
   const { problems, report } = findOverweight(files, pages, base);
