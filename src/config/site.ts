@@ -19,9 +19,12 @@
  *               recommended: true puts the highlighted "this is the one" styling on it.
  *               experimental: true dims the card and badges it, for something we are
  *               still testing rather than asking newcomers to set.
+ *   secondaryChannels  The two extra channels, and the one link that adds both to a radio.
  *   startHere   The numbered "new here?" steps on the home page.
  *   reddit      Our subreddit.
  *   flasher     The official Meshtastic web flasher (installs firmware from a browser).
+ *   firmware    The release pages for the two firmware versions the channels section names.
+ *   fccRule     The FCC rule the channels section quotes, on the government's own site.
  *   meshLinks   The "Other mesh communities" page, grouped by the technology each one runs.
  *   shortDescription  A one-line description used when the site is saved to a phone's home screen.
  *   themeColor  The colour a phone browser paints its toolbar with.
@@ -59,6 +62,16 @@ const links = {
   mt280: 'https://github.com/meshtastic/firmware/releases/tag/v2.8.0.47db0e3',
   mt2726: 'https://github.com/meshtastic/firmware/releases/tag/v2.7.26.54e0d8d',
   fcc: 'https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-C/subject-group-ECFR2f2e5828339709e/section-15.247',
+  /* The link the Meshtastic app reads to add the SoCalMesh and SoCalAlerts channels.
+     The long part after the # is both channel names and their keys, packed together.
+     `add=true` asks the app to add them rather than replace what is on the radio.
+
+     The QR code on the home page, src/assets/secondary-channels-qr.svg, is a picture
+     of this exact link. If the link ever changes, remake the picture to match:
+       qrencode -t SVG -l M -m 4 -s 8 --svg-path -o src/assets/secondary-channels-qr.svg "<the link>"
+     then scan it with a phone and check it opens the same link. */
+  addSecondaryChannels:
+    'https://meshtastic.org/e/?add=true#CjMSIAMn1q7X5v9Hnkh6gJEjGW1ILNFkjkyxK8k2Cp7EN25rGglTb0NhbE1lc2goAToCCBEKNRIgEHA72WY32ebde58MXX-CCl7h7eyIjctK5eYyZSfqYTsaC1NvQ2FsQWxlcnRzKAE6AggR',
 } as const;
 
 export const site = {
@@ -82,9 +95,10 @@ export const site = {
     showWidget: true,
   },
 
-  /* The channels we run. Change a number here and the home page follows.
-     The recommended one comes first, because that is the order the cards appear in,
-     and anything experimental goes last. */
+  /* The channel we run. LongTurbo slot 14 is the only one: the mesh no longer uses
+     LongFast or MediumFast. Change a number here and the home page follows.
+     If there is ever more than one again, the recommended one comes first, because
+     that is the order the cards appear in, and anything experimental goes last. */
   channels: [
     {
       short: 'LT14',
@@ -93,41 +107,23 @@ export const site = {
       frequency: '908.750 MHz',
       recommended: true,
       experimental: false,
-      headline: 'The default, and where most of us are.',
+      headline: 'The only one we recommend.',
       blurb:
-        'Set your region to US and a new radio is already here. LongTurbo with the slot left alone resolves to 14, so most people change nothing else. Set this one first.',
+        'On firmware 2.8.0 or newer, set your region to US and a new radio is already here. On 2.7.26, choose the LongTurbo preset as well. Either way, type 14 in for the frequency slot.',
     },
-/**
-     {
-      short: 'MF45',
-      preset: 'MediumFast',
-      slot: 45,
-      frequency: '913.125 MHz',
-      recommended: false,
-      experimental: false,
-      headline: 'The alternate.',
-      blurb:
-        'Faster on the air, and plenty of us in SoCal use it. It is not always strong though, and it depends on your area. Try it if you can connect.',
-    },
-    {
-      short: 'LT14',
-      preset: 'LongTurbo',
-      slot: 14,
-      frequency: '908.75 MHz',
-      recommended: false,
-      experimental: true,
-      headline: 'What we are trying next.',
-      blurb:
-        'A wider 500 kHz channel, a little quicker than LongFast for about 3 dB less reach. We are starting to experiment with it and we think it becomes our default in time. Needs firmware 2.7.17 or newer.',
-    },
-    */
   ],
+
+  /* Two extra channels people add on top of the primary one. One link adds both. */
+  secondaryChannels: {
+    names: ['SoCalMesh', 'SoCalAlerts'],
+    addUrl: links.addSecondaryChannels,
+  },
 
   /* The numbered steps under "New here?" on the home page. */
   startHere: [
     {
       title: 'Get a radio',
-      body: 'Any Meshtastic-compatible LoRa radio for the US 915 MHz band. Ask on Discord before you buy, and people will tell you what is working for them right now.',
+      body: "Any Meshtastic-compatible LoRa radio for the US 915 MHz band. Ask on Discord before you buy, and people will tell you what's working for them right now.",
     },
     {
       title: 'Flash it',
@@ -136,7 +132,7 @@ export const site = {
     },
     {
       title: 'Set the channel',
-      body: 'Region US, preset LongTurbo, frequency slot 14. Both settings, not just one. See the channels above.',
+      body: 'Set your region to US. Choose the LongTurbo preset and enter 14 for the frequency slot. See the Channels section above for details.',
     },
     {
       title: 'Say hello',
@@ -150,7 +146,7 @@ export const site = {
   meshLinks: {
     meshtastic: [
       { name: 'Meshtastic', url: links.meshtastic, blurb: 'The project itself: firmware, apps and the official documentation.' },
-      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, the channel we treat as our alternate, and our brokers bridge to each other.' },
+      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, and our brokers bridge to each other.' },
       { name: 'MtnMe.sh', url: 'https://mtnme.sh/', blurb: 'Wrote up their move from LongFast to MediumFast slot 45 in detail.' },
       { name: 'MSP Mesh', url: 'https://mspmesh.org/', blurb: 'Twin Cities, Minnesota. Also on MediumFast slot 45.' },
       { name: 'Puget Mesh', url: 'https://pugetmesh.org/', blurb: 'Seattle and Puget Sound. A substantial configuration guide, covering their LongFast default and their alternates.' },
@@ -188,6 +184,15 @@ export const site = {
 
   reddit: links.reddit,
   flasher: links.flasher,
+
+  /* Where to download the firmware versions the channels section talks about.
+     `defaultSince` is the first version that ships LongTurbo slot 14 as the default,
+     `recommended` is the one we tell people to install today. */
+  firmware: {
+    defaultSince: links.mt280,
+    recommended: links.mt2726,
+  },
+  fccRule: links.fcc,
 
   /* These are NOT all the same data source, which is why each blurb says what it is.
      Ours comes first, and it is also the hero's "See the live map" button. */
@@ -239,7 +244,7 @@ export const site = {
     {
       name: 'r/SoCalMesh on Reddit',
       url: links.reddit,
-      blurb: 'Our subreddit, for longer posts, build photos and questions that outlive a chat window.',
+      blurb: 'Our subreddit. Post longer write-ups, share build photos, or ask a question you want to find again later.',
     },
     {
       name: 'Meshtastic web flasher',
@@ -249,7 +254,7 @@ export const site = {
     {
       name: 'Discord Quick Start',
       url: links.discordQuickStart,
-      blurb: 'The post to read first once you are in the server.',
+      blurb: "The post to read first once you're in the server.",
     },
   ],
 
