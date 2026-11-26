@@ -11,6 +11,17 @@
  *   url('https://x.example') -> unchanged
  */
 export function url(path: string): string {
+  // Astro fills in import.meta.env. The tests run in plain Node, where it does not
+  // exist, and there the site is treated as living at "/".
+  const env = import.meta.env;
+  return withBase((env && env.BASE_URL) || '/', path);
+}
+
+/**
+ * The work behind url(), with the prefix passed in instead of read from Astro.
+ * It is separate so the tests can try it with "/" and with "/website/".
+ */
+export function withBase(base: string, path: string): string {
   if (
     /^[a-z][a-z0-9+.-]*:/i.test(path) ||
     path.startsWith('//') ||
@@ -19,7 +30,6 @@ export function url(path: string): string {
     return path;
   }
 
-  const base = import.meta.env.BASE_URL || '/';
   const joined = `${base.replace(/\/+$/, '')}/${path.replace(/^\/+/, '')}`;
   return joined.replace(/\/{2,}/g, '/') || '/';
 }

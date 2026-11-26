@@ -126,10 +126,13 @@ how it looks), so it should get a second pair of eyes before it goes live. A mai
    and then checks every internal link, which is what catches a link written as `/help/` instead of
    going through the `url()` helper. It also reads the finished pages and checks that each has one
    title and one main heading, that no id is used twice, and that every link to a section lands on
-   one. It takes a little longer than the other two because of the rebuild.
-4. `git status` shows only the files this task needed, nothing stray, no `node_modules`, no
+   one. Last, it weighs the site against the page-weight budget. It takes a little longer than the
+   other two because of the rebuild.
+4. `npm test` passes. These are small tests for the helper code in `src/lib/` and for the check
+   scripts. They take about a second.
+5. `git status` shows only the files this task needed, nothing stray, no `node_modules`, no
    scratch files, no `dist/`.
-5. No secrets, passwords, keys, or personal information anywhere in the change.
+6. No secrets, passwords, keys, or personal information anywhere in the change.
 
 If a check fails, fix it, or stop and explain the failure in plain English. Never push a red build.
 
@@ -363,8 +366,9 @@ where the thank-you to other people's work belongs.
 **Claude will:**
 
 1. Put the image in `src/assets/photos/`, with a lowercase-hyphenated filename.
-2. Resize it so the long edge is at most 1600 pixels and the file is under about 300 KB. The site
-   makes smaller phone-sized copies automatically when it builds.
+2. Resize it so the long edge is at most 1600 pixels and the file is under about 300 KB. (The
+   checks fail if any picture on the finished site is over 350 KB, so this step is not optional.)
+   The site makes smaller phone-sized copies automatically when it builds.
 3. Give it meaningful alt text, a short description of what is actually in the picture, for people
    using a screen reader. That description goes in the list at the top of
    `src/components/PhotoGrid.astro`, keyed by the file name. Adding a line to that list counts as
@@ -512,6 +516,8 @@ Claude reads this file automatically and knows the rest.
 | `.github/dependabot.yml` | the settings for the update robot (see section 3) |
 | `scripts/check-links.mjs` | the internal link checker that CI runs against the built site |
 | `scripts/check-pages.mjs` | the check that reads the finished pages: one title, one main heading, no repeated ids, section links that land |
+| `scripts/check-weight.mjs` | the page-weight budget, with every limit written at the top of the file |
+| `tests/` | small tests for the helper code and the check scripts, run with `npm test` |
 
 ### What CI checks
 
@@ -520,17 +526,26 @@ check called **Checks**, open its log to see which step failed. The steps, in or
 
 1. **Types and content**, runs `astro check`, which catches broken templates and article details
    that do not match the fields listed in section 3.
-2. **Build**, builds the whole site under the `/website/` address, exactly as it is published.
-3. **Internal links**, walks every internal link in the built site and fails if one points at a
+2. **Helper tests**, runs the small tests in `tests/` against the helper code, such as the
+   `url()` helper every internal link goes through, and against the check scripts themselves.
+3. **Build**, builds the whole site under the `/website/` address, exactly as it is published.
+4. **Internal links**, walks every internal link in the built site and fails if one points at a
    page that does not exist. External links are not fetched.
-4. **Finished pages**, reads every page that was just built and fails if one has no title or
+5. **Finished pages**, reads every page that was just built and fails if one has no title or
    two, no main heading or two, an id used twice, or a link to a section (`#maps`) that is not on
    the page it leads to.
-5. **Upload the built site**, attaches the finished site to the pull request as a download, so
+6. **Page weight**, fails if a picture is over 350 KB, a script is over 30 KB, or a page needs
+   more than 150 KB before its pictures load. Those limits, and a few more, are written at the top
+   of `scripts/check-weight.mjs`.
+7. **Upload the built site**, attaches the finished site to the pull request as a download, so
    someone can look at a change before it goes live. It is kept for seven days.
 
-On your own machine the first two are `npm run check` and `npm run build`, and `npm run links`
-runs the third and the fourth together.
+On your own machine these are `npm run check`, `npm test` and `npm run build`, and then
+`npm run links` runs the three checks on the built site together.
+
+**If Page weight fails,** make the file smaller before anything else. For a photo that means
+resizing it (see "Add a photo" in section 3). Raising a limit is a build change, so it goes in a
+pull request of its own that says why, and it needs a second pair of eyes.
 
 Two more automatic things run alongside CI, and neither of them can block a change:
 **CodeQL** (a security scanner, results appear on the repository's Security tab) and
@@ -578,8 +593,8 @@ They solve the same problems, so when a change here touches how the site is buil
 published, it is worth asking the maintainer how the other sites do it before inventing something
 new. Practices those sites use that this one does not have yet, as of November 2026:
 
-- **More automatic checks before publishing:** an accessibility scan of every page, a page-weight
-  budget, and small tests for helper code such as `src/lib/url.ts`.
+- **An accessibility scan of every page,** so a missing label or poor contrast fails a check
+  instead of reaching the site.
 - **Publishing in two steps,** a preview copy first and the real site only on a deliberate
   release, with a simple way to go back to the previous release.
 
