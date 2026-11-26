@@ -95,9 +95,10 @@ export const site = {
     showWidget: true,
   },
 
-  /* The channels we run. Change a number here and the home page follows.
-     The recommended one comes first, because that is the order the cards appear in,
-     and anything experimental goes last. */
+  /* The channel we run. LongTurbo slot 14 is the only one: the mesh no longer uses
+     LongFast or MediumFast. Change a number here and the home page follows.
+     If there is ever more than one again, the recommended one comes first, because
+     that is the order the cards appear in, and anything experimental goes last. */
   channels: [
     {
       short: 'LT14',
@@ -106,34 +107,10 @@ export const site = {
       frequency: '908.750 MHz',
       recommended: true,
       experimental: false,
-      headline: 'The default, and where most of us are.',
+      headline: 'The only one we recommend.',
       blurb:
-        'Set your region to US and a new radio is already here. LongTurbo with the slot left alone resolves to 14, so most people change nothing else. Set this one first.',
+        'On firmware 2.8.0 or newer, set your region to US and a new radio is already here. On 2.7.26, choose the LongTurbo preset as well. Either way, type 14 in for the frequency slot.',
     },
-/**
-     {
-      short: 'MF45',
-      preset: 'MediumFast',
-      slot: 45,
-      frequency: '913.125 MHz',
-      recommended: false,
-      experimental: false,
-      headline: 'The alternate.',
-      blurb:
-        'Faster on the air, and plenty of us in SoCal use it. It is not always strong though, and it depends on your area. Try it if you can connect.',
-    },
-    {
-      short: 'LT14',
-      preset: 'LongTurbo',
-      slot: 14,
-      frequency: '908.75 MHz',
-      recommended: false,
-      experimental: true,
-      headline: 'What we are trying next.',
-      blurb:
-        'A wider 500 kHz channel, a little quicker than LongFast for about 3 dB less reach. We are starting to experiment with it and we think it becomes our default in time. Needs firmware 2.7.17 or newer.',
-    },
-    */
   ],
 
   /* Two extra channels people add on top of the primary one. One link adds both. */

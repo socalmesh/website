@@ -3,6 +3,7 @@ title: "Best practices for the SoCal Mesh"
 description: "The settings this community recommends: channel, device role, hop limit and broadcast intervals, plus what actually makes a radio get heard."
 author: "davie"
 date: 2025-02-19
+updated: 2026-11-25
 tags: ["settings", "best-practices", "getting-started"]
 ---
 
@@ -11,29 +12,25 @@ running a lot of radios in a lot of places. The point of them is to stop the net
 itself, so your messages get through.
 
 If you check one thing after reading this, check your device role. It's the setting people get
-wrong most often, and the one that affects everyone around you. If you change nothing at all,
-you'll still be on the mesh.
+wrong most often, and the one that affects everyone around you. The channel comes first, though.
+On the wrong one, nobody here can hear you.
 
 ## Which channel to set
 
-**Start on LongFast, frequency slot 20.** That's where many of us are, and it's the factory
-default. Set your region to US and a new radio is already there: LongFast with the frequency slot
-left alone works out to 20 on its own. For most people there's nothing else to change.
+**Set LongTurbo, frequency slot 14.** It's the only channel we recommend now. We don't use
+LongFast or MediumFast here anymore, and a radio left on either of them can't hear this mesh.
 
-**MediumFast slot 45 is an alternate.** A lot of us in SoCal do use it, and it's faster on the
-air. It isn't always strong, though, and whether it works for you depends on the area you're
-trying to connect from. Try it if you can connect on it. Go back to LongFast slot 20 if you can't.
+LongTurbo is a wider 500 kHz channel that carries a little more than LongFast for roughly 3 dB
+less reach. It needs firmware 2.7.17 or newer, and some older phone apps don't list the preset
+yet.
 
-**LongTurbo slot 14 is an experiment.** It is a wider 500 kHz channel that carries a little more
-than LongFast for roughly 3 dB less reach, and like LongFast it works out its own slot: 14. We are
-only starting to test it, and our guess is that it becomes the default here eventually. It needs
-firmware 2.7.17 or newer, and some older phone apps do not list the preset yet. Switch a radio over
-to it if you want to help test. Note that Meshtastic has said it is considering a new default for
-version 3.0 without naming which one, so treat the "it becomes the default" part as our expectation
-rather than anybody's announcement.
+How much you have to set depends on your firmware. From 2.8.0 on, LongTurbo is the factory
+default: set your region to US and a new radio is already there. On 2.7.26, which is what we
+recommend for now because the 2.8 alphas have had problems, you choose the LongTurbo preset
+yourself. The home page links to both versions.
 
-Before you switch, look at [our live map](https://meshview.socalmesh.org) and see if there are
-MediumFast slot 45 nodes near you. One catch when you do: a node only turns up on a map if its
+To see who's near you, look at [our live map](https://meshview.socalmesh.org) for LongTurbo slot
+14 nodes. One catch when you do: a node only turns up on a map if its
 owner has switched on **OK to MQTT**, and plenty never do. There are far more nodes on this network
 than any map displays, so an empty patch isn't proof that nobody's out there. Use the map as a
 floor rather than a headcount, and ask on Discord, where somebody nearby can tell you what they're
@@ -54,20 +51,19 @@ default. It's not giving up. It's the quickest way back to a radio you can trust
 
 The default channel is fussy about this, and getting it wrong takes you off the mesh quietly.
 
-- For the default LongFast channel to work, either leave its name alone or name it exactly
-  `LongFast`. Change nothing else about it.
+- For the default LongTurbo channel to work, either leave its name alone or name it exactly
+  `LongTurbo`. Change nothing else about it.
 - **Set the frequency slot yourself instead of trusting the default.** With the slot left at `0`,
   the radio works out its frequency from the name of the primary channel. So renaming the primary
   can move you onto a different frequency. Changing the key doesn't. On a factory-fresh radio that
-  calculation lands on slot 20 for LongFast and slot 45 for MediumFast, which is why it often
-  seems fine with nothing set. Typing the number in is what makes it reliable.
-- Slot `20` is the LongFast value for the **US** region. It isn't a universal "put it back to 20".
-  If you're joining MediumFast slot 45, the slot is `45`. Other regions use different numbers
-  again.
+  calculation lands on slot 14 for LongTurbo, which is why it often seems fine with nothing set.
+  Typing the number in is what makes it reliable.
+- Slot `14` is the LongTurbo value for the **US** region. It isn't a universal "put it back to 14".
+  Other presets and other regions land on different numbers.
 
 You may also see advice to add LongFast as a **secondary** channel called `LongFast` with the key
 `AQ==`. Be clear about what that does. Every secondary channel shares the primary's preset and
-frequency slot, so this won't let a MediumFast radio hear the LongFast mesh over the air. It only
+frequency slot, so this won't let a LongTurbo radio hear a LongFast mesh over the air. It only
 decrypts LongFast traffic that reaches you some other way, like over MQTT. (`AQ==` is the
 published default key, not a secret of ours.)
 
