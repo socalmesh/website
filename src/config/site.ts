@@ -138,7 +138,7 @@ export const site = {
     },
     {
       title: 'Set the channel',
-      body: 'Region US, preset LongTurbo, frequency slot 14. Both settings, not just one. See the channels above.',
+      body: 'Set your region to US. Choose the LongTurbo preset and enter 14 for the frequency slot. See the Channels section above for details.',
     },
     {
       title: 'Say hello',
@@ -250,7 +250,7 @@ export const site = {
     {
       name: 'r/SoCalMesh on Reddit',
       url: links.reddit,
-      blurb: 'Our subreddit. Better than chat for longer posts, build photos, and questions you want to find again later.',
+      blurb: 'Our subreddit. Post longer write-ups, share build photos, or ask a question you want to find again later.',
     },
     {
       name: 'Meshtastic web flasher',

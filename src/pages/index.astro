@@ -27,7 +27,7 @@ const latest = (await publishedArticles()).slice(0, 3);
     id="about"
     eyebrow="About"
     title="About SoCal Mesh"
-    lede="No cell towers and no internet. Radios, and the people who run them."
+    lede="We use radios to send messages without cell service or internet access."
   >
     <div class="blocks">
       <article>
@@ -47,10 +47,9 @@ const latest = (await publishedArticles()).slice(0, 3);
       <article>
         <h3>What is Meshtastic?</h3>
         <p>
-          Meshtastic is an open source, decentralized, off-grid mesh network. It is made up of
-          small communicators that can form a mesh network. These communicators can be linked
-          to a phone via Bluetooth or Wi-Fi. Meshtastic uses inexpensive LoRa radios as a
-          long-range communication platform. Learn more at the{' '}
+          Meshtastic is an open source, decentralized, off-grid mesh network. It runs on small,
+          inexpensive LoRa radios that can relay messages over long distances. You can connect
+          your phone to one over Bluetooth or Wi-Fi. Learn more at the{' '}
           <a href={site.meshtastic.site} rel="noopener">official Meshtastic website</a>.
         </p>
       </article>
@@ -77,10 +76,10 @@ const latest = (await publishedArticles()).slice(0, 3);
     title="The channels we run"
   >
     <Fragment slot="lede">
-      Start on LongTurbo, frequency slot 14. It's the factory default from firmware{' '}
-      <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a> on, and{' '}
-      <a href={site.firmware.recommended} rel="noopener">2.7.26</a> has it too. The 2.8 alphas have
-      had problems, so for now we suggest staying on{' '}
+      Start on LongTurbo, frequency slot 14. It became the factory default in firmware{' '}
+      <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a>, and you can also select it in{' '}
+      <a href={site.firmware.recommended} rel="noopener">2.7.26</a>. We've seen problems with the
+      2.8 alphas, so we recommend{' '}
       <a href={site.firmware.recommended} rel="noopener">2.7.26 Beta</a>.
     </Fragment>
 
