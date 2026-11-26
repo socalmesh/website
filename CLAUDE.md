@@ -126,8 +126,10 @@ how it looks), so it should get a second pair of eyes before it goes live. A mai
    and then checks every internal link, which is what catches a link written as `/help/` instead of
    going through the `url()` helper. It also reads the finished pages and checks that each has one
    title and one main heading, that no id is used twice, and that every link to a section lands on
-   one. Last, it weighs the site against the page-weight budget. It takes a little longer than the
-   other two because of the rebuild.
+   one. Then it weighs the site against the page-weight budget. Last, it opens every page in a
+   browser and scans it for accessibility problems, which needs Chrome, Chromium or Edge on the
+   computer. Without one it says "SKIPPED" and carries on, and the checks on the pull request
+   still run it. All of this takes a little longer than the other two because of the rebuild.
 4. `npm test` passes. These are small tests for the helper code in `src/lib/` and for the check
    scripts. They take about a second.
 5. `git status` shows only the files this task needed, nothing stray, no `node_modules`, no
@@ -515,6 +517,7 @@ Claude reads this file automatically and knows the rest.
 | `scripts/check-pages.mjs` | the check that reads the finished pages: one title, one main heading, no repeated ids, section links that land |
 | `scripts/html-tags.mjs` | the small HTML reader the check scripts share |
 | `scripts/check-weight.mjs` | the page-weight budget, with every limit written at the top of the file |
+| `scripts/check-a11y.mjs` | the accessibility scan, which opens every page in a browser at a desktop and a phone width |
 | `tests/` | small tests for the helper code and the check scripts, run with `npm test` |
 
 ### What CI checks
@@ -535,11 +538,20 @@ check called **Checks**, open its log to see which step failed. The steps, in or
 6. **Page weight**, fails if a picture is over 350 KB, a script is over 30 KB, or a page needs
    more than 150 KB before its pictures load. Those limits, and a few more, are written at the top
    of `scripts/check-weight.mjs`.
-7. **Upload the built site**, attaches the finished site to the pull request as a download, so
+7. **Accessibility**, opens every page in a real browser, once at a desktop width and once at a
+   phone width, and fails on anything that keeps people from using the page: text with too little
+   contrast, a picture with no description, a link with no name, headings out of order.
+8. **Upload the built site**, attaches the finished site to the pull request as a download, so
    someone can look at a change before it goes live. It is kept for seven days.
 
 On your own machine these are `npm run check`, `npm test` and `npm run build`, and then
-`npm run links` runs the three checks on the built site together.
+`npm run links` runs the four checks on the built site together.
+
+**If Accessibility fails,** the log names the page, the screen size, the exact element and what
+is wrong with it, with a link to a fuller explanation. Fix the page. Do not switch a rule off to
+get a green check: if a finding looks wrong, say so in the pull request and let a maintainer
+decide. The rules come from axe-core, the one library this check uses. It is only ever used while
+checking and is never sent to visitors.
 
 **If Page weight fails,** make the file smaller before anything else. For a photo that means
 resizing it (see "Add a photo" in section 3). Raising a limit is a build change, so it goes in a
@@ -589,12 +601,16 @@ from them is copied into this public repository except the practice itself.
 
 They solve the same problems, so when a change here touches how the site is built, checked or
 published, it is worth asking the maintainer how the other sites do it before inventing something
-new. Practices those sites use that this one does not have yet, as of November 2026:
+new.
 
-- **An accessibility scan of every page,** so a missing label or poor contrast fails a check
-  instead of reaching the site.
-- **Publishing in two steps,** a preview copy first and the real site only on a deliberate
-  release, with a simple way to go back to the previous release.
+This site has already taken what was worth taking: workflow steps pinned to an exact version, the
+check on the finished pages, the page-weight budget, the helper tests and the accessibility scan
+all came from there.
+
+One practice was looked at and turned down, in November 2026: **publishing in two steps**, with a
+preview copy first and the real site only on a deliberate release. It is too much process for a
+site this size. Every merge to `main` publishes straight to the live site, and going back is a
+revert pull request (section 4). Do not propose it again unless a maintainer asks.
 
 In the other direction, the other sites have borrowed from this one: the plain-language guide you
 are reading, the one-command `npm run links` check, and `SECURITY.md`.

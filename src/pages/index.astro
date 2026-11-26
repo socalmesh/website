@@ -317,10 +317,12 @@ const latest = (await publishedArticles()).slice(0, 3);
     border: 1px solid var(--border);
   }
 
+  /* --text-muted, not --text-faint: this caption sits on the raised background,
+     where the fainter grey does not have enough contrast to read comfortably. */
   .caption {
     margin-top: var(--space-xs);
     font-size: var(--step--1);
-    color: var(--text-faint);
+    color: var(--text-muted);
   }
 
   .why {

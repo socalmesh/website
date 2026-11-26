@@ -65,6 +65,13 @@ jobs:
         if: '!cancelled()'
         run: node scripts/check-weight.mjs --dist dist --base "$BASE_PATH"
 
+      # Opens every built page in the Chrome that is already on this machine, at a
+      # desktop and a phone width, and fails on any accessibility problem it finds.
+      # The browser cannot reach the internet while it does this.
+      - name: Accessibility
+        if: '!cancelled()'
+        run: node scripts/check-a11y.mjs --dist dist --base "$BASE_PATH"
+
       # The built site, downloadable from the pull request. There are no preview
       # deployments on this repo, so this is how someone looks at a change before
       # it goes live.

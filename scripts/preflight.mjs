@@ -11,8 +11,12 @@
  * and one main heading each, no id used twice, and every link to a section landing
  * on a section that exists.
  *
- * Last, it weighs the site against the budget in scripts/check-weight.mjs, so a
+ * Then it weighs the site against the budget in scripts/check-weight.mjs, so a
  * huge photo or a big script is caught here and not by a reader on a slow phone.
+ *
+ * Last, it opens every page in a browser and scans it for accessibility problems
+ * (scripts/check-a11y.mjs). That one needs Chrome, Chromium or Edge installed. If
+ * none is, it says so and is skipped here; the checks on a pull request still run it.
  *
  * Plain Node so it works the same on Windows, macOS and Linux.
  */
@@ -34,6 +38,7 @@ for (const script of [
   'scripts/check-links.mjs',
   'scripts/check-pages.mjs',
   'scripts/check-weight.mjs',
+  'scripts/check-a11y.mjs',
 ]) {
   const check = run('node', [script, '--dist', 'dist', '--base', BASE]);
   if (check.status !== 0) failed = true;
