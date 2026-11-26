@@ -124,8 +124,9 @@ how it looks), so it should get a second pair of eyes before it goes live. A mai
 2. `npm run check` passes.
 3. `npm run links` passes. This one rebuilds the site at the address it is really published from
    and then checks every internal link, which is what catches a link written as `/help/` instead of
-   going through the `url()` helper. It takes a little longer than the other two because of the
-   rebuild.
+   going through the `url()` helper. It also reads the finished pages and checks that each has one
+   title and one main heading, that no id is used twice, and that every link to a section lands on
+   one. It takes a little longer than the other two because of the rebuild.
 4. `git status` shows only the files this task needed, nothing stray, no `node_modules`, no
    scratch files, no `dist/`.
 5. No secrets, passwords, keys, or personal information anywhere in the change.
@@ -507,6 +508,8 @@ Claude reads this file automatically and knows the rest.
 | `.github/workflows/codeql.yml` | the free security scanner (see section 3) |
 | `.github/dependabot.yml` | the settings for the update robot (see section 3) |
 | `scripts/check-links.mjs` | the internal link checker that CI runs against the built site |
+| `scripts/check-pages.mjs` | the check that reads the finished pages: one title, one main heading, no repeated ids, section links that land |
+| `scripts/html-tags.mjs` | the small HTML reader the check scripts share |
 
 ### What CI checks
 
@@ -518,10 +521,14 @@ check called **Checks**, open its log to see which step failed. The steps, in or
 2. **Build**, builds the whole site under the `/website/` address, exactly as it is published.
 3. **Internal links**, walks every internal link in the built site and fails if one points at a
    page that does not exist. External links are not fetched.
-4. **Upload the built site**, attaches the finished site to the pull request as a download, so
+4. **Finished pages**, reads every page that was just built and fails if one has no title or
+   two, no main heading or two, an id used twice, or a link to a section (`#maps`) that is not on
+   the page it leads to.
+5. **Upload the built site**, attaches the finished site to the pull request as a download, so
    someone can look at a change before it goes live. It is kept for seven days.
 
-On your own machine those first three are `npm run check`, `npm run build` and `npm run links`.
+On your own machine the first two are `npm run check` and `npm run build`, and `npm run links`
+runs the third and the fourth together.
 
 Two more automatic things run alongside CI, and neither of them can block a change:
 **CodeQL** (a security scanner, results appear on the repository's Security tab) and
@@ -571,8 +578,6 @@ new. Practices those sites use that this one does not have yet, as of November 2
 
 - **More automatic checks before publishing:** an accessibility scan of every page, a page-weight
   budget, and small tests for helper code such as `src/lib/url.ts`.
-- **A check on the finished site,** not only on the source: one page title and one main heading
-  per page, no duplicate ids, links to sections that really exist.
 - **Publishing in two steps,** a preview copy first and the real site only on a deliberate
   release, with a simple way to go back to the previous release.
 
