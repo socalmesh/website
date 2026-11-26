@@ -89,10 +89,11 @@ const latest = (await publishedArticles()).slice(0, 3);
       <div>
         <h3>Start on LongTurbo, Slot 14</h3>
         <p>
-          This is the factory default as of firmware version{' '}
-          <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a>. Set your region to US and a
-          new radio is already on it, because LongTurbo with the slot left alone resolves to 14. For
-          most people there's nothing to change here.
+          It's the only setting we recommend. We don't use LongFast or MediumFast anymore. From
+          firmware <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a> it's the factory
+          default: set your region to US and a new radio is already on it. On{' '}
+          <a href={site.firmware.recommended} rel="noopener">2.7.26</a>, which is what we recommend
+          today, choose the LongTurbo preset as well.
         </p>
       </div>
       <div>
