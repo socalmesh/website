@@ -19,6 +19,7 @@
  *               recommended: true puts the highlighted "this is the one" styling on it.
  *               experimental: true dims the card and badges it, for something we are
  *               still testing rather than asking newcomers to set.
+ *   secondaryChannels  The two extra channels, and the one link that adds both to a radio.
  *   startHere   The numbered "new here?" steps on the home page.
  *   reddit      Our subreddit.
  *   flasher     The official Meshtastic web flasher (installs firmware from a browser).
@@ -61,6 +62,16 @@ const links = {
   mt280: 'https://github.com/meshtastic/firmware/releases/tag/v2.8.0.47db0e3',
   mt2726: 'https://github.com/meshtastic/firmware/releases/tag/v2.7.26.54e0d8d',
   fcc: 'https://www.ecfr.gov/current/title-47/chapter-I/subchapter-A/part-15/subpart-C/subject-group-ECFR2f2e5828339709e/section-15.247',
+  /* The link the Meshtastic app reads to add the SoCalMesh and SoCalAlerts channels.
+     The long part after the # is both channel names and their keys, packed together.
+     `add=true` asks the app to add them rather than replace what is on the radio.
+
+     The QR code on the home page, src/assets/secondary-channels-qr.svg, is a picture
+     of this exact link. If the link ever changes, remake the picture to match:
+       qrencode -t SVG -l M -m 4 -s 8 --svg-path -o src/assets/secondary-channels-qr.svg "<the link>"
+     then scan it with a phone and check it opens the same link. */
+  addSecondaryChannels:
+    'https://meshtastic.org/e/?add=true#CjMSIAMn1q7X5v9Hnkh6gJEjGW1ILNFkjkyxK8k2Cp7EN25rGglTb0NhbE1lc2goAToCCBEKNRIgEHA72WY32ebde58MXX-CCl7h7eyIjctK5eYyZSfqYTsaC1NvQ2FsQWxlcnRzKAE6AggR',
 } as const;
 
 export const site = {
@@ -101,6 +112,12 @@ export const site = {
         'On firmware 2.8.0 or newer, set your region to US and a new radio is already here. On 2.7.26, choose the LongTurbo preset as well. Either way, type 14 in for the frequency slot.',
     },
   ],
+
+  /* Two extra channels people add on top of the primary one. One link adds both. */
+  secondaryChannels: {
+    names: ['SoCalMesh', 'SoCalAlerts'],
+    addUrl: links.addSecondaryChannels,
+  },
 
   /* The numbered steps under "New here?" on the home page. */
   startHere: [
