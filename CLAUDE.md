@@ -285,37 +285,34 @@ show nodes that uplink"; that is the mistake.
 
 ### Change the channel settings we recommend
 
-The home page shows the channels this mesh runs on, with the frequency each one lands on. These
-are the numbers newcomers copy onto their radio, so they matter more than anything else on the page.
+The home page shows the channel this mesh runs on, with the frequency it lands on. These are the
+numbers newcomers copy onto their radio, so they matter more than anything else on the page.
 
-- **LF20** (LongFast, frequency slot 20, 906.875 MHz), the recommended one.
-- **MF45** (MediumFast, slot 45, 913.125 MHz), the alternate.
-- **LT14** (LongTurbo, slot 14, 908.75 MHz), marked experimental.
+- **LT14** (LongTurbo, frequency slot 14, 908.75 MHz). It is the only one.
 
-**LF20 is the recommended one, and MF45 is the alternate.** LongFast slot 20 is where many of this
-community actually are. MediumFast slot 45 is faster on the air and plenty of people here use it,
-but it is not always strong and whether it works depends on the area, so the page tells people to
-try it if they can connect, and to check the live map for MF45 nodes near them first. Do not
-re-flip that emphasis without asking someone who runs a node.
+**LT14 is the only recommended setting.** This mesh used to recommend LongFast slot 20, with
+MediumFast slot 45 as an alternate and LongTurbo as an experiment. It has moved to LongTurbo slot
+14 and no longer uses LongFast or MediumFast at all. Do not put either of them back on the site,
+as a recommendation or as an alternate, without asking someone who runs a node.
 
-**LF20 really is the factory default, so say so plainly.** A radio set to region US, with the
-primary channel untouched and the frequency slot left at 0, works its slot out from the channel
-name and lands on 20 at 906.875 MHz by itself. Do not soften this into "close to the default".
-The one thing the radio does not do for you is pick the region, so that part still has to be set
-by hand.
+**It is the factory default from firmware 2.8.0, and only from there.** On 2.8.0 or newer, a radio
+set to region US, with the primary channel untouched and the frequency slot left at 0, works its
+slot out from the channel name and lands on 14 at 908.75 MHz by itself. On 2.7.26, which is the
+version the page recommends while the 2.8 alphas have problems, the factory default is still
+LongFast, so the reader has to choose the LongTurbo preset as well. Keep both halves on the page.
+"Set your region and you are done" is only true on 2.8.
 
-**LT14 is a trial, not a recommendation.** LongTurbo is a real preset (added to the firmware in
-December 2025, needs 2.7.17 or newer) and 500 kHz wide, which is why the US band has 52 slots for
-it rather than 104 and why slot 14 lands on 908.75 MHz rather than anywhere near the other two.
-It is on the page because this community expects to move there eventually, and it carries
-`experimental: true`, which dims the card and badges it. Meshtastic has said it is *considering* a
-new default for 3.0 without naming which preset, so never write that LongTurbo has been chosen as
-the new default. Ours is an expectation, and the page says so.
+LongTurbo is 500 kHz wide, which is why the US band has 52 slots for it instead of 104. It needs
+firmware 2.7.17 or newer.
 
-**Say:** "We moved to MediumSlow", or "the slot 45 frequency is wrong, it should be X".
+The same advice is written out at more length in the help article
+`src/content/help/best-practices.md`. When the channel changes, change the article in the same
+pull request, or the site gives two different answers.
+
+**Say:** "We moved to MediumSlow", or "the slot 14 frequency is wrong, it should be X".
 
 **Claude will:** edit the `channels` list in `src/config/site.ts`. Each channel has a short name
-(`LF20`), the preset name, the slot number, the frequency, and a sentence of explanation. The one
+(`LT14`), the preset name, the slot number, the frequency, and a sentence of explanation. The one
 with `recommended: true` gets the highlighted "Set this one" card, one with `experimental: true`
 gets a dimmed dashed card and an "Experimental" badge, and the cards render in array order, so the
 recommended one is listed first and anything experimental goes last. Every channel needs both
@@ -518,6 +515,7 @@ Claude reads this file automatically and knows the rest.
 | `.github/dependabot.yml` | the settings for the update robot (see section 3) |
 | `scripts/check-links.mjs` | the internal link checker that CI runs against the built site |
 | `scripts/check-pages.mjs` | the check that reads the finished pages: one title, one main heading, no repeated ids, section links that land |
+| `scripts/html-tags.mjs` | the small HTML reader the check scripts share |
 | `scripts/check-weight.mjs` | the page-weight budget, with every limit written at the top of the file |
 | `scripts/check-a11y.mjs` | the accessibility scan, which opens every page in a browser at a desktop and a phone width |
 | `tests/` | small tests for the helper code and the check scripts, run with `npm test` |

@@ -19,6 +19,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, resolve, posix, extname } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { readTags, attribute } from './html-tags.mjs';
 
 /**
  * Every limit, in kilobytes (KB). When this was written the biggest picture was
@@ -72,38 +73,33 @@ const kb = (bytes) => Math.round(bytes / 1024);
  * scripts and fonts it names, and how much JavaScript is written into the page.
  */
 export function scanPage(html) {
-  const text = html.replace(/<!--[\s\S]*?-->/g, '');
   const assets = new Set();
   let inlineScriptBytes = 0;
 
-  const tag = /<(link|script)\b((?:"[^"]*"|'[^']*'|[^'">])*)>/gi;
-  let m;
-  while ((m = tag.exec(text)) !== null) {
-    const name = m[1].toLowerCase();
-    const rest = m[2];
-    const address = /\s(?:href|src)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+))/i.exec(rest);
-    const value = address ? (address[1] ?? address[2] ?? address[3]).trim() : '';
-    if (value && ['script', 'stylesheet', 'font'].includes(kindOf(value.split(/[?#]/)[0]))) {
-      assets.add(value);
+  const isBeforePictures = (address) =>
+    ['script', 'stylesheet', 'font'].includes(kindOf(address.split(/[?#]/)[0]));
+
+  for (const tag of readTags(html)) {
+    if (tag.closing) continue;
+
+    if (tag.name === 'link' || tag.name === 'script') {
+      const address = (attribute(tag.attributes, 'href') ?? attribute(tag.attributes, 'src') ?? '').trim();
+      if (address && isBeforePictures(address)) assets.add(address);
     }
 
-    if (name === 'script') {
-      const end = text.toLowerCase().indexOf('</script', tag.lastIndex);
-      const inner = end === -1 ? '' : text.slice(tag.lastIndex, end);
+    if (tag.name === 'script') {
       // Data written into the page as JSON is not a program, so it is not counted.
-      if (!/\stype\s*=\s*["']?application\/(ld\+)?json/i.test(rest)) {
-        inlineScriptBytes += Buffer.byteLength(inner, 'utf8');
-      }
+      const type = (attribute(tag.attributes, 'type') ?? '').toLowerCase();
+      if (!/^application\/(ld\+)?json/.test(type)) inlineScriptBytes += Buffer.byteLength(tag.inner, 'utf8');
     }
-  }
 
-  // Fonts are usually named inside a <style> block rather than by a tag.
-  const style = /<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi;
-  while ((m = style.exec(text)) !== null) {
-    const fontUrl = /url\(\s*['"]?([^'")]+)['"]?\s*\)/gi;
-    let u;
-    while ((u = fontUrl.exec(m[1])) !== null) {
-      if (kindOf(u[1].split(/[?#]/)[0]) === 'font') assets.add(u[1].trim());
+    if (tag.name === 'style') {
+      // Fonts are usually named inside a <style> block, not by a tag of their own.
+      const fontUrl = /url\(\s*['"]?([^'")]+)['"]?\s*\)/gi;
+      let u;
+      while ((u = fontUrl.exec(tag.inner)) !== null) {
+        if (kindOf(u[1].split(/[?#]/)[0]) === 'font') assets.add(u[1].trim());
+      }
     }
   }
 
@@ -215,10 +211,18 @@ function main() {
   let total = 0;
   for (const file of walk(distRoot)) {
     const rel = file.slice(distRoot.length).replace(/\\/g, '/').replace(/^\//, '');
-    const bytes = statSync(file).size;
+    let bytes;
+    if (rel.endsWith('.html')) {
+      // Read a page once and weigh what was read, so its size and its contents
+      // can never be two different versions of the file.
+      const content = readFileSync(file);
+      bytes = content.length;
+      pages.set(rel, scanPage(content.toString('utf8')));
+    } else {
+      bytes = statSync(file).size;
+    }
     files.set(rel, bytes);
     total += bytes;
-    if (rel.endsWith('.html')) pages.set(rel, scanPage(readFileSync(file, 'utf8')));
   }
 
   const { problems, report } = findOverweight(files, pages, base);

@@ -22,6 +22,7 @@
 import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { join, resolve, posix } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { readTags, attribute, decodeEntities } from './html-tags.mjs';
 
 function parseArgs(argv) {
   const args = { dist: 'dist', base: '/' };
@@ -43,72 +44,36 @@ function walk(dir, out = []) {
   return out;
 }
 
-/** Turns &amp; and friends back into the characters they stand for. */
-function decodeEntities(text) {
-  return text
-    .replace(/&#x([0-9a-f]+);/gi, (_, hex) => String.fromCodePoint(parseInt(hex, 16)))
-    .replace(/&#(\d+);/g, (_, dec) => String.fromCodePoint(Number(dec)))
-    .replace(/&quot;/g, '"')
-    .replace(/&apos;/g, "'")
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&amp;/g, '&');
-}
-
-/** The value of one attribute inside a tag's text, or undefined if it is not there. */
-function attribute(tagText, name) {
-  const re = new RegExp(`\\s${name}\\s*=\\s*(?:"([^"]*)"|'([^']*)'|([^\\s"'>]+))`, 'i');
-  const m = re.exec(tagText);
-  if (!m) return undefined;
-  return decodeEntities(m[1] ?? m[2] ?? m[3] ?? '');
-}
-
-/**
- * Reads one finished page and reports what the checks need to know about it.
- * Comments, scripts and styles are dropped first, so text inside them is never
- * mistaken for a tag.
- */
+/** Reads one finished page and reports what the checks need to know about it. */
 export function scanPage(html) {
-  const text = html
-    .replace(/<!--[\s\S]*?-->/g, '')
-    .replace(/<script\b[\s\S]*?<\/script\s*>/gi, '')
-    .replace(/<style\b[\s\S]*?<\/style\s*>/gi, '');
-
   const page = { titles: [], h1: 0, ids: [], anchors: [], links: [], redirect: false };
 
   // A drawing (<svg>) may carry a <title> of its own. That is a label for the
   // drawing, not the page title, so titles are only counted outside drawings.
   let svgDepth = 0;
 
-  const tag = /<(\/?)([a-zA-Z][a-zA-Z0-9-]*)((?:"[^"]*"|'[^']*'|[^'">])*)>/g;
-  let m;
-  while ((m = tag.exec(text)) !== null) {
-    const closing = m[1] === '/';
-    const name = m[2].toLowerCase();
-    const rest = m[3];
-
-    if (name === 'svg') {
-      svgDepth += closing ? -1 : rest.trimEnd().endsWith('/') ? 0 : 1;
-      if (svgDepth < 0) svgDepth = 0;
+  for (const tag of readTags(html)) {
+    if (tag.name === 'svg') {
+      const selfClosing = tag.attributes.trimEnd().endsWith('/');
+      svgDepth = Math.max(0, svgDepth + (tag.closing ? -1 : selfClosing ? 0 : 1));
     }
-    if (closing) continue;
+    if (tag.closing) continue;
 
-    const id = attribute(rest, 'id');
+    const id = attribute(tag.attributes, 'id');
     if (id !== undefined && id !== '') page.ids.push(id);
 
-    if (name === 'title' && svgDepth === 0) {
-      const end = text.indexOf('</title', tag.lastIndex);
-      const inner = end === -1 ? '' : text.slice(tag.lastIndex, end);
-      page.titles.push(decodeEntities(inner).trim());
-    } else if (name === 'h1') {
+    if (tag.name === 'title' && svgDepth === 0) {
+      page.titles.push(decodeEntities(tag.inner).trim());
+    } else if (tag.name === 'h1') {
       page.h1++;
-    } else if (name === 'a' || name === 'area') {
-      const anchorName = attribute(rest, 'name');
+    } else if (tag.name === 'a' || tag.name === 'area') {
+      const anchorName = attribute(tag.attributes, 'name');
       if (anchorName) page.anchors.push(anchorName);
-      const href = attribute(rest, 'href');
+      const href = attribute(tag.attributes, 'href');
       if (href !== undefined) page.links.push(href.trim());
-    } else if (name === 'meta') {
-      if ((attribute(rest, 'http-equiv') ?? '').toLowerCase() === 'refresh') page.redirect = true;
+    } else if (tag.name === 'meta') {
+      const equiv = attribute(tag.attributes, 'http-equiv') ?? '';
+      if (equiv.toLowerCase() === 'refresh') page.redirect = true;
     }
   }
 
@@ -165,11 +130,10 @@ export function findProblems(pages, base = '/') {
 
       const path = href.slice(0, hash).split('?')[0];
       let target = page;
-      let targetAddress = address;
       if (path !== '') {
         // A page served as "/help/" is its own folder; "/404.html" sits in its parent.
         const folder = address.endsWith('/') ? address : posix.dirname(address) + '/';
-        targetAddress = path.startsWith('/') ? path : posix.join(folder, path);
+        const targetAddress = path.startsWith('/') ? path : posix.join(folder, path);
         if (!targetAddress.startsWith(base)) continue; // check-links reports this one.
         target = lookup(targetAddress);
         if (!target) continue; // A missing page is check-links's job to report.
