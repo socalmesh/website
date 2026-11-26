@@ -261,8 +261,13 @@ async function startBrowser(executable, sandbox) {
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data);
     if (message.id !== undefined) {
-      waiting.get(message.id)?.(message);
-      waiting.delete(message.id);
+      // Only answer a question this script really asked: the id has to be one of
+      // the numbers it handed out, with a function still waiting on it.
+      const answer = typeof message.id === 'number' ? waiting.get(message.id) : undefined;
+      if (typeof answer === 'function') {
+        waiting.delete(message.id);
+        answer(message);
+      }
     } else {
       for (const listener of listeners) listener(message);
     }
