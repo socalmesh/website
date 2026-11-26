@@ -22,6 +22,8 @@
  *   startHere   The numbered "new here?" steps on the home page.
  *   reddit      Our subreddit.
  *   flasher     The official Meshtastic web flasher (installs firmware from a browser).
+ *   firmware    The release pages for the two firmware versions the channels section names.
+ *   fccRule     The FCC rule the channels section quotes, on the government's own site.
  *   meshLinks   The "Other mesh communities" page, grouped by the technology each one runs.
  *   shortDescription  A one-line description used when the site is saved to a phone's home screen.
  *   themeColor  The colour a phone browser paints its toolbar with.
@@ -188,6 +190,15 @@ export const site = {
 
   reddit: links.reddit,
   flasher: links.flasher,
+
+  /* Where to download the firmware versions the channels section talks about.
+     `defaultSince` is the first version that ships LongTurbo slot 14 as the default,
+     `recommended` is the one we tell people to install today. */
+  firmware: {
+    defaultSince: links.mt280,
+    recommended: links.mt2726,
+  },
+  fccRule: links.fcc,
 
   /* These are NOT all the same data source, which is why each blurb says what it is.
      Ours comes first, and it is also the hero's "See the live map" button. */
