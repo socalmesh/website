@@ -19,7 +19,8 @@
  *               recommended: true puts the highlighted "this is the one" styling on it.
  *               experimental: true dims the card and badges it, for something we are
  *               still testing rather than asking newcomers to set.
- *   secondaryChannels  The two extra channels, and the one link that adds both to a radio.
+ *   secondaryChannels  The two private secondary channels, and the one link that adds both
+ *               to a radio. They share the primary channel's frequency and preset.
  *   startHere   The numbered "new here?" steps on the home page.
  *   reddit      Our subreddit.
  *   flasher     The official Meshtastic web flasher (installs firmware from a browser).
@@ -109,11 +110,13 @@ export const site = {
       experimental: false,
       headline: 'The only one we recommend.',
       blurb:
-        'On firmware 2.8.0 or newer, set your region to US and a new radio is already here. On 2.7.26, choose the LongTurbo preset as well. Either way, type 14 in for the frequency slot.',
+        "On 2.7.26 Beta, set your region to US and choose the LongTurbo preset. On 2.8 it's already the default. Leave the slot at 0 and it lands on 14.",
     },
   ],
 
-  /* Two extra channels people add on top of the primary one. One link adds both. */
+  /* Two private channels people add on top of the primary one. One link adds both.
+     They use the same frequency and preset as the primary, so adding them changes
+     nothing else on the radio. */
   secondaryChannels: {
     names: ['SoCalMesh', 'SoCalAlerts'],
     addUrl: links.addSecondaryChannels,
@@ -132,7 +135,7 @@ export const site = {
     },
     {
       title: 'Set the channel',
-      body: 'Set your region to US. Choose the LongTurbo preset and enter 14 for the frequency slot. See the Channels section above for details.',
+      body: 'Set your region to US and choose the LongTurbo preset. Leave the frequency slot at 0, which lands on 14.',
     },
     {
       title: 'Say hello',
