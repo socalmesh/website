@@ -129,7 +129,7 @@ export const site = {
   startHere: [
     {
       title: 'Get a radio',
-      body: 'Any Meshtastic-compatible LoRa radio for the US 915 MHz band. Ask on Discord before you buy, and people will tell you what is working for them right now.',
+      body: "Any Meshtastic-compatible LoRa radio for the US 915 MHz band. Ask on Discord before you buy, and people will tell you what's working for them right now.",
     },
     {
       title: 'Flash it',
@@ -152,7 +152,7 @@ export const site = {
   meshLinks: {
     meshtastic: [
       { name: 'Meshtastic', url: links.meshtastic, blurb: 'The project itself: firmware, apps and the official documentation.' },
-      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, the channel we treat as our alternate, and our brokers bridge to each other.' },
+      { name: 'Bay Area Mesh', url: 'https://bayme.sh/', blurb: 'San Francisco Bay Area. Runs MediumFast slot 45, and our brokers bridge to each other.' },
       { name: 'MtnMe.sh', url: 'https://mtnme.sh/', blurb: 'Wrote up their move from LongFast to MediumFast slot 45 in detail.' },
       { name: 'MSP Mesh', url: 'https://mspmesh.org/', blurb: 'Twin Cities, Minnesota. Also on MediumFast slot 45.' },
       { name: 'Puget Mesh', url: 'https://pugetmesh.org/', blurb: 'Seattle and Puget Sound. A substantial configuration guide, covering their LongFast default and their alternates.' },
@@ -250,7 +250,7 @@ export const site = {
     {
       name: 'r/SoCalMesh on Reddit',
       url: links.reddit,
-      blurb: 'Our subreddit, for longer posts, build photos and questions that outlive a chat window.',
+      blurb: 'Our subreddit. Better than chat for longer posts, build photos, and questions you want to find again later.',
     },
     {
       name: 'Meshtastic web flasher',
@@ -260,7 +260,7 @@ export const site = {
     {
       name: 'Discord Quick Start',
       url: links.discordQuickStart,
-      blurb: 'The post to read first once you are in the server.',
+      blurb: "The post to read first once you're in the server.",
     },
   ],
 

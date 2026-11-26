@@ -27,7 +27,7 @@ const latest = (await publishedArticles()).slice(0, 3);
     id="about"
     eyebrow="About"
     title="About SoCal Mesh"
-    lede="No cell towers. No internet. Just radios, and the people who run them."
+    lede="No cell towers and no internet. Radios, and the people who run them."
   >
     <div class="blocks">
       <article>
@@ -77,11 +77,11 @@ const latest = (await publishedArticles()).slice(0, 3);
     title="The channels we run"
   >
     <Fragment slot="lede">
-      Start on LongTurbo, frequency slot 14. It is the factory default as of firmware version{' '}
-      <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a>, but is also available on{' '}
-      <a href={site.firmware.recommended} rel="noopener">2.7.26</a>. Due to observed issues with
-      2.8.X alpha firmware, it is recommended to use{' '}
-      <a href={site.firmware.recommended} rel="noopener">2.7.26 Beta</a> firmware.
+      Start on LongTurbo, frequency slot 14. It's the factory default from firmware{' '}
+      <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a> on, and{' '}
+      <a href={site.firmware.recommended} rel="noopener">2.7.26</a> has it too. The 2.8 alphas have
+      had problems, so for now we suggest staying on{' '}
+      <a href={site.firmware.recommended} rel="noopener">2.7.26 Beta</a>.
     </Fragment>
 
     <ChannelCards />
@@ -93,7 +93,7 @@ const latest = (await publishedArticles()).slice(0, 3);
           This is the factory default as of firmware version{' '}
           <a href={site.firmware.defaultSince} rel="noopener">2.8.0</a>. Set your region to US and a
           new radio is already on it, because LongTurbo with the slot left alone resolves to 14. For
-          most people that means there is nothing to change here at all.
+          most people there's nothing to change here.
         </p>
       </div>
       <div>
@@ -106,12 +106,12 @@ const latest = (await publishedArticles()).slice(0, 3);
         </p>
       </div>
       <div>
-        <h3>How to tell what is near you</h3>
+        <h3>How to tell what's near you</h3>
         <p>
           Check <a href={site.maps[0].url} rel="noopener">our live map</a> for LongTurbo slot 14
           nodes around you. Remember a node only reaches a map if its owner switched on OK to
-          MQTT, so there are always more nodes on the air than any map displays. An empty patch is
-          not proof nobody is there. 
+          MQTT, so there are always more nodes on the air than any map displays. An empty patch
+          isn't proof nobody's there.
         </p>
       </div>
     </div>
@@ -181,8 +181,8 @@ const latest = (await publishedArticles()).slice(0, 3);
         </>
       ) : (
         <p class="lede">
-          No articles yet. Ask on <a href={url(site.discord.path)}>Discord</a> and we
-          will write one.
+          No articles yet. Ask on <a href={url(site.discord.path)}>Discord</a> and we'll
+          write one.
         </p>
       )
     }
@@ -238,7 +238,7 @@ const latest = (await publishedArticles()).slice(0, 3);
     </ul>
 
     <p class="sources">
-      We also lean on a handful of open source projects that are not ours, including the software
+      We also lean on a handful of open source projects that aren't ours, including the software
       behind our map and the parrot in our Discord. They are listed and thanked on the{' '}
       <a href={url('/links/')}>links page</a>.
     </p>
